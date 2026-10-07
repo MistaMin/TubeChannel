@@ -173,6 +173,13 @@ target_compile_definitions(TubeChannelStress PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE
 target_link_libraries(TubeChannelStress PRIVATE TubeChannel juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
 add_test(NAME processor_stress COMMAND TubeChannelStress)
 
+juce_add_console_app(TubeChannelGuiTest PRODUCT_NAME "Tube Channel GUI Test")
+target_sources(TubeChannelGuiTest PRIVATE tests/gui_test.cpp)
+target_include_directories(TubeChannelGuiTest PRIVATE Source Source/Plugin "${CMAKE_CURRENT_BINARY_DIR}/generated")
+target_compile_definitions(TubeChannelGuiTest PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(TubeChannelGuiTest PRIVATE TubeChannel juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
+add_test(NAME gui COMMAND TubeChannelGuiTest)
+
 # --- editor snapshot tool (renders both skins to PNG) -------------------------------------------------
 juce_add_console_app(TubeChannelSnapshot PRODUCT_NAME "Tube Channel Snapshot")
 target_sources(TubeChannelSnapshot PRIVATE tests/ui_snapshot.cpp)

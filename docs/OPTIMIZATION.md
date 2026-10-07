@@ -49,3 +49,17 @@ against a 5.33 ms deadline. Automation gains are modest and measurements vary wi
 This pass removes heap-related hazards; it does not yet make many simultaneous instances inexpensive.
 Further work should profile the detector and nonlinear solves without relaxing their accuracy or
 changing their circuits. Multi-instance host playback remains to be verified.
+
+## Next profiling priorities
+
+An instrumented stereo Default run identified the detector as the largest individual stage (about
+28% of measured stage time), followed by the tube and compressor audio circuits (about 16% each)
+and the microphone circuit (about 14%). Timing instrumentation and scheduling affect these figures;
+they identify priorities rather than predict an exact speedup.
+
+Next candidates are device evaluation, matrix stamping/factorization and memory layout in those
+solvers, with output-equivalence checks after each change. Parameter-expression bindings can reduce
+work while automating controls. Keep circuit equations, accuracy and retry behavior intact.
+
+The editor now skips spectrum transforms and display updates for hidden pages. This saves message-
+thread work while the analogue or System page is selected; it does not reduce circuit solve cost.

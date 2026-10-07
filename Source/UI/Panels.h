@@ -2,44 +2,113 @@
 
 #include "../Plugin/PluginProcessor.h"
 #include "Widgets.h"
+#include "MeterBallistics.h"
 
 namespace tc::ui
 {
-// ---- VU meter: amber-backlit needle meter (analogue) or flat bar plus readout (digital). The source is one of
-// four taps: preamp out, compressor out, EQ out, main out (UI state "vuSrc"). 0 VU = 0.347 V rms on the taps.
+// Analogue: calibrated RMS VU. Digital OUT: stereo sample peaks in dBFS after all output gain.
+// PRE / COMP / EQ retain their internal RMS VU references in both skins.
 class VuView : public juce::Component, private juce::Timer
 {
 public:
-    VuView(TubeChannelProcessor& p, const Skin* s) : proc(p), skin(s) { startTimerHz(30); }
+    VuView(TubeChannelProcessor& p, const Skin* s, std::function<bool()> channelB)
+        : proc(p), skin(s), chB(std::move(channelB))
+    {
+        source = juce::jlimit(0, 3, int(proc.apvts.state.getProperty("vuSrc", 3)));
+        startTimerHz(30);
+    }
+    void visibilityChanged() override
+    {
+        if (!isVisible()) { wasHidden = true; return; }
+        if (!wasHidden) return;
+        // Resume with fresh audio, rather than a maximum accumulated while another page was open.
+        if (skin->digital)
+            for (int ch = 0; ch < 2; ++ch) proc.takeOutputMeterPeak(ch);
+        meters[0] = {}; meters[1] = {};
+        needle = 0.f; displayDb = MeterBallistics::floorDb; lastTick = 0.0;
+        source = juce::jlimit(0, 3, int(proc.apvts.state.getProperty("vuSrc", 3)));
+        wasHidden = false;
+    }
     void paint(Graphics& g) override
     {
         const auto r = getLocalBounds().toFloat();
         if (!skin->digital)
-            gla::meters::drawVuMeter(g, r, needle, gla::meters::VuFace::Black);
-        else
         {
-            g.setColour(Colour(0xff050a12));
-            g.fillRoundedRectangle(r, 3);
-            auto bar = r.reduced(6).removeFromTop(r.getHeight() * 0.42f);
-            gla::retro::drawFlatBars(g, bar, juce::jlimit(0.f, 1.f, needle), juce::jlimit(0.f, 1.f, needle), juce::jlimit(0.f, 1.f, peakHold), juce::jlimit(0.f, 1.f, peakHold), skin->accent);
-            auto num = r.reduced(8).removeFromBottom(r.getHeight() * 0.42f);
-            gla::meters::drawSevenSegment(g, num.removeFromLeft(num.getWidth() * 0.6f), (vuDb >= 0 ? "+" : "") + juce::String(vuDb, 1), skin->accent, false);
-            g.setColour(skin->legendDim);
-            g.setFont(labelFont(10.0f));
-            g.drawText("VU", num, juce::Justification::centred);
+            gla::meters::drawVuMeter(g, r, needle, gla::meters::VuFace::Black);
+            return;
         }
+        g.setColour(Colour(0xff050a12));
+        g.fillRoundedRectangle(r, 3);
+        auto inner = r.reduced(6, 4);
+        const auto bars = inner.removeFromTop(10);
+        const float floor = source == 3 ? -60.f : -30.f, ceiling = source == 3 ? 0.f : 3.f;
+        const int channels = std::max(1, proc.activeChannels());
+        // Compact rows fit the actual available height; the gallery renderer needs a taller panel.
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            const auto row = bars.withY(bars.getY() + float(ch) * 6.f).withHeight(4.f);
+            const float level = gla::meters::dbPosition(meters[ch].db, floor, ceiling);
+            const float held = gla::meters::dbPosition(meters[ch].heldDb, floor, ceiling);
+            constexpr int count = 24;
+            const float step = row.getWidth() / float(count);
+            for (int i = 0; i < count; ++i)
+            {
+                const float f = float(i + 1) / float(count);
+                const Colour c = f > 0.95f ? Colour(0xffe5382a) : f > 0.8f ? Colour(0xfff0b323) : skin->accent;
+                g.setColour(level >= f ? c : c.withAlpha(0.13f));
+                g.fillRect(Rectangle<float>(row.getX() + float(i) * step, row.getY(), step - 1.f, row.getHeight()));
+            }
+            g.setColour(skin->legend);
+            g.fillRect(Rectangle<float>(row.getX() + held * (row.getWidth() - 1.f), row.getY(), 1.f, row.getHeight()));
+        }
+        auto readout = inner.removeFromBottom(14);
+        const auto units = readout.removeFromRight(36);
+        g.setColour(displayDb >= 0.f ? Colour(0xffe5382a) : skin->accent);
+        g.setFont(font(11.f, true));
+        g.drawFittedText(readoutText(), readout.toNearestInt(), juce::Justification::centredLeft, 1);
+        g.setColour(skin->legendDim);
+        g.setFont(labelFont(9.f));
+        g.drawText(source == 3 ? "dBFS" : "VU", units, juce::Justification::centredRight, false);
     }
 private:
+    juce::String readoutText() const
+    {
+        if (displayDb <= MeterBallistics::floorDb) return "-inf";
+        const float rounded = std::round(displayDb * 10.f) / 10.f;
+        return (rounded > 0.f ? "+" : "") + juce::String(rounded == 0.f ? 0.f : rounded, 1);
+    }
     void timerCallback() override
     {
+        const double now = juce::Time::getMillisecondCounterHiRes() * 0.001;
+        const double elapsed = lastTick > 0.0 ? now - lastTick : 1.0 / 30.0;
+        lastTick = now;
+        if (!isVisible()) return;
         const int src = juce::jlimit(0, 3, int(proc.apvts.state.getProperty("vuSrc", 3)));
-        float rms, ref;
-        if (src == 3) { rms = proc.telemetry[0].outRms.load(); ref = std::pow(10.0f, tcAlign() / 20.0f) / 1.41421356f; }
-        else          { rms = proc.telemetry[0].vuTap[src].load(); ref = 0.347f; }
-        vuDb = rms > 1e-6f ? 20.0f * std::log10(rms / ref) : -60.0f;
-        const float target = gla::meters::vuPositionForDb(vuDb);
-        needle += (target - needle) * 0.35f;
-        peakHold = std::max(peakHold * 0.995f, needle);
+        if (source != src)
+        {
+            meters[0] = {}; meters[1] = {};
+            source = src;
+        }
+        const int channels = std::max(1, proc.activeChannels());
+        const bool dual = proc.apvts.getRawParameterValue(tc::params::id::dualMono)->load() > 0.5f && channels == 2;
+        const int selected = dual && chB() ? 1 : 0;
+        float relativeRms[2] = {};
+        const float outputRef = std::pow(10.f, tcAlign() / 20.f) / 1.41421356f;
+        for (int ch = 0; ch < channels; ++ch)
+        {
+            const auto& t = proc.telemetry[ch];
+            relativeRms[ch] = src == 3 ? t.outRms.load() / outputRef : t.vuTap[src].load() / 0.347f;
+            if (skin->digital)
+            {
+                const float outputPeak = proc.takeOutputMeterPeak(ch);
+                meters[ch].update(src == 3 ? outputPeak : relativeRms[ch], elapsed);
+            }
+        }
+        const float rms = dual ? relativeRms[selected] : std::max(relativeRms[0], relativeRms[1]);
+        const float vuDb = rms > 1e-6f ? 20.f * std::log10(rms) : -60.f;
+        needle += (gla::meters::vuPositionForDb(vuDb) - needle) * float(1.0 - std::exp(-elapsed / 0.08));
+        displayDb = dual || channels == 1 ? meters[selected].heldDb : std::max(meters[0].heldDb, meters[1].heldDb);
+        setTitle(skin->digital ? readoutText() + (source == 3 ? " dBFS" : " VU") : juce::String(vuDb, 1) + " VU");
         repaint();
     }
     float tcAlign() const
@@ -49,7 +118,12 @@ private:
     }
     TubeChannelProcessor& proc;
     const Skin* skin;
-    float needle = 0.f, peakHold = 0.f, vuDb = -60.f;
+    std::function<bool()> chB;
+    MeterBallistics meters[2];
+    int source = -1;
+    float needle = 0.f, displayDb = -60.f;
+    double lastTick = 0.0;
+    bool wasHidden = false;
 };
 
 // ---- horizontal LED ladders (gain reduction, tube warmth) -------------------------------------------------------
@@ -57,7 +131,8 @@ class LadderView : public juce::Component, private juce::Timer
 {
 public:
     enum class Kind { GainReduction, Warmth };
-    LadderView(TubeChannelProcessor& p, const Skin* s, Kind k) : proc(p), skin(s), kind(k) { startTimerHz(30); }
+    LadderView(TubeChannelProcessor& p, const Skin* s, Kind k, std::function<bool()> channelB)
+        : proc(p), skin(s), kind(k), chB(std::move(channelB)) { startTimerHz(30); }
     void paint(Graphics& g) override
     {
         const int segs = kind == Kind::Warmth ? 10 : 12;
@@ -89,16 +164,21 @@ public:
 private:
     void timerCallback() override
     {
+        if (!isVisible()) return;
+        const bool dual = proc.activeChannels() == 2 && proc.apvts.getRawParameterValue(tc::params::id::dualMono)->load() > 0.5f;
+        const int selected = dual && chB() ? 1 : 0;
         float target = 0.f;
         if (kind == Kind::GainReduction)
         {
-            const float gr = std::max(0.f, proc.telemetry[0].grDb.load());
+            float gr = std::max(0.f, proc.telemetry[selected].grDb.load());
+            if (!dual && proc.activeChannels() == 2) gr = std::max(gr, proc.telemetry[1].grDb.load());
             target = juce::jlimit(0.f, 1.f, gr / 24.f);        // top segment = 24 dB (the hardware scale reads far further)
             // the segments fill from the top in the original orientation: here simply bottom-up
         }
         else
         {
-            const float v = proc.telemetry[0].tubeDrive.load();
+            float v = proc.telemetry[selected].tubeDrive.load();
+            if (!dual && proc.activeChannels() == 2) v = std::max(v, proc.telemetry[1].tubeDrive.load());
             const float db = v > 1e-4f ? 20.0f * std::log10(v / 12.0f) : -80.0f;
             target = juce::jlimit(0.f, 1.f, (db + 40.0f) / 40.0f);
         }
@@ -108,6 +188,7 @@ private:
     TubeChannelProcessor& proc;
     const Skin* skin;
     Kind kind;
+    std::function<bool()> chB;
     float shown = 0.f;
 };
 
@@ -115,7 +196,15 @@ private:
 class ClipLamp : public juce::Component, private juce::Timer
 {
 public:
-    ClipLamp(TubeChannelProcessor& p, juce::String t) : proc(p), text(std::move(t)) { startTimerHz(20); }
+    ClipLamp(TubeChannelProcessor& p, juce::String t, bool finalOutput = false) : proc(p), text(std::move(t)), digitalOutput(finalOutput) { startTimerHz(20); }
+    void visibilityChanged() override
+    {
+        if (!isVisible()) { wasHidden = true; return; }
+        if (!wasHidden) return;
+        if (digitalOutput) { proc.takeOutputClip(0); proc.takeOutputClip(1); }
+        on = 0.f;
+        wasHidden = false;
+    }
     void paint(Graphics& g) override
     {
         auto r = getLocalBounds().toFloat();
@@ -127,13 +216,23 @@ public:
 private:
     void timerCallback() override
     {
-        const bool c = proc.telemetry[0].clip.load() > 0.5f || proc.telemetry[1].clip.load() > 0.5f;
+        if (!isVisible()) return;
+        bool c;
+        if (digitalOutput)
+        {
+            const bool left = proc.takeOutputClip(0), right = proc.takeOutputClip(1);
+            c = left || right;
+        }
+        else c = proc.telemetry[0].clip.load() > 0.5f ||
+                 (proc.activeChannels() > 1 && proc.telemetry[1].clip.load() > 0.5f);
         on = c ? 1.0f : on * 0.85f;
         repaint();
     }
     TubeChannelProcessor& proc;
     juce::String text;
     float on = 0.f;
+    bool digitalOutput;
+    bool wasHidden = false;
 };
 
 // ---- the animated power supply ---------------------------------------------------------------------------------------
@@ -315,6 +414,7 @@ private:
 
     void timerCallback() override
     {
+        if (!isVisible()) return;
         const auto& t = proc.telemetry[0];
         const float load = juce::jlimit(0.0f, 0.5f, t.loadP15.load() + t.loadTube.load());
         flowPhase = std::fmod(flowPhase + (0.004f + load * 0.06f), 1.0f);

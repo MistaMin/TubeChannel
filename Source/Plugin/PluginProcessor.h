@@ -52,6 +52,10 @@ public:
     float cpuLoad() const { return cpu.load(); }
     int swapCount() const { return swaps.load(); }
 
+    // Final output peaks accumulated between UI polls, after trims and mode-switch fades.
+    float takeOutputMeterPeak(int ch) { return outputMeterPeak[ch].exchange(0.f, std::memory_order_relaxed); }
+    bool takeOutputClip(int ch) { return outputClip[ch].exchange(false, std::memory_order_relaxed); }
+
     // most recent output samples (mono sum) for the spectrum display
     static constexpr int kSpecSize = 4096;
     std::atomic<float> specRing[kSpecSize];
@@ -104,6 +108,8 @@ private:
     std::atomic<int> activeChannelCount { 2 }, activeFactor { 4 }, activeLatency { 0 }, swaps { 0 };
     std::atomic<bool> prepared { false }, building { false };
     std::atomic<float> cpu { 0.f };
+    std::atomic<float> outputMeterPeak[2] {};
+    std::atomic<bool> outputClip[2] {};
     int currentProgram = 0;
 
     juce::ValueTree otherState;

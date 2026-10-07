@@ -62,6 +62,15 @@ public:
         applySkin();
     }
 
+    void syncUiState()
+    {
+        const bool savedSystemPage = int(proc.apvts.state.getProperty("sysPage", 0)) == 1;
+        const bool pageChanged = savedSystemPage != systemPage;
+        systemPage = savedSystemPage;
+        if ((proc.skin() == 1) != skin.digital) applySkin();
+        else if (pageChanged) showPage();
+    }
+
     void drawPlate(Graphics& g, Rectangle<float> r)
     {
         if (skin.digital)
@@ -203,9 +212,9 @@ private:
         bindings.push_back({ [k, base, perChannel, this](bool b) { k->bind(proc.apvts, perChannel ? tc::params::idFor(base, b) : juce::String(base)); } });
         return k;
     }
-    HSlider* slider(const char* base, const char* title, int x, int y, int w, bool perChannel = true, int titleW = 74)
+    HSlider* slider(const char* base, const char* title, int x, int y, int w, bool perChannel = true, int titleW = 74, int valueW = 52)
     {
-        auto* s = add(std::make_unique<HSlider>(&skin, title, titleW, 52));
+        auto* s = add(std::make_unique<HSlider>(&skin, title, titleW, valueW));
         s->setBounds(x, y, w, 24);
         bindings.push_back({ [s, base, perChannel, this](bool b) { s->bind(proc.apvts, perChannel ? tc::params::idFor(base, b) : juce::String(base)); } });
         return s;
@@ -248,6 +257,8 @@ private:
         redoBtn->onClick = [this] { proc.undo.redo(); };
         addAndMakeVisible(tabA);
         addAndMakeVisible(tabB);
+        tabA.setComponentID("channel-a");
+        tabB.setComponentID("channel-b");
         tabA.setBounds(770, 7, 52, 26);
         tabB.setBounds(826, 7, 52, 26);
         tabA.onClick = [this] { channelB = false; bindAll(); syncChannelTabs(); };
@@ -255,9 +266,11 @@ private:
         tabA.setVisible(false);
         tabB.setVisible(false);
         sysBtn = add(std::make_unique<PushButton>(&skin, "SYSTEM"));
+        sysBtn->setComponentID("system-page");
         sysBtn->setBounds(950, 7, 100, 26);
         sysBtn->onClick = [this] { systemPage = !systemPage; showPage(); };
         skinBtn = add(std::make_unique<PushButton>(&skin, "ANALOGUE"));
+        skinBtn->setComponentID("skin-switch");
         skinBtn->setBounds(1070, 7, 116, 26);
         skinBtn->onClick = [this] { toggleSkin(); };
 
@@ -302,11 +315,12 @@ private:
         clip = add(std::make_unique<ClipLamp>(proc, "CLIP"));
         clip->setBounds(525, r1 + 14, 46, 52);
         vuBounds = { 985, 54, 155, 100 };
-        vu = add(std::make_unique<VuView>(proc, &skin));
+        vu = add(std::make_unique<VuView>(proc, &skin, [this] { return channelB; }));
+        vu->setComponentID("analogue-meter");
         vu->setBounds(vuBounds);
-        grA = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::GainReduction));
+        grA = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::GainReduction, [this] { return channelB; }));
         grA->setBounds(985, 160, 155, 12);
-        warmA = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::Warmth));
+        warmA = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::Warmth, [this] { return channelB; }));
         warmA->setBounds(985, 190, 155, 12);
         vuSrcA = add(std::make_unique<StateKeys>(proc, &skin, "vuSrc", juce::StringArray { "PRE", "COMP", "EQ", "OUT" }, 3));
         vuSrcA->setBounds(985, 218, 155, 20);
@@ -320,10 +334,11 @@ private:
             auto keyRow = [&](int x0, int spacing, int i) { return x0 + 25 + i * spacing; };
             // input: Gain is the only knob
             knob(id::gain, "GAIN", "", 80, 62, 56, true);
+            slider(id::inputTrim, "TRIM", 22, 186, 110, false, 28, 46)->setComponentID("input-trim");
             slider(id::impedance, "IMPEDANCE", 142, 74, 180, true, 66);
             slider(id::lowcut, "LOW CUT", 142, 110, 180, true, 66);
             slider(id::preOut, "PREAMP OUT", 142, 146, 180, true, 66);
-            warmD = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::Warmth));
+            warmD = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::Warmth, [this] { return channelB; }));
             warmD->setBounds(142, 198, 180, 10);
             toggle(id::instrument, "INST", "MIC", keyRow(22, 60, 0), kRow, 50);
             toggle(id::gain20, "+20 dB", "", keyRow(22, 60, 1), kRow, 50);
@@ -336,7 +351,7 @@ private:
             slider(id::attack, "ATTACK", 488, 74, 164, true, 56);
             slider(id::release, "RELEASE", 488, 110, 164, true, 56);
             slider(id::compOut, "OUTPUT", 488, 146, 164, true, 56);
-            grD = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::GainReduction));
+            grD = add(std::make_unique<LadderView>(proc, &skin, LadderView::Kind::GainReduction, [this] { return channelB; }));
             grD->setBounds(488, 198, 164, 10);
             const int cx0 = 336 + (316 - 4 * 60 + 10) / 2 - 5;
             toggle(id::comp, "ACTIVE", "BYPASS", keyRow(cx0, 60, 0), kRow, 50);
@@ -354,13 +369,15 @@ private:
             toggle(id::hiShift, "6kHz", "18kHz", keyRow(666, 51, 5) - 2, kRow, 50);
             toggle(id::eq, "EQ IN", "EQ OUT", keyRow(666, 51, 6) - 2, kRow, 50);
             // output
-            knob(id::master, "MASTER", "", 1107, 62, 44, true);
-            vuD = add(std::make_unique<VuView>(proc, &skin));
-            vuD->setBounds(1036, 168, 142, 40);
+            knob(id::master, "MASTER", "", 1107, 62, 30, true);
+            slider(id::outputTrim, "TRIM", 1036, 150, 142, false, 32)->setComponentID("output-trim");
+            vuD = add(std::make_unique<VuView>(proc, &skin, [this] { return channelB; }));
+            vuD->setComponentID("digital-meter");
+            vuD->setBounds(1036, 176, 142, 34);
             vuSrcD = add(std::make_unique<StateKeys>(proc, &skin, "vuSrc", juce::StringArray { "PRE", "COMP", "EQ", "OUT" }, 3));
             vuSrcD->setBounds(1036, 212, 142, 18);
             toggle(id::outLevel, "+4 dBu", "-10 dBV", 1036 + 40, kRow, 56);
-            clipD = add(std::make_unique<ClipLamp>(proc, "CLIP"));
+            clipD = add(std::make_unique<ClipLamp>(proc, "CLIP", true));
             clipD->setBounds(1036 + 100, kRow, 42, 36);
         }
 
@@ -420,7 +437,7 @@ private:
 
     void applySkin()
     {
-        skin = Skin::make(skin.digital);
+        skin = Skin::make(proc.skin() == 1);
         gla::retro::glowEnabled = false;
         skinBtn->setText(skin.digital ? "DIGITAL" : "ANALOGUE");
         skinBtn->setLit(skin.digital);
@@ -479,6 +496,7 @@ void TubeChannelEditor::resized()
 
 void TubeChannelEditor::timerCallback()
 {
+    content->syncUiState();
     const int f = proc.currentFactor();
     const double fs = proc.getSampleRate();
     const bool lin = proc.apvts.getRawParameterValue(id::linearPhase)->load() > 0.5f;

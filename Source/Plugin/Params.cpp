@@ -15,6 +15,7 @@ constexpr int kVersion = 1;
 
 juce::String fmt(double v, int dp, const char* unit)
 {
+    if (dp > 0 && std::round(v * std::pow(10.0, dp)) == 0.0) v = 0.0; // avoid a misleading "-0.0 dB"
     // JUCE treats 0 decimal places as "as many as needed", so format whole numbers explicitly
     return (dp == 0 ? juce::String(juce::roundToInt(v)) : juce::String(v, dp)) + " " + unit;
 }

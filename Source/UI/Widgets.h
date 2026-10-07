@@ -3,7 +3,7 @@
 // UI building blocks, drawn procedurally on GoodLookinUI. Two skins share one layout:
 //   analogue: a black rack panel with white printed legends, black knurled knobs with white pointers,
 //             small push buttons with LEDs, an orange-backlit VU meter;
-//   digital:  the same layout as flat vector graphics with seven-segment readouts.
+//   digital:  flat vector graphics with compact level readouts.
 // Nothing here touches the audio thread.
 
 #include <GoodLookinUI.h>

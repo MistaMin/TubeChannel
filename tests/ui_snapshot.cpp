@@ -48,6 +48,12 @@ int main(int argc, char** argv)
         auto img = ed->createComponentSnapshot(ed->getLocalBounds(), true, 1.0f);
         save(img, dir.getChildFile(kNames[skin]));
         if (skin == 0) save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 2.0f), dir.getChildFile("analogue@2x.png"));
+        if (skin == 1)
+        {
+            save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 2.0f), dir.getChildFile("digital@2x.png"));
+            ed->setSize(TubeChannelEditor::kW / 2, TubeChannelEditor::kH / 2);
+            save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 1.0f), dir.getChildFile("digital-small.png"));
+        }
         std::printf("wrote %s\n", kNames[skin]);
     }
     // the RATIO knob popped (brickwall limiter), in both skins
@@ -60,6 +66,25 @@ int main(int argc, char** argv)
         ed->setSize(TubeChannelEditor::kW, TubeChannelEditor::kH);
         juce::MessageManager::getInstance()->runDispatchLoopUntil(400);
         save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 1.0f), dir.getChildFile(skin == 0 ? "limiter-analogue.png" : "limiter-digital.png"));
+    }
+    // A positive dBFS readout and final-output clip lamp must also fit the compact meter.
+    p.setSkin(1);
+    p.apvts.state.setProperty("sysPage", 0, nullptr);
+    auto* outputTrim = p.apvts.getParameter(tc::params::id::outputTrim);
+    outputTrim->setValueNotifyingHost(outputTrim->convertTo0to1(18.f));
+    for (int b = 0; b < 40; ++b)
+    {
+        for (int i = 0; i < 256; ++i, ++ph)
+        {
+            const float v = float(0.25 * std::sin(2.0 * juce::MathConstants<double>::pi * 220.0 * double(ph) / 48000.0));
+            buf.setSample(0, i, v); buf.setSample(1, i, v);
+        }
+        p.processBlock(buf, midi);
+    }
+    {
+        std::unique_ptr<juce::AudioProcessorEditor> ed(p.createEditor());
+        juce::MessageManager::getInstance()->runDispatchLoopUntil(400);
+        save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 1.0f), dir.getChildFile("digital-overload.png"));
     }
     return 0;
 }

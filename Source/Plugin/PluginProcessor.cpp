@@ -122,6 +122,11 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
         builtKey = k;
     }
     fadeInRemaining = 0;
+    for (int ch = 0; ch < 2; ++ch)
+    {
+        outputMeterPeak[ch].store(0.f, std::memory_order_relaxed);
+        outputClip[ch].store(false, std::memory_order_relaxed);
+    }
     fadeInLength = std::max(1, juce::roundToInt(sampleRate_ * 0.02));
     activeChannelCount.store(chain->channels());
     activeFactor.store(chain->factor());
@@ -239,15 +244,29 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     {
         int w = specWrite.load(std::memory_order_relaxed);
         const int nc = std::max(1, std::min(buffer.getNumChannels(), getMainBusNumOutputChannels()));
+        float peaks[2] = {};
         for (int i = 0; i < total; ++i)
         {
             float v = 0.f;
             for (int ch = 0; ch < nc; ++ch)
-                v += buffer.getSample(ch, i);
+            {
+                const float sample = buffer.getSample(ch, i);
+                v += sample;
+                peaks[ch] = std::max(peaks[ch], std::fabs(sample));
+            }
             specRing[w].store(v / float(nc), std::memory_order_relaxed);
             w = (w + 1) % kSpecSize;
         }
         specWrite.store(w, std::memory_order_release);
+        for (int ch = 0; ch < nc; ++ch)
+        {
+            float previous = outputMeterPeak[ch].load(std::memory_order_relaxed);
+            // The UI only resets this value to zero. A failed comparison means it just consumed
+            // the previous peak; publish this block's peak with a bounded fallback.
+            if (previous < peaks[ch] && !outputMeterPeak[ch].compare_exchange_strong(previous, peaks[ch], std::memory_order_relaxed))
+                outputMeterPeak[ch].store(peaks[ch], std::memory_order_relaxed);
+            if (peaks[ch] >= 1.f) outputClip[ch].store(true, std::memory_order_relaxed);
+        }
     }
 
     const double secs = juce::Time::highResolutionTicksToSeconds(juce::Time::getHighResolutionTicks() - t0);

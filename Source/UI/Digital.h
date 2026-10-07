@@ -276,6 +276,7 @@ private:
 
     void timerCallback() override
     {
+        if (!isVisible()) return;
         const int w = proc.specWrite.load(std::memory_order_acquire);
         for (int i = 0; i < kN; ++i)
             data[size_t(i)] = proc.specRing[(w - kN + i + 2 * TubeChannelProcessor::kSpecSize) % TubeChannelProcessor::kSpecSize].load(std::memory_order_relaxed);
@@ -458,7 +459,7 @@ private:
     float yOf(double db) const { return area.getBottom() - float((db - kLo) / (kHi - kLo)) * area.getHeight(); }
     double inOf(float x) const { return kLo + double((x - area.getX()) / area.getWidth()) * (kHi - kLo); }
     double outOf(float y) const { return kLo + double((area.getBottom() - y) / area.getHeight()) * (kHi - kLo); }
-    void timerCallback() override { repaint(); }
+    void timerCallback() override { if (isVisible()) repaint(); }
 
     TubeChannelProcessor& proc;
     std::function<bool()> chB;
