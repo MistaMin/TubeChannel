@@ -27,8 +27,16 @@ for entry in "${BUNDLES[@]}"; do
   find "$OUT/stage/$id" -name '._*' -delete
   xattr -cr "$OUT/stage/$id/$name"
   if [ "${SIGN:-0}" = "1" ]; then
-    codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$OUT/stage/$id/$name"
-    codesign --verify --deep --strict --verbose=2 "$OUT/stage/$id/$name"
+    if [ "$id" = "lv2" ]; then
+      # an LV2 bundle is a plain folder: sign the binaries inside it
+      find "$OUT/stage/$id/$name" -type f \( -name '*.dylib' -o -name '*.so' \) | while read -r f; do
+        codesign --force --timestamp --options runtime --sign "$APP_ID" "$f"
+        codesign --verify --strict --verbose=2 "$f"
+      done
+    else
+      codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$OUT/stage/$id/$name"
+      codesign --verify --deep --strict --verbose=2 "$OUT/stage/$id/$name"
+    fi
   fi
   pkgbuild --root "$OUT/stage/$id" --install-location "$dest" --identifier "com.opengrid.tubechannel.$id" \
            --version "$VERSION" "$OUT/pkgs/TubeChannel-$id.pkg" >/dev/null
