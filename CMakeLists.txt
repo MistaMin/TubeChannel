@@ -43,6 +43,13 @@ add_executable(TubeChannelLockstepTest tests/lockstep_test.cpp)
 target_include_directories(TubeChannelLockstepTest PRIVATE Source)
 add_test(NAME lockstep COMMAND TubeChannelLockstepTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
 
+add_executable(TubeChannelRealtimeTest tests/realtime_test.cpp)
+target_include_directories(TubeChannelRealtimeTest PRIVATE Source)
+add_test(NAME realtime COMMAND TubeChannelRealtimeTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+add_executable(TubeChannelChainBench tests/chain_bench.cpp)
+target_include_directories(TubeChannelChainBench PRIVATE Source)
+
 # --- JUCE ------------------------------------------------------------------------------------------
 option(TUBECHANNEL_BUILD_PLUGIN "Build the JUCE plugin targets" ON)
 if(NOT TUBECHANNEL_BUILD_PLUGIN)

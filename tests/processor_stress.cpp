@@ -52,6 +52,24 @@ int main()
         std::printf("  layouts ok\n");
     }
 
+    // Cached parameter addresses must keep following automation, state restoration and presets.
+    {
+        TubeChannelProcessor p;
+        tc::params::ParameterValues a(p.apvts, false), b(p.apvts, true);
+        p.apvts.getParameter(id::gain)->setValueNotifyingHost(0.25f);
+        p.apvts.getParameter(tc::params::idFor(id::gain, true))->setValueNotifyingHost(0.75f);
+        setChoice(p, id::micZ, 300);
+        const auto saved = p.apvts.copyState();
+        p.apvts.getParameter(id::gain)->setValueNotifyingHost(0.9f);
+        check(std::fabs(tc::params::readControls(a).gain - 0.9) < 1e-6, "cached controls follow automation");
+        p.apvts.replaceState(saved);
+        check(std::fabs(tc::params::readControls(a).gain - 0.25) < 1e-6, "cached channel A survives state restoration");
+        check(std::fabs(tc::params::readControls(b).gain - 0.75) < 1e-6, "cached channel B stays independent");
+        check(std::fabs(tc::params::readControls(b).micSourceOhms - 300.0) < 1e-3, "cached global impedance is shared");
+        p.setCurrentProgram(0);
+        check(std::fabs(tc::params::readControls(a).gain) < 1e-6, "cached controls follow presets");
+    }
+
     // 2. Audio: level, latency and the oversampling factors at 96 kHz (Default = 1x there)
     for (int quality = 0; quality < 2; ++quality)
         for (bool lin : { false, true })
@@ -105,6 +123,16 @@ int main()
         }
         check(finite, "finite while switching");
         check(p.currentFactor() == 2, "HQ at 96 kHz is 2x", p.currentFactor());
+        for (int quality : { 0, 1, 0 })
+        {
+            const int before = p.swapCount();
+            setChoice(p, id::quality, quality);
+            pump(1);
+            buf.clear();
+            p.processBlock(buf, midi);
+            check(p.swapCount() == before + 1, "successive mode switches always have a retirement slot");
+            check(p.currentFactor() == (quality == 0 ? 1 : 2), "successive mode switch adopts requested factor");
+        }
         std::printf("  live switching ok (swaps %d)\n", p.swapCount());
     }
     std::printf("%s (%d failure%s)\n", failures == 0 ? "ALL PASSED" : "FAILED", failures, failures == 1 ? "" : "s");

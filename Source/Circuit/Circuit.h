@@ -290,8 +290,9 @@ public:
             const double a = 3.14159265358979 * warpHz * dt;
             kappa = a > 1e-9 && a < 1.2 ? a / std::tan(a) : 1.0;
         }
+        groundDiag.resize(nodeNames.size());
         for (int i = 0; i < int(nodeNames.size()); ++i)
-            lu.add(i, i);
+            groundDiag[size_t(i)] = lu.add(i, i);
         lu.analyze();
         const int n = lu.size();
         const int nz = lu.nnz();
@@ -305,6 +306,10 @@ public:
         xNew.assign(size_t(n), 0.0);
         rhs.assign(size_t(n), 0.0);
         rhsBase.assign(size_t(n), 0.0);
+        unitRhs.assign(size_t(n), 0.0);
+        inverseColumn.assign(size_t(n), 0.0);
+        lrZ.assign(size_t(n), 0.0);
+        prepareInverseStorage();
         for (auto& o : opamps) { o.vpos = o.m.VSW; o.vneg = o.m.VSW; }
         dirty = true;
         needFactor = true;
@@ -701,7 +706,7 @@ private:
             if (d.p.aa >= 0 || d.p.bb >= 0)
                 stamp2(baseVals, d.p, kGmin);
         for (int i = 0; i < lu.size(); ++i)
-            baseVals[size_t(lu.add(i, i))] += kGmin + gminExtra;   // registered already: this only looks it up
+            baseVals[size_t(groundDiag[size_t(i)])] += kGmin + gminExtra;
         // the low-rank resistor is stamped at its present value: corrections are relative to that
         if (lrHandle >= 0)
             lrG0 = 1.0 / resistors[size_t(lrHandle)].R;
@@ -1190,12 +1195,10 @@ private:
         if (lrHandle < 0)
             return;
         const auto& r = resistors[size_t(lrHandle)];
-        const int n = lu.size();
-        std::vector<double> e(static_cast<size_t>(n), 0.0);
-        if (r.a >= 0) e[size_t(r.a)] += 1.0;
-        if (r.b >= 0) e[size_t(r.b)] -= 1.0;
-        lrZ.assign(size_t(n), 0.0);
-        lu.solve(e.data(), lrZ.data());
+        std::fill(unitRhs.begin(), unitRhs.end(), 0.0);
+        if (r.a >= 0) unitRhs[size_t(r.a)] += 1.0;
+        if (r.b >= 0) unitRhs[size_t(r.b)] -= 1.0;
+        lu.solve(unitRhs.data(), lrZ.data());
         lrZu = (r.a >= 0 ? lrZ[size_t(r.a)] : 0.0) - (r.b >= 0 ? lrZ[size_t(r.b)] : 0.0);
     }
 
@@ -1288,8 +1291,8 @@ private:
         }
     }
 
-    // Dense inverse restricted to the columns where the right-hand side is non-zero.
-    void buildInverse()
+    // The circuit topology is fixed after finalize. Allocate and resolve the inverse layout once.
+    void prepareInverseStorage()
     {
         const int n = lu.size();
         if (rhsIdx.empty())
@@ -1319,13 +1322,19 @@ private:
             rhsLocal.assign(invCols, 0.0);
         }
         minvCols.assign(invCols * size_t(n), 0.0);
-        std::vector<double> e(static_cast<size_t>(n), 0.0), col(static_cast<size_t>(n), 0.0);
+    }
+
+    // Dense inverse restricted to the columns where the right-hand side is non-zero.
+    void buildInverse()
+    {
+        const int n = lu.size();
+        std::fill(minvCols.begin(), minvCols.end(), 0.0);
         for (size_t j = 0; j < rhsIdx.size(); ++j)
         {
-            std::fill(e.begin(), e.end(), 0.0);
-            e[size_t(rhsIdx[j])] = 1.0;
-            lu.solve(e.data(), col.data());
-            std::copy(col.begin(), col.end(), minvCols.begin() + long(j * size_t(n)));
+            std::fill(unitRhs.begin(), unitRhs.end(), 0.0);
+            unitRhs[size_t(rhsIdx[j])] = 1.0;
+            lu.solve(unitRhs.data(), inverseColumn.data());
+            std::copy(inverseColumn.begin(), inverseColumn.end(), minvCols.begin() + long(j * size_t(n)));
         }
         fastValid = true;
         ++invVersion;
@@ -1360,8 +1369,8 @@ private:
     int lrHandle = -1;
     bool lrDirty = false;
     double lrG0 = 0.0, lrZu = 0.0;
-    std::vector<double> lrZ;
-    std::vector<int> rhsIdx, fmSrc, fmIa, fmIb, fmCa, fmCb, fmLa, fmLb, fmOp;
+    std::vector<double> lrZ, unitRhs, inverseColumn;
+    std::vector<int> groundDiag, rhsIdx, fmSrc, fmIa, fmIb, fmCa, fmCb, fmLa, fmLb, fmOp;
     std::vector<double> minvCols, rhsLocal;
     size_t invCols = 0;
     unsigned long invVersion = 0;

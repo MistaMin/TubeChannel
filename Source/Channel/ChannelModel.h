@@ -554,9 +554,14 @@ private:
     {
         const bool wasLimiter = controls.limiter;
         controls = pending;
-        // the limiter ceiling is the THRESHOLD label (dBm, peak) at the compressor output
-        limiter.setCeiling(1.0960 * std::pow(10.0, (-20.0 + 40.0 * controls.threshold) / 20.0));
-        limiter.setRelease(controls.limiterRelease);
+        if (immediate || controlsDirty)
+        {
+            // Targets and limiter coefficients stay constant while the controls glide toward them.
+            // The limiter ceiling is the THRESHOLD label (dBm, peak) at the compressor output.
+            limiter.setCeiling(1.0960 * std::pow(10.0, (-20.0 + 40.0 * controls.threshold) / 20.0));
+            limiter.setRelease(controls.limiterRelease);
+            mapControls(controls, controlTargets);
+        }
         if (controls.limiter && !wasLimiter)
         {
             limiter.reset();
@@ -565,11 +570,9 @@ private:
             comp.setParam("LDRR", 1e6);
             comp.c.setResistance(P.compRLDR, 1e6);
         }
-        std::map<std::string, double> target;
-        mapControls(controls, target);
         if (immediate || smoothed.empty())
-            smoothed = target;
-        for (auto& [k, v] : target)
+            smoothed = controlTargets;
+        for (auto& [k, v] : controlTargets)
         {
             // continuous controls glide, switches jump
             const bool isSwitch = k == "INST" || k == "PH48" || k == "INVERT" || k == "TUBE20" || k == "HV" || k == "COMP" ||
@@ -595,13 +598,11 @@ private:
     {
         if (controlsDirty || !smoothSettled)
         {
-            controlsDirty = false;
             applyControls(false);
+            controlsDirty = false;
             // keep gliding until the smoothed values reach the targets
-            std::map<std::string, double> target;
-            mapControls(controls, target);
             smoothSettled = true;
-            for (auto& [k, v] : target)
+            for (auto& [k, v] : controlTargets)
                 if (std::fabs(smoothed[k] - v) > 1e-6 * (1.0 + std::fabs(v)))
                     smoothSettled = false;
         }
@@ -662,7 +663,7 @@ private:
     Noise noise[3];
     ChannelControls pending;
     bool controlsDirty = true, smoothSettled = true;
-    std::map<std::string, double> smoothed;
+    std::map<std::string, double> smoothed, controlTargets;
     int tickCount = 0;
     double psuInterval = 2.0, psuCount = 0.0;
     double loadAcc[4] = {};

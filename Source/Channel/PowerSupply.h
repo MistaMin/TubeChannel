@@ -35,6 +35,16 @@ public:
         psu.build(netlist, 1.0 / kRate, tol, {},
                   { { "nS1", s.rsec }, { "nS2", s.rsec }, { "P15", 0.015 }, { "N15", 0.015 } }, 0.5,
                   { { "P15", false }, { "N15", true }, { "P45", false }, { "TUBEP", false }, { "P150", false } });
+        ports.p15 = psu.nodeId("P15"); ports.n15 = psu.nodeId("N15");
+        ports.p25 = psu.nodeId("P25"); ports.n25 = psu.nodeId("N25");
+        ports.p45 = psu.nodeId("P45"); ports.p75 = psu.nodeId("P75");
+        ports.p150 = psu.nodeId("P150"); ports.tube = psu.nodeId("TUBEP");
+        ports.heater = psu.resistorHandle("R30");
+        ports.s1 = psu.inputHandle("nS1"); ports.s2 = psu.inputHandle("nS2");
+        ports.regP = psu.inputHandle("P15"); ports.regN = psu.inputHandle("N15");
+        ports.loadP = psu.loads.at("P15"); ports.loadN = psu.loads.at("N15");
+        ports.load45 = psu.loads.at("P45"); ports.loadTube = psu.loads.at("TUBEP");
+        ports.load150 = psu.loads.at("P150");
         psu.dc();
         phase = 0.0;
         set(0.0, 0.0, 0.0, 0.0, false);
@@ -65,15 +75,15 @@ public:
         stepWith(1.0 / kRate, iP15, iN15, iP45, iTube, high);
     }
 
-    double p15() const { return psu.node("P15"); }
-    double n15() const { return psu.node("N15"); }
-    double p45() const { return psu.node("P45"); }
-    double tubeP() const { return psu.node("TUBEP"); }
-    double p25() const { return psu.node("P25"); }
-    double n25() const { return psu.node("N25"); }
-    double p75() const { return psu.node("P75"); }
-    double p150() const { return psu.node("P150"); }
-    double heaterCurrent() const { return psu.c.resistorCurrent(psu.nl.resistors.at("R30")); }
+    double p15() const { return psu.nodeV(ports.p15); }
+    double n15() const { return psu.nodeV(ports.n15); }
+    double p45() const { return psu.nodeV(ports.p45); }
+    double tubeP() const { return psu.nodeV(ports.tube); }
+    double p25() const { return psu.nodeV(ports.p25); }
+    double n25() const { return psu.nodeV(ports.n25); }
+    double p75() const { return psu.nodeV(ports.p75); }
+    double p150() const { return psu.nodeV(ports.p150); }
+    double heaterCurrent() const { return psu.c.resistorCurrent(ports.heater); }
     double mainsPhase() const { return phase; }
     PowerSupplySettings settings;
     circuit::Block psu;
@@ -81,11 +91,11 @@ public:
 private:
     void set(double iP15, double iN15, double iP45, double iTube, bool high)
     {
-        psu.setLoad("P15", iP15);
-        psu.setLoad("N15", iN15);
-        psu.setLoad("P45", iP45);
-        psu.setLoad("TUBEP", iTube);
-        psu.setLoad("P150", 0.0);
+        psu.c.setCurrent(ports.loadP, iP15);
+        psu.c.setCurrent(ports.loadN, iN15);
+        psu.c.setCurrent(ports.load45, iP45);
+        psu.c.setCurrent(ports.loadTube, iTube);
+        psu.c.setCurrent(ports.load150, 0.0);
         if (high != lastHigh)
         {
             psu.setParam("HV", high ? 1.0 : 0.0);
@@ -99,15 +109,21 @@ private:
         phase += 6.283185307179586 * settings.mainsHz * dt;
         if (phase > 6.283185307179586) phase -= 6.283185307179586;
         const double v = settings.vsec * settings.mainsScale * 1.4142135623730951 * std::sin(phase);
-        psu.setInput("nS1", v);
-        psu.setInput("nS2", -v);
-        psu.setInput("P15", std::max(std::min(15.0, psu.node("P25") - 2.0), 0.0));
-        psu.setInput("N15", std::min(std::max(-15.0, psu.node("N25") + 2.0), 0.0));
+        psu.setSourceH(ports.s1, v);
+        psu.setSourceH(ports.s2, -v);
+        psu.setSourceH(ports.regP, std::max(std::min(15.0, p25() - 2.0), 0.0));
+        psu.setSourceH(ports.regN, std::min(std::max(-15.0, n25() + 2.0), 0.0));
         set(iP15, iN15, iP45, iTube, high);
         psu.step();
     }
 
     double phase = 0.0;
     bool lastHigh = true;
+    struct Ports
+    {
+        int p15 = 0, n15 = 0, p25 = 0, n25 = 0, p45 = 0, p75 = 0, p150 = 0, tube = 0;
+        int heater = 0, s1 = 0, s2 = 0, regP = 0, regN = 0;
+        int loadP = 0, loadN = 0, load45 = 0, loadTube = 0, load150 = 0;
+    } ports;
 };
 } // namespace tubechannel::channel

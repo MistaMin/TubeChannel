@@ -88,6 +88,8 @@ private:
     double sampleRate_ = 48000.0;
     int maxBlock_ = 512;
 
+    const tc::params::ParameterValues paramsA, paramsB;
+
     // audio thread
     std::unique_ptr<tc::Chain> chain;
     int fadeInRemaining = 0, fadeInLength = 0;

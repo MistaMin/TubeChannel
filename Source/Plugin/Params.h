@@ -131,8 +131,24 @@ inline double hmFreqHz(double k, bool x10) { return (x10 ? 1800.0 : 162.0) * std
 
 juce::AudioProcessorValueTreeState::ParameterLayout createLayout();
 
-// Read the current controls of one channel out of the parameter tree.
-tubechannel::channel::ChannelControls readControls(const juce::AudioProcessorValueTreeState& apvts, bool channelB);
+// Parameter addresses stay valid for the APVTS lifetime. Resolve IDs once, off the audio thread.
+struct ParameterValues
+{
+    ParameterValues(const juce::AudioProcessorValueTreeState&, bool channelB);
+    std::atomic<float>* instrument, *gain, *gain20, *impedance, *phantom;
+    std::atomic<float>* invert, *lowcut, *plateHigh, *preOut, *comp;
+    std::atomic<float>* threshold, *ratio, *attack, *release, *autoDetect;
+    std::atomic<float>* compOut, *extSc, *ratioLimit, *eq, *low;
+    std::atomic<float>* loShift, *high, *hiShift, *hmLevel, *hmFreq;
+    std::atomic<float>* hmX10, *hmNarrow, *lmLevel, *lmFreq, *lmX10;
+    std::atomic<float>* lmNarrow, *master, *outLevel, *inputTrim, *outputTrim;
+    std::atomic<float>* alignment, *micZ, *instZ, *quality, *linearPhase;
+    std::atomic<float>* stereoLink, *dualMono, *mains, *mainsVolts, *tolerances;
+    std::atomic<float>* seed, *noise, *psuModel;
+};
+
+// Read one channel using cached addresses, without constructing strings or searching the tree.
+tubechannel::channel::ChannelControls readControls(const ParameterValues&);
 
 // Factory presets (name + a list of id/value pairs; unspecified parameters keep their defaults).
 struct Preset

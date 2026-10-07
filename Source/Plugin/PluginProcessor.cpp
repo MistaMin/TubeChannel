@@ -25,7 +25,8 @@ TubeChannelProcessor::TubeChannelProcessor()
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)
                          .withInput("Sidechain", juce::AudioChannelSet::stereo(), false)),
-      apvts(*this, &undo, kStateTag, tc::params::createLayout())
+      apvts(*this, &undo, kStateTag, tc::params::createLayout()),
+      paramsA(apvts, false), paramsB(apvts, true)
 {
     for (auto& v : specRing)
         v.store(0.f);
@@ -63,10 +64,10 @@ TubeChannelProcessor::Key TubeChannelProcessor::requestedKey() const
     k.sampleRate = sampleRate_;
     k.maxBlock = maxBlock_;
     k.channels = std::max(1, std::min(2, getMainBusNumInputChannels()));
-    k.quality = juce::roundToInt(apvts.getRawParameterValue(tc::params::id::quality)->load());
-    k.linear = apvts.getRawParameterValue(tc::params::id::linearPhase)->load() > 0.5f;
-    k.tolerances = apvts.getRawParameterValue(tc::params::id::tolerances)->load() > 0.5f;
-    k.seed = juce::roundToInt(apvts.getRawParameterValue(tc::params::id::seed)->load());
+    k.quality = juce::roundToInt(paramsA.quality->load());
+    k.linear = paramsA.linearPhase->load() > 0.5f;
+    k.tolerances = paramsA.tolerances->load() > 0.5f;
+    k.seed = juce::roundToInt(paramsA.seed->load());
     return k;
 }
 
@@ -80,8 +81,8 @@ std::unique_ptr<tc::Chain> TubeChannelProcessor::buildChain(const Key& k) const
     cfg.linearPhase = k.linear;
     cfg.tolerances = k.tolerances;
     cfg.seed = k.seed;
-    cfg.psu.mainsHz = apvts.getRawParameterValue(tc::params::id::mains)->load() > 0.5f ? 50.0 : 60.0;
-    cfg.psu.mainsScale = apvts.getRawParameterValue(tc::params::id::mainsVolts)->load();
+    cfg.psu.mainsHz = paramsA.mains->load() > 0.5f ? 50.0 : 60.0;
+    cfg.psu.mainsScale = paramsA.mainsVolts->load();
     auto c = std::make_unique<tc::Chain>();
     c->prepare(cfg, embeddedNetlists());
     return c;
@@ -89,18 +90,17 @@ std::unique_ptr<tc::Chain> TubeChannelProcessor::buildChain(const Key& k) const
 
 tc::ChainGlobals TubeChannelProcessor::readGlobals() const
 {
-    namespace id = tc::params::id;
     tc::ChainGlobals g;
-    g.inputTrimDb = apvts.getRawParameterValue(id::inputTrim)->load();
-    g.outputTrimDb = apvts.getRawParameterValue(id::outputTrim)->load();
+    g.inputTrimDb = paramsA.inputTrim->load();
+    g.outputTrimDb = paramsA.outputTrim->load();
     static const double kAlign[] = { -14.0, -16.0, -18.0, -20.0, -22.0 };
-    g.alignmentDbfs = kAlign[juce::jlimit(0, 4, juce::roundToInt(apvts.getRawParameterValue(id::alignment)->load()))];
-    g.stereoLink = apvts.getRawParameterValue(id::stereoLink)->load() > 0.5f;
-    g.dualMono = apvts.getRawParameterValue(id::dualMono)->load() > 0.5f;
-    g.noise = apvts.getRawParameterValue(id::noise)->load() > 0.5f;
-    g.psuModel = apvts.getRawParameterValue(id::psuModel)->load() > 0.5f;
-    g.mainsHz = apvts.getRawParameterValue(id::mains)->load() > 0.5f ? 50.0 : 60.0;
-    g.mainsScale = apvts.getRawParameterValue(id::mainsVolts)->load();
+    g.alignmentDbfs = kAlign[juce::jlimit(0, 4, juce::roundToInt(paramsA.alignment->load()))];
+    g.stereoLink = paramsA.stereoLink->load() > 0.5f;
+    g.dualMono = paramsA.dualMono->load() > 0.5f;
+    g.noise = paramsA.noise->load() > 0.5f;
+    g.psuModel = paramsA.psuModel->load() > 0.5f;
+    g.mainsHz = paramsA.mains->load() > 0.5f ? 50.0 : 60.0;
+    g.mainsScale = paramsA.mainsVolts->load();
     return g;
 }
 
@@ -145,8 +145,12 @@ void TubeChannelProcessor::handleAsyncUpdate()
     building.store(true);
     auto fresh = buildChain(k);            // heavy (the circuits are built and warmed up): message thread only
     const int latency = fresh->latency();
+    std::unique_ptr<tc::Chain> trash;
     {
         const juce::SpinLock::ScopedLockType l(handoverLock);
+        // Free the retirement slot before publishing another chain. Destruction stays on this
+        // thread, and the next audio callback can adopt the published latency without waiting.
+        trash = std::move(retired);
         incoming = std::move(fresh);
     }
     setLatencySamples(latency);
@@ -172,19 +176,12 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     if (chain == nullptr || total == 0)
         return;
 
-    std::unique_ptr<tc::Chain> next;
-    {
-        const juce::SpinLock::ScopedTryLockType l(handoverLock);
-        if (l.isLocked() && incoming != nullptr)
-            next = std::move(incoming);
-    }
-
     const int nch = std::min(chain->channels(), std::min(getMainBusNumInputChannels(), buffer.getNumChannels()));
     if (nch > 0)
     {
         // controls
-        const auto ca = tc::params::readControls(apvts, false);
-        const auto cb = tc::params::readControls(apvts, true);
+        const auto ca = tc::params::readControls(paramsA);
+        const auto cb = tc::params::readControls(paramsB);
         const auto g = readGlobals();
         // sidechain bus
         const float* scPtrs[2] = { nullptr, nullptr };
@@ -201,7 +198,19 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
         chain->process(audio, total, scPtrs, nsc, ca, cb, g, tel);
     }
 
-    if (next != nullptr)
+    bool swapped = false;
+    {
+        const juce::SpinLock::ScopedTryLockType l(handoverLock);
+        // Leave the incoming chain pending until the old one has a retirement slot. Both moves
+        // happen under the same lock, so processing can never destroy a chain on return.
+        if (l.isLocked() && incoming != nullptr && retired == nullptr)
+        {
+            std::swap(chain, incoming);
+            retired = std::move(incoming);
+            swapped = true;
+        }
+    }
+    if (swapped)
     {
         for (int ch = 0; ch < nch; ++ch)
         {
@@ -209,15 +218,11 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
             for (int i = 0; i < total; ++i)
                 data[i] *= 1.0f - float(i + 1) / float(total);
         }
-        std::swap(chain, next);
         fadeInRemaining = fadeInLength;
         activeChannelCount.store(chain->channels());
         activeFactor.store(chain->factor());
         activeLatency.store(chain->latency());
         swaps.fetch_add(1);
-        const juce::SpinLock::ScopedTryLockType l(handoverLock);
-        if (l.isLocked() && retired == nullptr)
-            retired = std::move(next);
     }
     else if (fadeInRemaining > 0)
     {

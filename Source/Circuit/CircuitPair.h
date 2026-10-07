@@ -25,6 +25,8 @@ public:
         vals2.assign(size_t(lu2.nnz()), V2(0.0));
         rhs2.assign(size_t(n), V2(0.0));
         x2.assign(size_t(n), V2(0.0));
+        minv2.assign(a.minvCols.size(), V2(0.0));
+        packInverse();
     }
 
     bool step()
@@ -99,7 +101,6 @@ private:
         Circuit& b = *c[1];
         if (!minv2.empty() && verA == a.invVersion && verB == b.invVersion)
             return;
-        minv2.resize(a.minvCols.size());
         for (size_t i = 0; i < minv2.size(); ++i)
             minv2[i] = V2(a.minvCols[i], b.minvCols[i]);
         verA = a.invVersion;
@@ -225,7 +226,6 @@ private:
             {
                 Circuit& k = *c[l];
                 const auto& rl = k.resistors[size_t(k.lrHandle)];
-                k.lrZ.assign(size_t(n), 0.0);
                 for (int i = 0; i < n; ++i)
                     k.lrZ[size_t(i)] = lane(x2[size_t(i)], l);
                 k.lrZu = (rl.a >= 0 ? k.lrZ[size_t(rl.a)] : 0.0) - (rl.b >= 0 ? k.lrZ[size_t(rl.b)] : 0.0);
