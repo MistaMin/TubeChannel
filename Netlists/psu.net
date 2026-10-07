@@ -1,0 +1,69 @@
+* Tube Channel power supply: centre-tapped transformer secondary, rectifiers, voltage multipliers,
+* regulators and the tube plate supply. Sources and regulators are driven from code.
+.model D1N4004 D(IS=76.9p RS=42m N=1.45 BV=400 IBV=5u)
+.model DZ47 D(IS=1n RS=15 N=1.5 BV=47 IBV=1m)
+
+LS1 nS1 P7 2m
+LS2 nS2 P5 2m
+
+* +/-25 V raw: full-wave centre-tap rectifier
+D30 P7 P25 D1N4004
+D32 P5 P25 D1N4004
+C27 P7 P5 0.1u
+C78 P25 0 1000u
+D27 N25 P7 D1N4004
+D28 N25 P5 D1N4004
+C28 P7 P5 0.1u
+C74 0 N25 1000u
+
+* regulated +/-15 V (the regulators themselves are driven from code) with the heater bypass resistors
+C69 P15 0 10u
+R245 P25 P15 47
+C70 0 N15 10u
+R41 N15 N25 47
+D26 N15 0 D1N4004
+
+* +75 V doubler stacked on +25 V
+C76 P7 nD33 100u
+D33 P25 nD33 D1N4004
+D29 nD33 P75 D1N4004
+C77 P75 P25 100u
+
+* +70 V and the +45 V series regulator
+R181 P75 P70 150
+C72 P70 0 100u
+R173 P70 nZ1 4.99k
+R176 nZ1 B20 4.99k
+C75 nZ1 0 100u
+D25 0 B20 DZ47
+XQ20 P70 B20 P45 TIP112
+C22 P45 0 100u
+
+* +150 V: two more multiplier stages
+C79 P7 nD34 100u
+D34 P75 nD34 D1N4004
+D31 nD34 P125 D1N4004
+C201 P125 P75 100u
+C200 P7 nD203 100u
+D203 P125 nD203 D1N4004
+D202 nD203 nP150 D1N4004
+C202 nP150 0 100u
+D201 nP150 nD200 D1N4004
+D200 nD200 nR244 D1N4004
+R244 nR244 P150 150
+C203 P150 0 100u
+
+* heaters (series 12.6 V heaters, about 150 mA)
+R30 P15 nH1 27
+RH1 nH1 0 84
+RH3 0 nH3 84
+R160 nH3 N15 27
+
+* tube plate supply: HIGH = pass transistor from +150 V (saturated, modelled as 110 ohm), NORMAL = from +45 V
+* through a diode. HV is set from code.
+.param HV=1 BIG=1e9
+D7 P150 nT1 D1N4004
+D9 nT1 nT2 D1N4004
+R50 nT2 TUBEP {if(HV>0,110,BIG)}
+D10 P45 TUBEP D1N4004
+C15 TUBEP 0 100u

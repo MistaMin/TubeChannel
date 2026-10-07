@@ -1,0 +1,18 @@
+// Generated from Netlists/*.net at configure time. Do not edit.
+#pragma once
+
+namespace tc::embedded
+{
+inline constexpr const char* kMic = R"TCNET(@TC_MIC@)TCNET";
+inline constexpr const char* kInst = R"TCNET(@TC_INST@)TCNET";
+inline constexpr const char* kTube = R"TCNET(@TC_TUBE@)TCNET";
+inline constexpr const char* kPreout = R"TCNET(@TC_PREOUT@)TCNET";
+inline constexpr const char* kComp = R"TCNET(@TC_COMP@)TCNET";
+inline constexpr const char* kDet = R"TCNET(@TC_DET@)TCNET";
+inline constexpr const char* kEq1 = R"TCNET(@TC_EQ1@)TCNET";
+inline constexpr const char* kEq2 = R"TCNET(@TC_EQ2@)TCNET";
+inline constexpr const char* kEq3 = R"TCNET(@TC_EQ3@)TCNET";
+inline constexpr const char* kEq4 = R"TCNET(@TC_EQ4@)TCNET";
+inline constexpr const char* kOut = R"TCNET(@TC_OUT@)TCNET";
+inline constexpr const char* kPsu = R"TCNET(@TC_PSU@)TCNET";
+} // namespace tc::embedded

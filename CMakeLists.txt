@@ -1,0 +1,174 @@
+cmake_minimum_required(VERSION 3.22)
+
+# Single source of truth for the plugin version: VERSION (MAJOR.MINOR.PATCH).
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" TUBECHANNEL_VERSION_STR)
+string(STRIP "${TUBECHANNEL_VERSION_STR}" TUBECHANNEL_VERSION_STR)
+# Release builds for macOS: -DTUBECHANNEL_UNIVERSAL=ON gives an arm64 + x86_64 binary. Off by default
+# so day-to-day builds compile once for the host.
+option(TUBECHANNEL_UNIVERSAL "Build arm64 + x86_64 on macOS" OFF)
+if(APPLE AND TUBECHANNEL_UNIVERSAL)
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "" FORCE)
+endif()
+set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum macOS version")
+
+project(TubeChannel VERSION ${TUBECHANNEL_VERSION_STR} LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+enable_testing()
+
+# --- Engine test: no JUCE, runs on every platform ------------------------------------------------
+add_executable(TubeChannelOversamplerTest tests/oversampler_test.cpp)
+target_include_directories(TubeChannelOversamplerTest PRIVATE Source)
+add_test(NAME oversampler COMMAND TubeChannelOversamplerTest)
+
+add_executable(TubeChannelSparseLUTest tests/sparse_lu_test.cpp)
+target_include_directories(TubeChannelSparseLUTest PRIVATE Source)
+add_test(NAME sparse_lu COMMAND TubeChannelSparseLUTest)
+
+add_executable(TubeChannelCircuitTest tests/circuit_test.cpp)
+target_include_directories(TubeChannelCircuitTest PRIVATE Source)
+add_test(NAME circuit COMMAND TubeChannelCircuitTest)
+
+add_executable(TubeChannelSidechainTest tests/sidechain_test.cpp)
+target_include_directories(TubeChannelSidechainTest PRIVATE Source)
+add_test(NAME sidechain COMMAND TubeChannelSidechainTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+add_executable(TubeChannelLimiterTest tests/limiter_test.cpp)
+target_include_directories(TubeChannelLimiterTest PRIVATE Source)
+add_test(NAME limiter COMMAND TubeChannelLimiterTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+add_executable(TubeChannelLockstepTest tests/lockstep_test.cpp)
+target_include_directories(TubeChannelLockstepTest PRIVATE Source)
+add_test(NAME lockstep COMMAND TubeChannelLockstepTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+# --- JUCE ------------------------------------------------------------------------------------------
+option(TUBECHANNEL_BUILD_PLUGIN "Build the JUCE plugin targets" ON)
+if(NOT TUBECHANNEL_BUILD_PLUGIN)
+    return()
+endif()
+
+include(FetchContent)
+set(TUBECHANNEL_JUCE_SOURCE "" CACHE PATH "Use an existing JUCE checkout instead of downloading")
+if(TUBECHANNEL_JUCE_SOURCE)
+    set(FETCHCONTENT_SOURCE_DIR_JUCE "${TUBECHANNEL_JUCE_SOURCE}")
+endif()
+FetchContent_Declare(
+    JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG        8.0.4
+)
+FetchContent_MakeAvailable(JUCE)
+
+# --- GoodLookinUI (plugin-free toolkit, consumed like HybridEQ does) ---------------------------------
+set(GOODLOOKINUI_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/GoodLookinUI" CACHE PATH "GoodLookinUI toolkit location")
+if(NOT EXISTS "${GOODLOOKINUI_ROOT}/CMakeLists.txt")
+    message(FATAL_ERROR
+        "GoodLookinUI not found at ${GOODLOOKINUI_ROOT}.\n"
+        "Add it as a submodule (git submodule add https://github.com/MistaMin/GoodLookinUI.git third_party/GoodLookinUI)\n"
+        "or pass -DGOODLOOKINUI_ROOT=<path to a checkout>.")
+endif()
+add_subdirectory("${GOODLOOKINUI_ROOT}" "${CMAKE_CURRENT_BINARY_DIR}/goodlookinui")
+
+# --- Formats -----------------------------------------------------------------------------------------
+# VST3 + Standalone everywhere, AU on macOS, LV2 everywhere (the native format on Linux). CLAP is
+# added below through clap-juce-extensions.
+set(TUBECHANNEL_FORMATS VST3 Standalone LV2)
+set(TUBECHANNEL_EXTRA_ARGS LV2URI "urn:opengrid:tubechannel")
+if(APPLE)
+    list(APPEND TUBECHANNEL_FORMATS AU)
+endif()
+set(TUBECHANNEL_AAX_SDK "${CMAKE_SOURCE_DIR}/../aax-sdk-2-8-1" CACHE PATH "Optional Avid AAX SDK")
+if((APPLE OR WIN32) AND EXISTS "${TUBECHANNEL_AAX_SDK}/Interfaces/AAX.h")
+    juce_set_aax_sdk_path("${TUBECHANNEL_AAX_SDK}")
+    list(APPEND TUBECHANNEL_FORMATS AAX)
+else()
+    message(STATUS "AAX SDK not used; building ${TUBECHANNEL_FORMATS}")
+endif()
+
+juce_add_plugin(TubeChannel
+    COMPANY_NAME             "OpenGrid"
+    IS_SYNTH                 FALSE
+    NEEDS_MIDI_INPUT         FALSE
+    NEEDS_MIDI_OUTPUT        FALSE
+    PLUGIN_MANUFACTURER_CODE OpGr
+    PLUGIN_CODE              TbCh
+    FORMATS                  ${TUBECHANNEL_FORMATS}
+    PRODUCT_NAME             "Tube Channel"
+    COPY_PLUGIN_AFTER_BUILD  FALSE
+    ${TUBECHANNEL_EXTRA_ARGS}
+)
+
+# --- CLAP ----------------------------------------------------------------------------------------------
+option(TUBECHANNEL_BUILD_CLAP "Build the CLAP plugin" ON)
+if(TUBECHANNEL_BUILD_CLAP)
+    set(TUBECHANNEL_CLAP_EXT_SOURCE "" CACHE PATH "Use an existing clap-juce-extensions checkout")
+    if(TUBECHANNEL_CLAP_EXT_SOURCE)
+        set(FETCHCONTENT_SOURCE_DIR_CLAP-JUCE-EXTENSIONS "${TUBECHANNEL_CLAP_EXT_SOURCE}")
+    endif()
+    FetchContent_Declare(
+        clap-juce-extensions
+        GIT_REPOSITORY https://github.com/free-audio/clap-juce-extensions.git
+        # Pinned commit on main: the 0.26.0 tag predates JUCE 8 and does not compile against it.
+        GIT_TAG        55525c9858d4b25687be7759a5e0f70eccef218e
+        GIT_SUBMODULES_RECURSE TRUE
+    )
+    FetchContent_MakeAvailable(clap-juce-extensions)
+endif()
+
+# Netlists are embedded into the binary at configure time.
+foreach(net mic inst tube preout comp det eq1 eq2 eq3 eq4 out psu)
+    string(TOUPPER ${net} NETU)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/Netlists/${net}.net")
+    file(READ "${CMAKE_CURRENT_SOURCE_DIR}/Netlists/${net}.net" TC_${NETU})
+endforeach()
+configure_file(Netlists/EmbeddedNetlists.h.in generated/EmbeddedNetlists.h @ONLY)
+
+target_sources(TubeChannel PRIVATE
+    Source/Plugin/PluginProcessor.cpp
+    Source/Plugin/PluginEditor.cpp
+    Source/Plugin/Params.cpp
+)
+target_include_directories(TubeChannel PRIVATE Source Source/Plugin "${GOODLOOKINUI_ROOT}/adapters/juce" "${CMAKE_CURRENT_BINARY_DIR}/generated")
+
+target_compile_definitions(TubeChannel PUBLIC
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
+    JUCE_DISPLAY_SPLASH_SCREEN=0
+)
+
+target_link_libraries(TubeChannel
+    PRIVATE
+        goodlookinui_juce
+        juce::juce_audio_utils
+        juce::juce_dsp
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags
+)
+
+if(TUBECHANNEL_BUILD_CLAP)
+    clap_juce_extensions_plugin(TARGET TubeChannel
+        CLAP_ID "com.opengrid.tubechannel"
+        CLAP_FEATURES audio-effect equalizer compressor mono stereo
+        CLAP_MANUAL_URL ""
+        CLAP_SUPPORT_URL "")
+endif()
+
+# --- Host-level stress test of the real processor --------------------------------------------------
+juce_add_console_app(TubeChannelStress PRODUCT_NAME "Tube Channel Stress Test")
+target_sources(TubeChannelStress PRIVATE tests/processor_stress.cpp)
+target_include_directories(TubeChannelStress PRIVATE Source Source/Plugin "${CMAKE_CURRENT_BINARY_DIR}/generated")
+target_compile_definitions(TubeChannelStress PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(TubeChannelStress PRIVATE TubeChannel juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
+add_test(NAME processor_stress COMMAND TubeChannelStress)
+
+# --- editor snapshot tool (renders both skins to PNG) -------------------------------------------------
+juce_add_console_app(TubeChannelSnapshot PRODUCT_NAME "Tube Channel Snapshot")
+target_sources(TubeChannelSnapshot PRIVATE tests/ui_snapshot.cpp)
+target_include_directories(TubeChannelSnapshot PRIVATE Source Source/Plugin "${GOODLOOKINUI_ROOT}/adapters/juce" "${CMAKE_CURRENT_BINARY_DIR}/generated")
+target_compile_definitions(TubeChannelSnapshot PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(TubeChannelSnapshot PRIVATE TubeChannel goodlookinui_juce juce::juce_audio_utils juce::juce_recommended_config_flags)

@@ -1,0 +1,76 @@
+* Tube Channel stage netlist: det, the compressor detector (sidechain), transcribed from the reference circuit.
+* O6B (the compressor audio path after the photoresistor) comes in through a Thevenin source; the LED current
+* leaves through RLED and is turned into the photoresistor value by code (Vactrol).
+.param THRW=0.5      ; VR4 THRESHOLD wiper, 0 = CCW (all signal) .. 1 = CW (end of the track, to ground via R96)
+.param RATR=50k      ; VR5 RATIO as a rheostat, 0 = CW (highest ratio) .. 100k = CCW (2:1)
+.param ATTR=10k      ; VR14A/B ATTACK, both gangs in parallel (0 = short) .. 50k = long
+.param RELW=0.5      ; VR15A RELEASE wiper, 0 = Short .. 1 = Long
+.param AUTO=0        ; SW5 detect mode: 1 Auto, 0 Manual
+.param SMALL=1m BIG=1e9
+.param G07x=5.25Meg S07x=20
+
+.model D4148 D(IS=2.52n N=1.752 RS=0.568)
+.model D1N5235 D(IS=1e-14 N=1.0 BV=6.8 IBV=20m)
+.model DLED D(IS=1.6e-13 N=2.5)
+.model 2N4403 PNP(IS=6.5e-14 BF=150 VAF=70 IKF=0.3 RB=10 CJC=8.5p CJE=30p TF=0.8n BVCEO=40)
+
+* threshold network and gain stage A3A (inverting, 12k / 2.21k, soft limited by the zener pair D5/D6)
+C31  O6B THCCW 22u
+RTU  THCCW THW {10k*THRW+SMALL}
+RTD  THW THCW {10k*(1-THRW)+SMALL}
+R96  THCW 0 100
+R94  THW N3A 2.21k
+XA3A 0 N3A A3AO OPAMP params: GBW={G07x} SR={S07x}
+R44  N3A A3AO 12k
+D5   N3A ZM D1N5235
+D6   A3AO ZM D1N5235
+
+* full-wave rectifier A3C with D3/D4, bled to -15 through R97
+R49  A3AO N9 10.0k
+XA3C 0 N9 A3CO OPAMP params: GBW={G07x} SR={S07x}
+R40  N9 A3CO 10.0k
+D3   A3CO NT D4148
+D4   A3AO NT D4148
+R97  NT VN 1Meg
+
+* ratio: VR5 and R42 into the summing node of A3D, feedback through R33 and D2, clamp D1
+RRAT NT RC {RATR+SMALL}
+R42  RC N13 1.00k
+R33  N13 P1 4.99k
+R32  P1 0 10.0k
+R37  P1 QN 75k
+XA3D 0 N13 N14 OPAMP params: GBW={G07x} SR={S07x}
+D2   P1 N14 D4148
+D1   N14 N13 D1N5235
+
+* attack: the output charges the timing capacitor through the PNP followers Q13 / Q18
+R47  N14 NB 4.99k
+R51  NB DB 4.99k
+D8   0 DB D4148
+Q13  VN NB E13 2N4403
+R81  QN E13 4.99k
+Q18  VN NB X 2N4403
+D52  XR N14 D4148
+R77  X XR 20.0k
+RATT X Y {ATTR+SMALL}
+
+* timing capacitor with SW5B: Manual = through the attack pot, Auto = through Q13 / R81
+R53  NC NCR 2.21k
+C20  NCR 0 2.2u
+RSWM NC Y {if(AUTO>0,BIG,SMALL)}
+RSWA NC QN {if(AUTO>0,SMALL,BIG)}
+
+* release: R55 and VR15A to ground, with the top of the pot referred to the gain-reduction node through R56
+R55  Y W 39k
+RRU  W RUP {100k*(1-RELW)+SMALL}
+R56  RUP E14 3.9k
+RRD  W 0 {100k*RELW+SMALL}
+
+* A3B buffers the capacitor voltage; Q14 turns it into the LED current of the vactrol, R64 sets the slope
+XA3B NC N6 A3BO OPAMP params: GBW={G07x} SR={S07x}
+D11  A3BO N6 D4148
+R63  E14 N6 100k
+R64  E14 0 300
+Q14  QC A3BO E14 2N4403
+RLED QC QL 0.1
+DLED QL VN DLED
