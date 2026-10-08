@@ -1,0 +1,40 @@
+[
+  {
+    "kind": "validation",
+    "returncode": 1,
+    "args": [
+      "build/hybrid/TubeChannelTubeCompare",
+      "Netlists",
+      "validation"
+    ]
+  },
+  {
+    "kind": "sensitivity",
+    "returncode": 1,
+    "args": [
+      "build/hybrid/TubeChannelTubeCompare",
+      "Netlists",
+      "sensitivity"
+    ]
+  },
+  {
+    "kind": "sweep",
+    "returncode": 0,
+    "args": [
+      "build/hybrid/TubeChannelTubeCompare",
+      "Netlists",
+      "sweep",
+      "/private/tmp/tubechannel-tube-sweeps"
+    ]
+  },
+  {
+    "kind": "harmonic",
+    "returncode": 1,
+    "args": [
+      "build/hybrid/TubeChannelTubeCompare",
+      "Netlists",
+      "harmonic",
+      "/private/tmp/tubechannel-tube-sweeps"
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+sensitivity fixture 0: residual -226.521 dB, max audio error 6.36646291e-12, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sensitivity fixture 1: residual -24.929 dB, max audio error 0.695835471, max GR error 0.0225544 dB, finite yes
+  stage 2 original retries/rescues 153155/16085, candidate 153061/16085
+  stage 4 original retries/rescues 32664/1, candidate 32887/0
+sensitivity fixture 2: residual -172.065 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sensitivity fixture 3: residual -180.104 dB, max audio error 3.7252903e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sensitivity fixture 4: residual -25.854 dB, max audio error 0.742052674, max GR error 0.00421238 dB, finite yes
+  stage 2 original retries/rescues 7280/826, candidate 7221/785
+  stage 4 original retries/rescues 1676/0, candidate 1676/0
+sensitivity fixture 5: residual -178.601 dB, max audio error 1.49011612e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sensitivity fixture 6: residual -25.368 dB, max audio error 0.835349284, max GR error 0.0218573 dB, finite yes
+  stage 2 original retries/rescues 12917/2396, candidate 12985/2439
+  stage 4 original retries/rescues 2091/0, candidate 2068/0
+sensitivity fixture 7: residual -181.580 dB, max audio error 1.49011612e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+tube comparison failures 3

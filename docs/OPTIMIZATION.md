@@ -107,3 +107,8 @@ The measured further reductions are 3.7% steady and 2.5% under continuous EQ aut
 relative process CPU savings from the 1.1.2 Default backend, not percentage points of host CPU or
 an 80% reduction. The new profile identifies retained microphone, tube and compressor audio solves
 as the largest remaining combined cost. See [raw results and validation](measurements/eq-optimization-1.1.3/README.md).
+
+
+## 1.1.4 tube-law experiment
+
+A smooth lookup for the existing triode current equation saves about 5.2% in one preliminary stereo Default timing set. The isolated curve error is tiny, but longer complete-channel comparisons diverge under several loud/changing conditions, and a loud harmonic sweep differs. It is kept as an offline experiment; all normal modes continue to use the original tube model. See [tube experiment and failed fidelity cases](measurements/tube-optimization-1.1.4/README.md).

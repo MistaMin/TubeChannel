@@ -1,0 +1,37 @@
+{
+  "original_cpu_ms": 10.891,
+  "lookup_cpu_ms": 10.327,
+  "reduction_percent": 5.178587824809478,
+  "runs": [
+    {
+      "file": "initial-benchmark-0-original.txt",
+      "lookup": false,
+      "cpu_ms": 10.935
+    },
+    {
+      "file": "initial-benchmark-1-lookup.txt",
+      "lookup": true,
+      "cpu_ms": 10.386
+    },
+    {
+      "file": "initial-benchmark-2-lookup.txt",
+      "lookup": true,
+      "cpu_ms": 10.216
+    },
+    {
+      "file": "initial-benchmark-3-original.txt",
+      "lookup": false,
+      "cpu_ms": 10.793
+    },
+    {
+      "file": "initial-benchmark-4-original.txt",
+      "lookup": false,
+      "cpu_ms": 10.945
+    },
+    {
+      "file": "initial-benchmark-5-lookup.txt",
+      "lookup": true,
+      "cpu_ms": 10.379
+    }
+  ]
+}

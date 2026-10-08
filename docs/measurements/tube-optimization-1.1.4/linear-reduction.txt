@@ -1,0 +1,8 @@
+tube original: 56.724 ms
+tube: eliminated 13, retained 20 of 33 unknowns
+tube reduced: 74.014 ms
+tube reduction residual -221.51 dB relative RMS
+comp original: 81.154 ms
+comp: eliminated 15, retained 21 of 36 unknowns
+comp reduced: 103.268 ms
+comp reduction residual -197.04 dB relative RMS

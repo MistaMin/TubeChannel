@@ -1,0 +1,5 @@
+VST3 version: 1.1.4 (1.1.4)
+Architecture: arm64 Release
+Configuration: normal plugin (TC_TUBE_EXPERIMENT is off)
+Bundle verification: codesign --verify --strict passed (local ad-hoc signature)
+Binary SHA-256: 8747da21a3ebef89e1e650fab640b68fa707d98a4c7434acf673afc4e4612a0c

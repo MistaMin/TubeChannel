@@ -1,0 +1,2 @@
+max harmonic-level difference above -100 dBFS: 2.9464123569968876
+minimum separated-order window residual: -115.04622674394926

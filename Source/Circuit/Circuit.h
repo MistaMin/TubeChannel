@@ -18,10 +18,16 @@
 #include <cstdint>
 #include <cstdio>
 #include <map>
+#ifdef TC_TUBE_EXPERIMENT
+#include <memory>
+#endif
 #include <string>
 #include <vector>
 
 #include "SparseLU.h"
+#ifdef TC_TUBE_EXPERIMENT
+#include "TriodeLookup.h"
+#endif
 
 #ifdef TC_NEWTON_PROF
 #include <chrono>
@@ -261,7 +267,7 @@ public:
         if (m.CGP > 0.0) addCapacitor(g, p, m.CGP);
         if (m.CPK > 0.0) addCapacitor(p, k, m.CPK);
         addResistor(p, k, 1e9);
-        triodes.push_back(t);
+        triodes.push_back(std::move(t));
         return int(triodes.size()) - 1;
     }
 
@@ -325,6 +331,22 @@ public:
     }
 
     // ---- run-time control -----------------------------------------------------------------------------
+#ifdef TC_TUBE_EXPERIMENT
+    // Preparation only: no table construction or heap work in a device evaluation.
+    void enableTriodeLookup(bool enabled)
+    {
+        if (enabled)
+            for (auto& t : triodes)
+                if (!t.lookup)
+                {
+                    t.lookup = std::make_unique<TriodeLookup>();
+                    t.lookup->prepare(t.m.EX, t.m.KG1);
+                }
+        useTriodeLookup = enabled;
+    }
+
+#endif
+
     void setResistance(int h_, double R)
     {
         auto& r = resistors[size_t(h_)];
@@ -652,6 +674,9 @@ private:
     struct Tri
     {
         TriodeModel m;
+#ifdef TC_TUBE_EXPERIMENT
+        std::unique_ptr<TriodeLookup> lookup;
+#endif
         int p_, g_, k_;
         int p[3][3];                          // rows/cols ordered p, g, k
         double J[3][3] = {}, I0[3] = {};
@@ -878,6 +903,11 @@ private:
             q.d[3] = gr / q.m.BR;
         }
 
+#ifdef TC_TUBE_EXPERIMENT
+        // Use the approximation only for routine, small-signal iterates. DC, overload and
+        // recovery retain the original law on the same physical states, without a reset.
+        const bool lookupActive = useTriodeLookup && !dcMode && !limitSteps && !tightJac && checkOpampsLinear();
+#endif
         for (auto& t : triodes)
         {
             const double vp = xv(t.p_), vg = xv(t.g_), vk = xv(t.k_);
@@ -888,17 +918,32 @@ private:
                 const double S = std::sqrt(t.m.KVB + vpk * vpk);
                 const double arg = t.m.KP * (1.0 / t.m.MU + vgk / S);
                 double L, sig;
+#ifdef TC_TUBE_EXPERIMENT
+                if (!(lookupActive && t.lookup && t.lookup->softplus(arg, L, sig)))
+                {
+#endif
                 if (arg > 30.0) { L = arg; sig = 1.0; }
                 else if (arg < -30.0) { L = std::exp(arg); sig = L; }
                 else { const double ea = std::exp(arg); L = std::log1p(ea); sig = ea / (1.0 + ea); }
+#ifdef TC_TUBE_EXPERIMENT
+                }
+#endif
                 const double E1 = vpk / t.m.KP * L;
                 if (E1 > 0.0)
                 {
                     const double dE_dpk = L / t.m.KP - vpk * vpk * vgk * sig / (S * S * S);
                     const double dE_dgk = vpk * sig / S;
-                    const double pw = std::pow(E1, t.m.EX - 1.0);
-                    Ia = 2.0 * pw * E1 / t.m.KG1;
-                    const double dIa_dE = 2.0 * t.m.EX * pw / t.m.KG1;
+                    double dIa_dE;
+#ifdef TC_TUBE_EXPERIMENT
+                    if (!(lookupActive && t.lookup && t.lookup->current(E1, Ia, dIa_dE)))
+                    {
+#endif
+                        const double pw = std::pow(E1, t.m.EX - 1.0);
+                        Ia = 2.0 * pw * E1 / t.m.KG1;
+                        dIa_dE = 2.0 * t.m.EX * pw / t.m.KG1;
+#ifdef TC_TUBE_EXPERIMENT
+                    }
+#endif
                     dIa_dpk = dIa_dE * dE_dpk;
                     dIa_dgk = dIa_dE * dE_dgk;
                 }
@@ -1456,6 +1501,9 @@ public:
     double firstAccept = 8.0;  // multiple of tolStep that a first-iteration update may reach and still be accepted
     double tolStep = 3e-6;     // accept a step when the update is below this (relative to 1 + |x|/1000)
 private:
+#ifdef TC_TUBE_EXPERIMENT
+    bool useTriodeLookup = false;
+#endif
     int rescues = 0, retries = 0;
     int lrHandle = -1;
     bool lrDirty = false;

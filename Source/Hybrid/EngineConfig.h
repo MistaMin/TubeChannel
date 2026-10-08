@@ -10,6 +10,9 @@ namespace tubechannel::hybrid
 struct EngineConfig
 {
     bool compactDetector = false;
+    bool compactTubes = false; // offline experiment; never selected by normal quality modes
+    int tubeExtrapolation = 2;
+    bool guardedTubes = false; // offline convergence investigation
     bool compactSupply = false;
     Detector::Calibration detector;
     Supply::Calibration supply;

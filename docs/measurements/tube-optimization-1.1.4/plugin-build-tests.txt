@@ -1,0 +1,9 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/juce
+    Start 14: processor_stress
+1/2 Test #14: processor_stress .................   Passed    7.88 sec
+    Start 15: gui
+2/2 Test #15: gui ..............................   Passed    1.99 sec
+
+100% tests passed out of 2
+
+Total Test time (real) =   9.87 sec

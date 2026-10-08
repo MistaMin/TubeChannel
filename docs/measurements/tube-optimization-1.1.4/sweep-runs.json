@@ -1,0 +1,10 @@
+[
+  {
+    "kind": "sweep",
+    "returncode": 0
+  },
+  {
+    "kind": "harmonic",
+    "returncode": 1
+  }
+]

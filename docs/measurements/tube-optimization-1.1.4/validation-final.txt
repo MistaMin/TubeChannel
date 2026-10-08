@@ -1,0 +1,25 @@
+validation fixture 0: residual -175.922 dB, max audio error 3.7252903e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+validation fixture 1: residual -24.875 dB, max audio error 0.96358344, max GR error 0.0141182 dB, finite yes
+  stage 2 original retries/rescues 153155/16085, candidate 152384/16084
+  stage 4 original retries/rescues 32664/1, candidate 32541/0
+validation fixture 2: residual -171.886 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+validation fixture 3: residual -173.943 dB, max audio error 3.7252903e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+validation fixture 4: residual -25.958 dB, max audio error 0.49819915, max GR error 0.00485611 dB, finite yes
+  stage 2 original retries/rescues 7280/826, candidate 7310/795
+  stage 4 original retries/rescues 1676/0, candidate 1658/0
+validation fixture 5: residual -179.898 dB, max audio error 1.49011612e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+validation fixture 6: residual -25.881 dB, max audio error 0.584103104, max GR error 0.0117874 dB, finite yes
+  stage 2 original retries/rescues 12917/2396, candidate 12936/2407
+  stage 4 original retries/rescues 2091/0, candidate 2122/0
+validation fixture 7: residual -175.168 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+tube comparison failures 3

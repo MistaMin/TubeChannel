@@ -46,6 +46,8 @@ int main(int argc, char** argv)
     cfg.quality = static_cast<tubechannel::dsp::Quality>(quality);
     cfg.tolerances = argc > 3 ? std::atoi(argv[3]) != 0 : true;
     cfg.tiledLinear = !std::getenv("REFERENCE_LINEAR");
+    if (const auto* tube = std::getenv("TUBE_LOOKUP"))
+        cfg.tubeMode = std::atoi(tube) ? tc::TubeMode::Prototype : tc::TubeMode::Original;
     cfg.lockstep = !std::getenv("NOLOCK");
     std::printf("paired linear layout: %s\n", cfg.tiledLinear ? "tiled" : "reference columns");
     const int detectorOverride = argc > 13 ? std::atoi(argv[13]) : -1;
@@ -56,6 +58,7 @@ int main(int argc, char** argv)
     tc::Chain chain;
     const auto t0 = std::chrono::steady_clock::now();
     chain.prepare(cfg, nets);
+    std::printf("tube current: %s\n", chain.config().engine.compactTubes ? "lookup" : "original");
     std::printf("engine: detector %s, supply %s\n", chain.config().engine.compactDetector ? "prototype" : "circuit",
                 chain.config().engine.compactSupply ? "prototype" : "circuit");
     std::printf("prepare %.2f s (%d ch, factor %dx, automation %s)\n", std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count(), channels, chain.factor(), automate ? "on" : "off");

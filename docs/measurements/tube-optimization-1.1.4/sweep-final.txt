@@ -1,0 +1,16 @@
+sweep fixture 0 original: preconditioned 2 s, frozen plate 175.785156 V
+sweep fixture 0 lookup: preconditioned 2 s, frozen plate 175.785156 V
+sweep fixture 0: residual -176.022 dB, max audio error 7.4505806e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sweep fixture 1 original: preconditioned 2 s, frozen plate 102.516716 V
+sweep fixture 1 lookup: preconditioned 2 s, frozen plate 102.516716 V
+sweep fixture 1: residual -181.230 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 4703/0, candidate 4703/0
+sweep fixture 2 original: preconditioned 2 s, frozen plate 161.960999 V
+sweep fixture 2 lookup: preconditioned 2 s, frozen plate 161.960999 V
+sweep fixture 2: residual -188.615 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 242/0, candidate 242/0
+  stage 4 original retries/rescues 10294/0, candidate 10294/0
+tube comparison failures 0

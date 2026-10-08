@@ -1,0 +1,10 @@
+sweep fixture 0: residual -176.313 dB, max audio error 3.7252903e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+sweep fixture 1: residual -178.312 dB, max audio error 5.96046448e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 4745/0, candidate 4745/0
+sweep fixture 2: residual -183.844 dB, max audio error 5.96046448e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 237/0, candidate 237/0
+  stage 4 original retries/rescues 11986/0, candidate 11986/0
+tube comparison failures 0

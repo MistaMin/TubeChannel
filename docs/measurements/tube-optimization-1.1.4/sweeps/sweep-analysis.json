@@ -1,0 +1,714 @@
+{
+  "sample_rate": 48000,
+  "harmonics": [
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 1,
+      "original_dbfs": -26.19764306487522,
+      "lookup_dbfs": -26.197643064922737,
+      "difference_db": -4.75175454539567e-11
+    },
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 2,
+      "original_dbfs": -123.99977448899868,
+      "lookup_dbfs": -123.99977967958584,
+      "difference_db": -5.190587160086579e-06
+    },
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 3,
+      "original_dbfs": -146.3821111023785,
+      "lookup_dbfs": -146.3820322896848,
+      "difference_db": 7.881269371523558e-05
+    },
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 4,
+      "original_dbfs": -148.68845015009944,
+      "lookup_dbfs": -148.6886572532676,
+      "difference_db": -0.0002071031681509794
+    },
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 5,
+      "original_dbfs": -150.69226057157715,
+      "lookup_dbfs": -150.69216642468052,
+      "difference_db": 9.414689662889941e-05
+    },
+    {
+      "fixture": 0,
+      "frequency": 100,
+      "order": 6,
+      "original_dbfs": -152.30137813402985,
+      "lookup_dbfs": -152.30138231794103,
+      "difference_db": -4.183911187283229e-06
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 1,
+      "original_dbfs": -26.080839716200053,
+      "lookup_dbfs": -26.08083971615791,
+      "difference_db": 4.214228965793154e-11
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 2,
+      "original_dbfs": -124.32478045868422,
+      "lookup_dbfs": -124.32477583823241,
+      "difference_db": 4.620451804271397e-06
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 3,
+      "original_dbfs": -166.4062923228601,
+      "lookup_dbfs": -166.4058504477493,
+      "difference_db": 0.00044187511082327546
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 4,
+      "original_dbfs": -169.18534536775397,
+      "lookup_dbfs": -169.184545420059,
+      "difference_db": 0.0007999476949578366
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 5,
+      "original_dbfs": -173.67379807787714,
+      "lookup_dbfs": -173.67264163954934,
+      "difference_db": 0.0011564383277971046
+    },
+    {
+      "fixture": 0,
+      "frequency": 1000,
+      "order": 6,
+      "original_dbfs": -172.5930706545839,
+      "lookup_dbfs": -172.5928827662412,
+      "difference_db": 0.00018788834270822008
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 1,
+      "original_dbfs": -26.09588490755062,
+      "lookup_dbfs": -26.095884907482045,
+      "difference_db": 6.857447942820727e-11
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 2,
+      "original_dbfs": -124.21229088038606,
+      "lookup_dbfs": -124.21227850164519,
+      "difference_db": 1.2378740876783922e-05
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 3,
+      "original_dbfs": -167.0493315986302,
+      "lookup_dbfs": -167.0484119802333,
+      "difference_db": 0.0009196183968924743
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 4,
+      "original_dbfs": -188.62589812869732,
+      "lookup_dbfs": -188.64417918799512,
+      "difference_db": -0.01828105929780577
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 5,
+      "original_dbfs": -166.01626539019517,
+      "lookup_dbfs": -166.01694236541945,
+      "difference_db": -0.0006769752242803406
+    },
+    {
+      "fixture": 0,
+      "frequency": 3000,
+      "order": 6,
+      "original_dbfs": -186.27111885674378,
+      "lookup_dbfs": -186.2663654753606,
+      "difference_db": 0.004753381383181932
+    },
+    {
+      "fixture": 0,
+      "frequency": 6000,
+      "order": 1,
+      "original_dbfs": -26.112545169596192,
+      "lookup_dbfs": -26.112545169856574,
+      "difference_db": -2.603819382329675e-10
+    },
+    {
+      "fixture": 0,
+      "frequency": 6000,
+      "order": 2,
+      "original_dbfs": -123.92482588505202,
+      "lookup_dbfs": -123.92483321370432,
+      "difference_db": -7.328652301907823e-06
+    },
+    {
+      "fixture": 0,
+      "frequency": 6000,
+      "order": 3,
+      "original_dbfs": -168.2536603385793,
+      "lookup_dbfs": -168.2531123547112,
+      "difference_db": 0.0005479838681026195
+    },
+    {
+      "fixture": 0,
+      "frequency": 10000,
+      "order": 1,
+      "original_dbfs": -26.152262701206105,
+      "lookup_dbfs": -26.152262701218824,
+      "difference_db": -1.2718714970105793e-11
+    },
+    {
+      "fixture": 0,
+      "frequency": 10000,
+      "order": 2,
+      "original_dbfs": -123.27717851463468,
+      "lookup_dbfs": -123.27717544554113,
+      "difference_db": 3.0690935517441176e-06
+    },
+    {
+      "fixture": 0,
+      "frequency": 18000,
+      "order": 1,
+      "original_dbfs": -26.325210538212037,
+      "lookup_dbfs": -26.325210538254773,
+      "difference_db": -4.2735592842291226e-11
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 1,
+      "original_dbfs": -11.609941933703201,
+      "lookup_dbfs": -11.609941934115604,
+      "difference_db": -4.1240255654884095e-10
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 2,
+      "original_dbfs": -42.33619201569945,
+      "lookup_dbfs": -42.33619201929532,
+      "difference_db": -3.595864939143212e-09
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 3,
+      "original_dbfs": -68.52474835723983,
+      "lookup_dbfs": -68.52474838572641,
+      "difference_db": -2.8486581982178905e-08
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 4,
+      "original_dbfs": -99.99915312873222,
+      "lookup_dbfs": -99.99914890105089,
+      "difference_db": 4.227681330348787e-06
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 5,
+      "original_dbfs": -85.72133074435975,
+      "lookup_dbfs": -85.72132955503085,
+      "difference_db": 1.1893288984765604e-06
+    },
+    {
+      "fixture": 1,
+      "frequency": 100,
+      "order": 6,
+      "original_dbfs": -103.1806029168967,
+      "lookup_dbfs": -103.18060390681339,
+      "difference_db": -9.899166855120711e-07
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 1,
+      "original_dbfs": -11.488967764960986,
+      "lookup_dbfs": -11.488967764789976,
+      "difference_db": 1.710098729290621e-10
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 2,
+      "original_dbfs": -42.20395375190233,
+      "lookup_dbfs": -42.20395375052392,
+      "difference_db": 1.3784102748104488e-09
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 3,
+      "original_dbfs": -68.35310991363447,
+      "lookup_dbfs": -68.35310986391364,
+      "difference_db": 4.972082479071105e-08
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 4,
+      "original_dbfs": -105.48839243468171,
+      "lookup_dbfs": -105.48839005352333,
+      "difference_db": 2.381158381581372e-06
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 5,
+      "original_dbfs": -105.24024382147672,
+      "lookup_dbfs": -105.24025660543508,
+      "difference_db": -1.2783958354134484e-05
+    },
+    {
+      "fixture": 1,
+      "frequency": 1000,
+      "order": 6,
+      "original_dbfs": -128.53244818431168,
+      "lookup_dbfs": -128.53255026903187,
+      "difference_db": -0.00010208472019712644
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 1,
+      "original_dbfs": -11.432407117695519,
+      "lookup_dbfs": -11.432407117515682,
+      "difference_db": 1.7983659006404196e-10
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 2,
+      "original_dbfs": -42.070693448195286,
+      "lookup_dbfs": -42.07069345219633,
+      "difference_db": -4.001044828783051e-09
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 3,
+      "original_dbfs": -68.09777736466748,
+      "lookup_dbfs": -68.09777716154142,
+      "difference_db": 2.0312606352490548e-07
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 4,
+      "original_dbfs": -103.60025801640938,
+      "lookup_dbfs": -103.60025839982562,
+      "difference_db": -3.8341623564974725e-07
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 5,
+      "original_dbfs": -111.08002237317491,
+      "lookup_dbfs": -111.08004445145392,
+      "difference_db": -2.2078279002357704e-05
+    },
+    {
+      "fixture": 1,
+      "frequency": 3000,
+      "order": 6,
+      "original_dbfs": -132.60935446693105,
+      "lookup_dbfs": -132.6092926143754,
+      "difference_db": 6.185255566037995e-05
+    },
+    {
+      "fixture": 1,
+      "frequency": 6000,
+      "order": 1,
+      "original_dbfs": -11.271201376479778,
+      "lookup_dbfs": -11.271201376464468,
+      "difference_db": 1.531041959879076e-11
+    },
+    {
+      "fixture": 1,
+      "frequency": 6000,
+      "order": 2,
+      "original_dbfs": -41.70760664080369,
+      "lookup_dbfs": -41.70760663971134,
+      "difference_db": 1.09235287482079e-09
+    },
+    {
+      "fixture": 1,
+      "frequency": 6000,
+      "order": 3,
+      "original_dbfs": -67.54009163089309,
+      "lookup_dbfs": -67.5400916335703,
+      "difference_db": -2.677211341506336e-09
+    },
+    {
+      "fixture": 1,
+      "frequency": 10000,
+      "order": 1,
+      "original_dbfs": -11.365655099312143,
+      "lookup_dbfs": -11.365655099318685,
+      "difference_db": -6.5423222395111225e-12
+    },
+    {
+      "fixture": 1,
+      "frequency": 10000,
+      "order": 2,
+      "original_dbfs": -41.78147935455472,
+      "lookup_dbfs": -41.78147935463035,
+      "difference_db": -7.563016879430506e-11
+    },
+    {
+      "fixture": 1,
+      "frequency": 18000,
+      "order": 1,
+      "original_dbfs": -11.167295741023793,
+      "lookup_dbfs": -11.167295741022611,
+      "difference_db": 1.1812772982011666e-12
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 1,
+      "original_dbfs": -10.290024997883197,
+      "lookup_dbfs": -10.193902601805648,
+      "difference_db": 0.0961223960775488
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 2,
+      "original_dbfs": -39.22455692048472,
+      "lookup_dbfs": -39.314101341842175,
+      "difference_db": -0.08954442135745211
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 3,
+      "original_dbfs": -63.819537092927554,
+      "lookup_dbfs": -63.87461015841177,
+      "difference_db": -0.05507306548421553
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 4,
+      "original_dbfs": -96.67185788901728,
+      "lookup_dbfs": -96.71048713276616,
+      "difference_db": -0.03862924374888621
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 5,
+      "original_dbfs": -84.9823686703485,
+      "lookup_dbfs": -84.6663767144618,
+      "difference_db": 0.3159919558867017
+    },
+    {
+      "fixture": 2,
+      "frequency": 100,
+      "order": 6,
+      "original_dbfs": -100.94694314288023,
+      "lookup_dbfs": -100.57802014070788,
+      "difference_db": 0.36892300217235174
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 1,
+      "original_dbfs": -10.524793783177932,
+      "lookup_dbfs": -10.278302188632587,
+      "difference_db": 0.2464915945453452
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 2,
+      "original_dbfs": -38.65410299805896,
+      "lookup_dbfs": -38.94083253398997,
+      "difference_db": -0.28672953593100914
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 3,
+      "original_dbfs": -63.74868907591111,
+      "lookup_dbfs": -63.705961563756944,
+      "difference_db": 0.04272751215416548
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 4,
+      "original_dbfs": -93.62758372341945,
+      "lookup_dbfs": -96.10603761960384,
+      "difference_db": -2.4784538961843907
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 5,
+      "original_dbfs": -100.44441990024353,
+      "lookup_dbfs": -100.98817187044958,
+      "difference_db": -0.5437519702060456
+    },
+    {
+      "fixture": 2,
+      "frequency": 1000,
+      "order": 6,
+      "original_dbfs": -120.99598106399353,
+      "lookup_dbfs": -124.62299492969575,
+      "difference_db": -3.6270138657022244
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 1,
+      "original_dbfs": -10.767396726323287,
+      "lookup_dbfs": -10.390608626283493,
+      "difference_db": 0.37678810003979457
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 2,
+      "original_dbfs": -38.19889412328755,
+      "lookup_dbfs": -38.63132086127423,
+      "difference_db": -0.4324267379866811
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 3,
+      "original_dbfs": -63.89605496009863,
+      "lookup_dbfs": -63.65547827357689,
+      "difference_db": 0.24057668652174158
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 4,
+      "original_dbfs": -90.39766406272474,
+      "lookup_dbfs": -93.34407641972163,
+      "difference_db": -2.9464123569968876
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 5,
+      "original_dbfs": -105.82378385082885,
+      "lookup_dbfs": -106.72424118633246,
+      "difference_db": -0.9004573355036172
+    },
+    {
+      "fixture": 2,
+      "frequency": 3000,
+      "order": 6,
+      "original_dbfs": -124.2693222512454,
+      "lookup_dbfs": -125.80603306573389,
+      "difference_db": -1.5367108144884867
+    },
+    {
+      "fixture": 2,
+      "frequency": 6000,
+      "order": 1,
+      "original_dbfs": -10.853037012203293,
+      "lookup_dbfs": -10.365527706000012,
+      "difference_db": 0.4875093062032807
+    },
+    {
+      "fixture": 2,
+      "frequency": 6000,
+      "order": 2,
+      "original_dbfs": -37.597246130571015,
+      "lookup_dbfs": -38.13229875005581,
+      "difference_db": -0.5350526194847944
+    },
+    {
+      "fixture": 2,
+      "frequency": 6000,
+      "order": 3,
+      "original_dbfs": -63.82713066281119,
+      "lookup_dbfs": -63.32841507478655,
+      "difference_db": 0.4987155880246448
+    },
+    {
+      "fixture": 2,
+      "frequency": 10000,
+      "order": 1,
+      "original_dbfs": -11.094329561218617,
+      "lookup_dbfs": -10.51271505310277,
+      "difference_db": 0.5816145081158464
+    },
+    {
+      "fixture": 2,
+      "frequency": 10000,
+      "order": 2,
+      "original_dbfs": -37.4046762069984,
+      "lookup_dbfs": -38.00408434024554,
+      "difference_db": -0.5994081332471382
+    },
+    {
+      "fixture": 2,
+      "frequency": 18000,
+      "order": 1,
+      "original_dbfs": -11.063028403904593,
+      "lookup_dbfs": -10.397174042313722,
+      "difference_db": 0.6658543615908705
+    }
+  ],
+  "separated_orders": [
+    {
+      "fixture": 0,
+      "order": 1,
+      "residual_db": -186.3073605735701,
+      "original_window_energy": 0.0029524809070569057,
+      "max_window_error": 8.294196492814043e-13
+    },
+    {
+      "fixture": 0,
+      "order": 2,
+      "residual_db": -133.99138101578626,
+      "original_window_energy": 5.045824744693514e-09,
+      "max_window_error": 9.982507082202088e-13
+    },
+    {
+      "fixture": 0,
+      "order": 3,
+      "residual_db": -127.71469626037589,
+      "original_window_energy": 2.094109045682989e-09,
+      "max_window_error": 1.4594373560376306e-12
+    },
+    {
+      "fixture": 0,
+      "order": 4,
+      "residual_db": -121.89419448582834,
+      "original_window_energy": 7.9788300018439e-10,
+      "max_window_error": 1.6189996994587437e-12
+    },
+    {
+      "fixture": 0,
+      "order": 5,
+      "residual_db": -117.19530152509648,
+      "original_window_energy": 2.126914759185965e-10,
+      "max_window_error": 1.8171849893753531e-12
+    },
+    {
+      "fixture": 0,
+      "order": 6,
+      "residual_db": -115.04622674394926,
+      "original_window_energy": 6.143847400200809e-11,
+      "max_window_error": 1.1474324392560223e-12
+    },
+    {
+      "fixture": 1,
+      "order": 1,
+      "residual_db": -188.90023306155055,
+      "original_window_energy": 0.23916839691358616,
+      "max_window_error": 5.906289061888108e-12
+    },
+    {
+      "fixture": 1,
+      "order": 2,
+      "residual_db": -133.43466950931565,
+      "original_window_energy": 5.738165591724703e-07,
+      "max_window_error": 8.832907139102997e-12
+    },
+    {
+      "fixture": 1,
+      "order": 3,
+      "residual_db": -138.1208363864949,
+      "original_window_energy": 1.803258385625214e-07,
+      "max_window_error": 2.9437566687015072e-12
+    },
+    {
+      "fixture": 1,
+      "order": 4,
+      "residual_db": -131.4180348090895,
+      "original_window_energy": 6.84337400697751e-08,
+      "max_window_error": 3.862028604971241e-12
+    },
+    {
+      "fixture": 1,
+      "order": 5,
+      "residual_db": -123.73030064717284,
+      "original_window_energy": 1.8229009715807136e-08,
+      "max_window_error": 4.724234455103773e-12
+    },
+    {
+      "fixture": 1,
+      "order": 6,
+      "residual_db": -116.74368909614728,
+      "original_window_energy": 5.254349827372225e-09,
+      "max_window_error": 5.887790001670229e-12
+    },
+    {
+      "fixture": 2,
+      "order": 1,
+      "residual_db": -220.09876950555156,
+      "original_window_energy": 0.4982542055915564,
+      "max_window_error": 1.7615467054867343e-13
+    },
+    {
+      "fixture": 2,
+      "order": 2,
+      "residual_db": -163.54344454360032,
+      "original_window_energy": 8.801047604274335e-07,
+      "max_window_error": 3.242212416283287e-13
+    },
+    {
+      "fixture": 2,
+      "order": 3,
+      "residual_db": -155.29749319951785,
+      "original_window_energy": 3.5820214771206785e-07,
+      "max_window_error": 4.967222108891861e-13
+    },
+    {
+      "fixture": 2,
+      "order": 4,
+      "residual_db": -148.70520729598775,
+      "original_window_energy": 1.3647592269317322e-07,
+      "max_window_error": 6.799971166254444e-13
+    },
+    {
+      "fixture": 2,
+      "order": 5,
+      "residual_db": -141.18681053232973,
+      "original_window_energy": 3.637812638827282e-08,
+      "max_window_error": 8.241252444336029e-13
+    },
+    {
+      "fixture": 2,
+      "order": 6,
+      "residual_db": -134.07461764035202,
+      "original_window_energy": 1.0509059936227334e-08,
+      "max_window_error": 9.909249438761045e-13
+    }
+  ],
+  "limitations": [
+    "Native diagnostics, not Plugin Doctor exports or fitted Hammerstein kernels.",
+    "ESS uses a common inverse and fixed order windows; stateful/clipped responses need caution.",
+    "No independent time alignment or gain normalization between variants."
+  ]
+}

@@ -1,0 +1,7 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/hybrid
+    Start 11: triode_lookup
+1/1 Test #11: triode_lookup ....................   Passed    0.28 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.34 sec

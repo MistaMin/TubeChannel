@@ -1,0 +1,9 @@
+validation fixture 0: residual -175.921 dB, max audio error 3.7252903e-09, max GR error 0 dB, finite yes
+validation fixture 1: residual -24.705 dB, max audio error 1.05926549, max GR error 0.0196834 dB, finite yes
+validation fixture 2: residual -173.234 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+validation fixture 3: residual -168.232 dB, max audio error 7.4505806e-09, max GR error 0 dB, finite yes
+validation fixture 4: residual -25.781 dB, max audio error 0.732911557, max GR error 0.00851631 dB, finite yes
+validation fixture 5: residual -174.646 dB, max audio error 1.49011612e-08, max GR error 0 dB, finite yes
+validation fixture 6: residual -25.540 dB, max audio error 0.573915809, max GR error 0.0178795 dB, finite yes
+validation fixture 7: residual -172.842 dB, max audio error 2.98023224e-08, max GR error 0 dB, finite yes
+tube comparison failures 3

@@ -1,0 +1,4 @@
+EX 1.1: relative max errors current 1.8e-12, derivative 6.4e-10, softplus 1.55e-10, sigmoid 3.07e-08
+EX 1.2: relative max errors current 3.3e-12, derivative 1.08e-09, softplus 1.55e-10, sigmoid 3.07e-08
+EX 1.4: relative max errors current 5.14e-12, derivative 1.44e-09, softplus 1.55e-10, sigmoid 3.07e-08
+triode curve failures 0

@@ -66,6 +66,28 @@ add_executable(TubeChannelLinearLayoutTest tests/linear_layout_test.cpp)
 target_include_directories(TubeChannelLinearLayoutTest PRIVATE Source)
 add_test(NAME linear_layout COMMAND TubeChannelLinearLayoutTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
 
+add_executable(TubeChannelTriodeLookupTest tests/triode_lookup_test.cpp)
+target_include_directories(TubeChannelTriodeLookupTest PRIVATE Source)
+add_test(NAME triode_lookup COMMAND TubeChannelTriodeLookupTest)
+
+add_executable(TubeChannelReferenceWaveCapture tests/reference_wave_capture.cpp)
+target_include_directories(TubeChannelReferenceWaveCapture PRIVATE Source)
+
+add_executable(TubeChannelTubeCompare tests/tube_compare.cpp)
+target_include_directories(TubeChannelTubeCompare PRIVATE Source)
+target_compile_definitions(TubeChannelTubeCompare PRIVATE TC_TUBE_EXPERIMENT=1)
+# Diagnostic fidelity gate: currently rejected at high drive, so not a normal plugin test.
+add_executable(TubeChannelTubeLookupBench tests/chain_bench.cpp)
+target_include_directories(TubeChannelTubeLookupBench PRIVATE Source)
+target_compile_definitions(TubeChannelTubeLookupBench PRIVATE TC_TUBE_EXPERIMENT=1)
+add_executable(TubeChannelTubeLookupProfile tests/chain_bench.cpp)
+target_include_directories(TubeChannelTubeLookupProfile PRIVATE Source)
+target_compile_definitions(TubeChannelTubeLookupProfile PRIVATE TC_TUBE_EXPERIMENT=1 TC_PROFILE=1)
+
+add_executable(TubeChannelTubeReductionCapture tests/tube_reduction_capture.cpp)
+target_include_directories(TubeChannelTubeReductionCapture PRIVATE Source)
+target_compile_definitions(TubeChannelTubeReductionCapture PRIVATE TC_DETECTOR_EXPERIMENT=1)
+
 add_executable(TubeChannelHybridModulesTest tests/hybrid_modules_test.cpp)
 target_include_directories(TubeChannelHybridModulesTest PRIVATE Source)
 add_test(NAME hybrid_modules COMMAND TubeChannelHybridModulesTest)

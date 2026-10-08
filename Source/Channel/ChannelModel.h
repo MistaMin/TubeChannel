@@ -76,6 +76,9 @@ public:
                  const PowerSupplySettings& psuSettings = {}, const hybrid::EngineConfig& engine = {})
     {
         using namespace circuit;
+#ifndef TC_TUBE_EXPERIMENT
+        if (engine.compactTubes || engine.guardedTubes) throw std::invalid_argument("tube lookup is an offline experiment, unavailable in the normal plugin");
+#endif
         if (!engine.detector.valid() || !engine.supply.valid())
             throw std::invalid_argument("invalid hybrid calibration");
         hybridConfig = engine;
@@ -130,6 +133,13 @@ public:
         for (auto* b : blocks) { link(); b->dc(); }
         for (int pass = 0; pass < 2; ++pass)
             for (auto* b : blocks) { link(); b->dc(); }
+#ifdef TC_TUBE_EXPERIMENT
+        if (engine.guardedTubes)
+            for (auto* b : { &tube, &comp })
+            { b->c.maxIter = 50; b->c.guardJunctionUpdates = true; b->c.extrapOrder = engine.tubeExtrapolation; }
+        tube.c.enableTriodeLookup(engine.compactTubes);
+        comp.c.enableTriodeLookup(engine.compactTubes);
+#endif
         tickCount = 0;
     }
 

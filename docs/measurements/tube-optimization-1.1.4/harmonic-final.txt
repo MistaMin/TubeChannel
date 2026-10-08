@@ -1,0 +1,10 @@
+harmonic fixture 0: residual -177.680 dB, max audio error 7.4505806e-09, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+harmonic fixture 1: residual -175.532 dB, max audio error 5.96046448e-08, max GR error 0 dB, finite yes
+  stage 2 original retries/rescues 0/0, candidate 0/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+harmonic fixture 2: residual -26.105 dB, max audio error 0.0222229362, max GR error 9.53674e-07 dB, finite yes
+  stage 2 original retries/rescues 2997/0, candidate 2997/0
+  stage 4 original retries/rescues 0/0, candidate 0/0
+tube comparison failures 1

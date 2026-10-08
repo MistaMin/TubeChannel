@@ -20,6 +20,7 @@ namespace tc
 {
 // Overrides support offline circuit comparisons; normal plugin modes follow quality.
 enum class DetectorMode { FollowQuality, Original, Prototype };
+enum class TubeMode { FollowQuality, Original, Prototype };
 
 struct ChainConfig
 {
@@ -34,6 +35,7 @@ struct ChainConfig
     bool lockstep = true;                // stereo: both channels share SIMD lanes in the circuit solves
     tubechannel::channel::PowerSupplySettings psu;
     DetectorMode detectorMode = DetectorMode::FollowQuality;
+    TubeMode tubeMode = TubeMode::Original; // prototype is explicit until fidelity/speed gates pass
     tubechannel::hybrid::EngineConfig engine; // calibration plus resolved channel-stage selections
 };
 
@@ -59,6 +61,8 @@ public:
         cfg = c;
         cfg.engine.compactDetector = c.detectorMode == DetectorMode::Prototype
             || (c.detectorMode == DetectorMode::FollowQuality && c.quality == dsp::Quality::Default);
+        cfg.engine.compactTubes = c.tubeMode == TubeMode::Prototype
+            || (c.tubeMode == TubeMode::FollowQuality && c.quality == dsp::Quality::Default);
         nch = std::max(1, std::min(2, c.channels));
         for (int ch = 0; ch < nch; ++ch)
         {
@@ -99,6 +103,18 @@ public:
         double t = 0.0;
         for (int ch = 0; ch < nch; ++ch) t += model[ch]->profile[slot];
         return t;
+    }
+#endif
+
+#ifdef TC_TUBE_EXPERIMENT
+    void collectSolverRecoveries(long* retries, long* rescues) const
+    {
+        for (int ch = 0; ch < nch; ++ch)
+            for (int k = 0; k < tubechannel::channel::ChannelModel::kStages; ++k)
+            {
+                const auto& c = model[ch]->blocks[size_t(k)]->c;
+                retries[k] += c.retryCount(); rescues[k] += c.rescueCount();
+            }
     }
 #endif
 
