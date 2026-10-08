@@ -7,7 +7,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 VERSION=$(cat VERSION)
 ART=build/universal/TubeChannel_artefacts/Release
-OUT=dist
+OUT=${OUT:-dist}
 BUILD=build/universal
 APP_ID="Developer ID Application: Marcos Deida (ZQYU67JUBH)"
 INST_ID="Developer ID Installer: Marcos Deida (ZQYU67JUBH)"
@@ -39,7 +39,9 @@ cp "$CLAP_EXT_SRC/LICENSE.md" "$LICENSE_ROOT/CLAP/clap-juce-extensions-LICENSE.m
 cp "$CLAP_EXT_SRC/clap-libs/clap/LICENSE" "$LICENSE_ROOT/CLAP/clap-LICENSE"
 cp "$CLAP_EXT_SRC/clap-libs/clap-helpers/LICENSE" "$LICENSE_ROOT/CLAP/clap-helpers-LICENSE"
 
-# Include the license notices for bundled JUCE module dependencies used by the plugin formats.
+# Include notices for code used by the shipped macOS formats: codecs, graphics helpers, and
+# the VST3, LV2, and Audio Unit SDKs. Windows/Android backends and disabled browser/scripting
+# modules are not part of these binaries.
 while IFS= read -r -d '' license; do
   case "$license" in
     */juce_audio_processors_headless/format_types/VST3_SDK/*)
@@ -51,7 +53,18 @@ while IFS= read -r -d '' license; do
     */modules/*)
       rel=${license#*modules/}; mkdir -p "$LICENSE_ROOT/JUCE/modules/$(dirname "$rel")"; cp "$license" "$LICENSE_ROOT/JUCE/modules/$rel" ;;
   esac
-done < <(find "$JUCE_SRC/modules" -type f \( -iname 'LICENSE*' -o -iname 'COPYING*' -o -iname 'NOTICE*' \) ! -path '*/AAX/*' -print0)
+done < <(find \
+  "$JUCE_SRC/modules/juce_audio_formats/codecs" \
+  "$JUCE_SRC/modules/juce_core/zip/zlib" \
+  "$JUCE_SRC/modules/juce_graphics/drawables/lunasvg" \
+  "$JUCE_SRC/modules/juce_graphics/fonts/harfbuzz" \
+  "$JUCE_SRC/modules/juce_graphics/image_formats/libwebp" \
+  "$JUCE_SRC/modules/juce_graphics/image_formats/pnglib" \
+  "$JUCE_SRC/modules/juce_graphics/unicode/sheenbidi" \
+  "$JUCE_SRC/modules/juce_audio_processors_headless/format_types/VST3_SDK" \
+  "$JUCE_SRC/modules/juce_audio_processors_headless/format_types/LV2_SDK" \
+  "$JUCE_SRC/modules/juce_audio_plugin_client/AU/AudioUnitSDK" \
+  -type f \( -iname 'LICENSE*' -o -iname 'COPYING*' -o -iname 'NOTICE*' \) -print0)
 
 declare -a BUNDLES=(
   "VST3/Tube Channel.vst3|/Library/Audio/Plug-Ins/VST3|vst3"
