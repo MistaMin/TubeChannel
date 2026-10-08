@@ -1,0 +1,132 @@
+fit pass 0 RMS 1.544084 dB, step 0.50000
+fit pass 1 RMS 1.297035 dB, step 0.50000
+fit pass 2 RMS 1.280098 dB, step 0.50000
+fit pass 3 RMS 1.274577 dB, step 0.50000
+fit pass 4 RMS 1.271998 dB, step 0.50000
+fit pass 5 RMS 1.269547 dB, step 0.50000
+fit pass 6 RMS 1.268524 dB, step 0.50000
+fit pass 7 RMS 1.268023 dB, step 0.50000
+fit pass 8 RMS 1.268023 dB, step 0.30000
+fit pass 9 RMS 1.258280 dB, step 0.30000
+fit pass 10 RMS 1.247699 dB, step 0.30000
+fit pass 11 RMS 1.244488 dB, step 0.30000
+fit pass 12 RMS 1.242177 dB, step 0.30000
+fit pass 13 RMS 1.241009 dB, step 0.30000
+fit pass 14 RMS 1.240768 dB, step 0.30000
+fit pass 15 RMS 1.240768 dB, step 0.18000
+fit pass 16 RMS 1.210408 dB, step 0.18000
+fit pass 17 RMS 1.164534 dB, step 0.18000
+fit pass 18 RMS 1.157807 dB, step 0.18000
+fit pass 19 RMS 1.152251 dB, step 0.18000
+fit pass 20 RMS 1.152241 dB, step 0.18000
+fit pass 21 RMS 1.152241 dB, step 0.10800
+fit pass 22 RMS 1.131030 dB, step 0.10800
+fit pass 23 RMS 1.016834 dB, step 0.10800
+fit pass 24 RMS 1.013303 dB, step 0.10800
+fit pass 25 RMS 1.012463 dB, step 0.10800
+fit pass 26 RMS 1.011616 dB, step 0.10800
+fit pass 27 RMS 1.010780 dB, step 0.10800
+fit pass 28 RMS 1.009971 dB, step 0.10800
+fit pass 29 RMS 1.009264 dB, step 0.10800
+fit pass 30 RMS 1.008638 dB, step 0.10800
+fit pass 31 RMS 1.007863 dB, step 0.10800
+fit pass 32 RMS 0.996597 dB, step 0.10800
+fit pass 33 RMS 0.956585 dB, step 0.10800
+fit pass 34 RMS 0.940760 dB, step 0.10800
+fit pass 35 RMS 0.938050 dB, step 0.10800
+fit pass 36 RMS 0.935205 dB, step 0.10800
+fit pass 37 RMS 0.932572 dB, step 0.10800
+fit pass 38 RMS 0.930438 dB, step 0.10800
+fit pass 39 RMS 0.927997 dB, step 0.10800
+fit pass 40 RMS 0.926055 dB, step 0.10800
+fit pass 41 RMS 0.925049 dB, step 0.10800
+fit pass 42 RMS 0.925049 dB, step 0.06480
+fit pass 43 RMS 0.924164 dB, step 0.06480
+fit pass 44 RMS 0.896228 dB, step 0.06480
+fit pass 45 RMS 0.890925 dB, step 0.06480
+fit pass 46 RMS 0.889934 dB, step 0.06480
+fit pass 47 RMS 0.870791 dB, step 0.06480
+fit pass 48 RMS 0.866138 dB, step 0.06480
+fit pass 49 RMS 0.850814 dB, step 0.06480
+fit pass 50 RMS 0.847521 dB, step 0.06480
+fit pass 51 RMS 0.844830 dB, step 0.06480
+fit pass 52 RMS 0.842454 dB, step 0.06480
+fit pass 53 RMS 0.841102 dB, step 0.06480
+fit pass 54 RMS 0.840532 dB, step 0.06480
+fit pass 55 RMS 0.840532 dB, step 0.03888
+fit pass 56 RMS 0.831770 dB, step 0.03888
+fit pass 57 RMS 0.829599 dB, step 0.03888
+fit pass 58 RMS 0.828790 dB, step 0.03888
+fit pass 59 RMS 0.822690 dB, step 0.03888
+fit pass 60 RMS 0.821741 dB, step 0.03888
+fit pass 61 RMS 0.820953 dB, step 0.03888
+fit pass 62 RMS 0.820571 dB, step 0.03888
+fit pass 63 RMS 0.814820 dB, step 0.03888
+fit pass 64 RMS 0.814529 dB, step 0.03888
+fit pass 65 RMS 0.814529 dB, step 0.02333
+fit pass 66 RMS 0.812676 dB, step 0.02333
+fit pass 67 RMS 0.812676 dB, step 0.01400
+fit pass 68 RMS 0.810910 dB, step 0.01400
+fit pass 69 RMS 0.809753 dB, step 0.01400
+fit pass 70 RMS 0.809602 dB, step 0.01400
+fit pass 71 RMS 0.809539 dB, step 0.01400
+fit pass 72 RMS 0.807231 dB, step 0.01400
+fit pass 73 RMS 0.806533 dB, step 0.01400
+fit pass 74 RMS 0.806504 dB, step 0.01400
+fit pass 75 RMS 0.806088 dB, step 0.01400
+fit pass 76 RMS 0.806088 dB, step 0.00840
+fit pass 77 RMS 0.804532 dB, step 0.00840
+fit pass 78 RMS 0.803020 dB, step 0.00840
+fit pass 79 RMS 0.802865 dB, step 0.00840
+fit pass 80 RMS 0.802594 dB, step 0.00840
+fit pass 81 RMS 0.801462 dB, step 0.00840
+fit pass 82 RMS 0.800612 dB, step 0.00840
+fit pass 83 RMS 0.800363 dB, step 0.00840
+fit pass 84 RMS 0.800001 dB, step 0.00840
+fit pass 85 RMS 0.799895 dB, step 0.00840
+fit pass 86 RMS 0.799657 dB, step 0.00840
+fit pass 87 RMS 0.799566 dB, step 0.00840
+fit pass 88 RMS 0.798810 dB, step 0.00840
+fit pass 89 RMS 0.798525 dB, step 0.00840
+fit pass 90 RMS 0.798378 dB, step 0.00840
+fit pass 91 RMS 0.798317 dB, step 0.00840
+fit pass 92 RMS 0.798287 dB, step 0.00840
+fit pass 93 RMS 0.798287 dB, step 0.00504
+fit pass 94 RMS 0.798121 dB, step 0.00504
+rectifierDrop = 0.50599046752495136
+driveScale = 0.86368454060282329
+ledDrop = 0.001
+attackBase = 0.010864156033150314
+attackFarads = 9.5665379696611221e-07
+releaseBase = 0.06155530690144146
+releaseSpan = 0.12398509224513751
+releaseFeedback = 0.055389547266731641
+autoAttack = 0.020901718924879732
+autoRelease = 0.12223175297571998
+followerOffset = 0.001
+driverCeiling = 4.701202899581097
+case 0: GR RMS 0.5833 dB, max 1.2192 dB
+case 1: GR RMS 0.8789 dB, max 8.8390 dB
+case 2: GR RMS 0.9597 dB, max 6.9976 dB
+case 3: GR RMS 1.3140 dB, max 3.1719 dB
+case 4: GR RMS 0.8118 dB, max 8.2274 dB
+case 5: GR RMS 1.5302 dB, max 8.5482 dB
+case 6: GR RMS 1.1770 dB, max 3.2540 dB
+case 7: GR RMS 0.6709 dB, max 1.8331 dB
+case 8: GR RMS 1.4128 dB, max 4.1858 dB
+case 9: GR RMS 1.3261 dB, max 1.7271 dB
+case 10: GR RMS 0.4988 dB, max 2.3620 dB
+case 11: GR RMS 0.4835 dB, max 3.4475 dB
+case 12: GR RMS 0.1041 dB, max 0.4285 dB
+case 13: GR RMS 0.4936 dB, max 7.2268 dB
+case 14: GR RMS 0.5026 dB, max 7.9938 dB
+case 15: GR RMS 0.3020 dB, max 1.3543 dB
+case 16: GR RMS 0.3561 dB, max 3.4024 dB
+case 17: GR RMS 0.4954 dB, max 7.5390 dB
+case 18: GR RMS 0.3169 dB, max 1.4007 dB
+case 19: GR RMS 0.4851 dB, max 7.2556 dB
+case 20: GR RMS 0.7662 dB, max 5.5500 dB
+case 21: GR RMS 0.3055 dB, max 1.3176 dB
+case 22: GR RMS 0.4957 dB, max 7.2962 dB
+case 23: GR RMS 0.4924 dB, max 7.1645 dB
+final training GR RMS 0.798644 dB

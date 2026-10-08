@@ -12,7 +12,7 @@ static int failures = 0;
 static void check(bool ok, const char* what) { std::printf("  %s %s\n", ok ? "ok  " : "FAIL", what); if (!ok) ++failures; }
 
 // returns the gain reduction (dB) after `seconds`, for a main level and an optional sidechain level (both dBFS peak)
-static double run(const std::string& dir, bool external, double mainDb, double scDb)
+static double run(const std::string& dir, bool external, double mainDb, double scDb, bool hybrid = false)
 {
     tubechannel::channel::NetlistSet nets;
     nets.mic = slurp(dir + "/mic.net"); nets.inst = slurp(dir + "/inst.net"); nets.tube = slurp(dir + "/tube.net");
@@ -21,6 +21,7 @@ static double run(const std::string& dir, bool external, double mainDb, double s
     nets.out = slurp(dir + "/out.net"); nets.psu = slurp(dir + "/psu.net");
     tc::ChainConfig cfg;
     cfg.channels = 1; cfg.maxBlock = 256; cfg.tolerances = false;
+    cfg.detectorMode = hybrid ? tc::DetectorMode::Prototype : tc::DetectorMode::Original;
     tc::Chain chain;
     chain.prepare(cfg, nets);
     tubechannel::channel::Telemetry tel[2];
@@ -67,6 +68,11 @@ int main(int argc, char** argv)
     // the internal detector sits after the gain element (it hears the compressed signal), the external one is
     // feed-forward, so at the same digital level the external reduction is larger
     check(extLoudQuietMain >= intLoud && extLoudQuietMain < intLoud + 20.0, "external (feed-forward) reduction is at least the internal one");
+    const double hybridExternal = run(dir, true, -80.0, -14.0, true);
+    const double hybridSilent = run(dir, true, -14.0, -120.0, true);
+    const double hybridInternal = run(dir, false, -80.0, -14.0, true);
+    check(hybridExternal > 3.0, "compact detector follows external sidechain");
+    check(hybridSilent < 0.5 && hybridInternal < 0.5, "compact detector respects internal/external routing");
     std::printf(failures ? "FAILED (%d)\n" : "PASSED\n", failures);
     return failures ? 1 : 0;
 }

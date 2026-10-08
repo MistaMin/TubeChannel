@@ -1,0 +1,42 @@
+{
+  "settings": "48 kHz, stereo, Default 2x, 1024 samples, tolerances and circuit supply on, 220 Hz 0.8-peak bursts, maximum manual attack/release, 400 blocks/run",
+  "runs": [
+    {
+      "run": 0,
+      "detector": "circuit",
+      "cpu_ms_per_block": 13.433
+    },
+    {
+      "run": 1,
+      "detector": "compact",
+      "cpu_ms_per_block": 11.173
+    },
+    {
+      "run": 2,
+      "detector": "compact",
+      "cpu_ms_per_block": 11.141
+    },
+    {
+      "run": 3,
+      "detector": "circuit",
+      "cpu_ms_per_block": 13.511
+    },
+    {
+      "run": 4,
+      "detector": "circuit",
+      "cpu_ms_per_block": 13.503
+    },
+    {
+      "run": 5,
+      "detector": "compact",
+      "cpu_ms_per_block": 11.056
+    }
+  ],
+  "mean_cpu_ms_per_block": {
+    "circuit": 13.482333333333333,
+    "compact": 11.123333333333333
+  },
+  "cpu_reduction_percent": 17.496971345217194,
+  "fidelity_accepted": false,
+  "other_workloads": "Plugin Doctor closed; builds, tests and fits completed before timing"
+}

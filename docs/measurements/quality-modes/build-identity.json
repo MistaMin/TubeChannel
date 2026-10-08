@@ -1,0 +1,33 @@
+{
+  "quality_modes_at_44100_48000": {
+    "Default": {
+      "detector": "round-8 prototype",
+      "factor": 2
+    },
+    "HQ": {
+      "detector": "original circuit",
+      "factor": 2
+    },
+    "Derp": {
+      "detector": "original circuit",
+      "factor": 4
+    }
+  },
+  "artifacts": {
+    "VST3": {
+      "path": "/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3",
+      "version": "1.1.2",
+      "binary_sha256": "eb653bc370cd8de6df518760f887d8ea6641911375bc8a4b55a7f0593a365b4d"
+    },
+    "AU": {
+      "path": "/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/AU/Tube Channel.component",
+      "version": "1.1.2",
+      "binary_sha256": "53e90631063e22cb9b539ce72e0299b179f8246d88809089016d06d60692d626"
+    },
+    "Standalone": {
+      "path": "/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/Standalone/Tube Channel.app",
+      "version": "1.1.2",
+      "binary_sha256": "bd5f9ad8d960e98e18841c8b93f7a43416a131539051ec0c5570891ca95e6e56"
+    }
+  }
+}

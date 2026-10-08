@@ -219,8 +219,8 @@ int main()
 
     // The oversampled rate stays put as the session rate rises.
     struct { double fs; int d, h, x; } expect[] = {
-        { 44100, 2, 4, 16 }, { 48000, 2, 4, 16 }, { 88200, 1, 2, 8 },
-        { 96000, 1, 2, 8 }, { 176400, 1, 1, 4 }, { 192000, 1, 1, 4 }, { 384000, 1, 1, 2 } };
+        { 44100, 2, 2, 4 }, { 48000, 2, 2, 4 }, { 88200, 1, 1, 2 },
+        { 96000, 1, 1, 2 }, { 176400, 1, 1, 1 }, { 192000, 1, 1, 1 }, { 384000, 1, 1, 1 } };
     for (const auto& e : expect)
     {
         check(Oversampler::factorFor(Quality::Default, e.fs) == e.d, "Default factor for rate", e.fs, "Hz");

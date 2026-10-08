@@ -1,0 +1,16 @@
+{
+  "reference": {
+    "path": "/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3",
+    "version": "1.1.2",
+    "sha256": "9326a4fde2d6fd574cffee0c22d26b895be354501f912858e2c8b8b4e03815ac",
+    "detector": "circuit",
+    "supply": "circuit"
+  },
+  "prototype": {
+    "path": "/Volumes/Developer/Developer/TubeChannel/build/hybrid-plugin/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3",
+    "version": "1.1.2",
+    "sha256": "08fcb38e39c1e90961ee24d8fa2fefb7ebf45c38b663dc525b981cbd5df75e1a",
+    "detector": "round-8 compact",
+    "supply": "circuit"
+  }
+}

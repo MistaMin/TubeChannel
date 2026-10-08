@@ -1,0 +1,7 @@
+case 0: attack 0.0 release 0.0 manual; LED relative error -2.76 dB, max optical GR difference 8.688 dB
+case 1: attack 0.5 release 0.5 manual; LED relative error -12.82 dB, max optical GR difference 3.265 dB
+case 2: attack 1.0 release 1.0 manual; LED relative error -4.65 dB, max optical GR difference 17.004 dB
+case 3: attack 0.0 release 0.0 Auto; LED relative error 3.08 dB, max optical GR difference 18.004 dB
+case 4: attack 0.5 release 0.5 Auto; LED relative error 3.28 dB, max optical GR difference 18.698 dB
+case 5: attack 1.0 release 1.0 Auto; LED relative error 2.06 dB, max optical GR difference 17.853 dB
+reference/model finite or convergence failures: 0; accuracy is reported, not certified

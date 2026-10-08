@@ -180,10 +180,23 @@ private:
                 const double* xo = k.x.data();
                 for (size_t i = 0; i < k.x.size(); ++i)
                 {
+                    if (k.guardJunctionUpdates && !std::isfinite(xn[i]))
+                        return false;
                     const double an = std::fabs(xn[i]);
                     if (!(std::fabs(xn[i] - xo[i]) < tol * (1.0 + 1e-3 * an)))
                         conv = false;
                     big = std::max(big, an);
+                }
+                if (k.guardJunctionUpdates)
+                {
+                    const double alpha = k.junctionUpdateScale();
+                    if (alpha < 1.0)
+                    {
+                        for (size_t i = 0; i < k.x.size(); ++i)
+                            k.x[i] += alpha * (k.xNew[i] - k.x[i]);
+                        done = false;
+                        continue;
+                    }
                 }
                 if (!(big < 1e4))
                     return false;

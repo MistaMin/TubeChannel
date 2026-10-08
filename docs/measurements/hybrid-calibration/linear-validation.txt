@@ -1,0 +1,6 @@
+37 Hz 0.25 V: EQ error -48.118 dB relative RMS, EQ+output -49.051 dB 
+997 Hz 2.00 V: EQ error -76.056 dB relative RMS, EQ+output -75.685 dB 
+4001 Hz 0.25 V: EQ error -85.633 dB relative RMS, EQ+output -84.382 dB 
+14003 Hz 2.00 V: EQ error -84.055 dB relative RMS, EQ+output -84.685 dB 
+997 Hz 17.00 V: EQ error -15.846 dB relative RMS, EQ+output -15.847 dB (overload diagnostic; linear profile not accepted here)
+linear holdout failures 0

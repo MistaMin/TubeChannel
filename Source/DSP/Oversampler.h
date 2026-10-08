@@ -6,9 +6,9 @@
 // the session rate rises and the effective rate stays the same):
 //
 //                      44.1/48k   88.2/96k   176.4/192k
-//   Quality::Default      4x         2x          1x
-//   Quality::HQ           8x         4x          2x
-//   Quality::Derp        32x        16x          8x     "\( ᐖ)/ - Derp mode"
+//   Quality::Default      2x         1x          1x
+//   Quality::HQ           2x         1x          1x
+//   Quality::Derp         4x         2x          1x     "\( ᐖ)/ - Derp mode"
 //
 // Each can use minimum-phase IIR half-bands (zero reported latency) or, with linearPhase = true
 // (the "+L" modes), linear-phase FIR half-bands. The whole circuit runs at the oversampled rate;
@@ -25,8 +25,8 @@ inline int nominalStages(Quality q)
     switch (q)
     {
         case Quality::Default: return 1;     // 2x at 44.1 / 48 kHz
-        case Quality::HQ:      return 2;     // 4x
-        case Quality::Derp:    return 4;     // 16x
+        case Quality::HQ:      return 1;     // 2x; original detector selected by the chain
+        case Quality::Derp:    return 2;     // 4x; original detector
     }
     return 1;
 }
@@ -190,7 +190,7 @@ public:
 
 private:
     double fs = 48000.0;
-    int maxBlockSize = 0, numChannels = 0, factor_ = 4, latencyBase = 0, pad = 0;
+    int maxBlockSize = 0, numChannels = 0, factor_ = 2, latencyBase = 0, pad = 0;
     Quality quality = Quality::Default;
     bool linear = false;
     std::vector<std::unique_ptr<HalfbandStage>> stages;     // decimation (down) path

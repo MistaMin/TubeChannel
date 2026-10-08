@@ -1,0 +1,145 @@
+{
+  "linear": {
+    "stimulus_dbfs": -30,
+    "max_difference_db": 0.09738000000000113,
+    "max_difference_frequency_hz": 120.1245,
+    "rms_difference_across_linear_frequency_bins_db": 0.0011139612782553768,
+    "note": "Supply simulation enabled; independent supply phases confound narrow mains-related bins. Not a sound-similarity percentage."
+  },
+  "harmonic": {
+    "stimulus_dbfs": -18,
+    "displayed_frequency_hz": 999.0,
+    "displayed_thd_db": [
+      -39.8,
+      -39.8
+    ],
+    "displayed_thdn_db": [
+      -39.9,
+      -39.9
+    ],
+    "peaks": [
+      {
+        "harmonic": 1,
+        "frequency_hz": 999.08411,
+        "reference_db": -20.32596,
+        "solver_fixed_db": -20.32596,
+        "difference_db": 0.0
+      },
+      {
+        "harmonic": 2,
+        "frequency_hz": 1998.16833,
+        "reference_db": -60.10788,
+        "solver_fixed_db": -60.10788,
+        "difference_db": 0.0
+      },
+      {
+        "harmonic": 3,
+        "frequency_hz": 2997.2522,
+        "reference_db": -95.1255,
+        "solver_fixed_db": -95.12549,
+        "difference_db": 1.0000000003174137e-05
+      },
+      {
+        "harmonic": 4,
+        "frequency_hz": 3996.33594,
+        "reference_db": -144.3199,
+        "solver_fixed_db": -144.24158,
+        "difference_db": 0.07831999999999084
+      },
+      {
+        "harmonic": 5,
+        "frequency_hz": 4995.42285,
+        "reference_db": -124.70007,
+        "solver_fixed_db": -124.69894,
+        "difference_db": 0.001130000000003406
+      }
+    ]
+  },
+  "dynamics": {
+    "status": "captured",
+    "frequency_hz": 999.0,
+    "segments": [
+      {
+        "duration_s": 3,
+        "level_dbfs": -36
+      },
+      {
+        "duration_s": 2,
+        "level_dbfs": -6
+      },
+      {
+        "duration_s": 6,
+        "level_dbfs": -36
+      }
+    ],
+    "export_segments": 4,
+    "samples_per_segment": 528000,
+    "note": "Default attack/release; visual overlay only. Export channel mapping and quantitative envelope analysis still pending."
+  },
+  "pending": [
+    "Repeat maximum attack and Auto release",
+    "Validate performance sweep against standalone benchmark",
+    "Resolve 2D frequency-axis/sample-rate mismatch",
+    "Independently verify Hammerstein and sweep export segment mappings"
+  ],
+  "hammerstein": {
+    "status": "captured",
+    "order": 6,
+    "stimulus_dbfs": -18,
+    "fft_quality": "normal",
+    "speed": "realtime",
+    "export_segments": 12,
+    "points_per_segment": 4094,
+    "comparison": "Overlaid kernels visually similar; segment-to-chain mapping not independently established for this mode.",
+    "limitation": "Stateful compressor cannot be certified by Hammerstein fit."
+  },
+  "aliasing_2d": {
+    "status": "captured",
+    "stimulus_dbfs": -18,
+    "sweep_start_hz": 10,
+    "sweep_end_hz": 24000,
+    "sweep_law": "exponential",
+    "color_limits_db": [
+      -200,
+      0
+    ],
+    "fft_quality": "normal",
+    "speed": "realtime",
+    "comparison": "Reflected harmonic traces visible in both versions with similar overall patterns. No calibrated alias-level or audibility conclusion.",
+    "sample_rate_note": "Settings showed 48000 Hz but display upper label was 22.1 kHz; reconcile before quantitative frequency interpretation."
+  },
+  "thd_sweep": {
+    "status": "captured",
+    "stimulus_dbfs": -18,
+    "fft_quality": "normal",
+    "speed": "ultra",
+    "points_per_segment": 83,
+    "frequency_range_hz": [
+      5.85937,
+      21896.4668
+    ],
+    "export_segments": 4,
+    "finite_aligned_points_20hz_20khz": 71,
+    "max_segment_1_vs_3_difference_db": 5.000000000165983e-05,
+    "max_difference_frequency_hz": 58.59374,
+    "mapping_note": "Segments 1 and 3 treated as chain 1 and 2 by established frequency-export convention; sweep-specific mapping not separately verified. Extra segments must not be assumed valid without checking.",
+    "sentinel_note": "-500 sentinel and non-finite ordinates excluded from differences; THD with no in-band harmonic is not an aliasing test."
+  },
+  "fundamental_sweep": {
+    "status": "captured",
+    "stimulus_dbfs": -18,
+    "fft_quality": "normal",
+    "speed": "ultra",
+    "points_per_segment": 83,
+    "frequency_range_hz": [
+      5.85937,
+      21896.4668
+    ],
+    "export_segments": 4,
+    "finite_aligned_points_20hz_20khz": 77,
+    "max_segment_1_vs_3_difference_db": 0.0008699999999999264,
+    "max_difference_frequency_hz": 13543.93652,
+    "mapping_note": "Segments 1 and 3 treated as chain 1 and 2 by established frequency-export convention; sweep-specific mapping not separately verified. Extra segments must not be assumed valid without checking.",
+    "sentinel_note": "-500 sentinel and non-finite ordinates excluded from differences; THD with no in-band harmonic is not an aliasing test."
+  }
+}

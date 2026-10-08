@@ -1,0 +1,23 @@
+{
+  "model": "two-path scalar circuit, round 8",
+  "training_set": "train4, 72 fixtures at 48 kHz",
+  "values": {
+    "rectifierDrop": 0.4015805349376797,
+    "rectifierLogDrop": 6.604920535932226e-05,
+    "rectifierFloor": 0.011427725025523822,
+    "driveScale": 1.0,
+    "driverCeiling": 5.5652910978686965,
+    "fastFraction": 0.44881379821521744,
+    "fastDrop": 1e-06,
+    "slowDrop": 1e-06,
+    "fastSourceOhms": 1388.5606769447177,
+    "slowSourceOhms": 11617.728769148143,
+    "timingFarads": 1.6613945837475307e-06,
+    "releaseBaseOhms": 39725.66219105331,
+    "releaseSpanOhms": 70000.0,
+    "releaseFeedback": 0.06948663628797234,
+    "autoFastOhms": 4525.988062926465,
+    "autoSlowOhms": 81105.57416323059
+  },
+  "production_enabled": false
+}

@@ -81,6 +81,7 @@ std::unique_ptr<tc::Chain> TubeChannelProcessor::buildChain(const Key& k) const
     cfg.linearPhase = k.linear;
     cfg.tolerances = k.tolerances;
     cfg.seed = k.seed;
+    cfg.engine.compactSupply = TC_EXPERIMENTAL_SUPPLY != 0;
     cfg.psu.mainsHz = paramsA.mains->load() > 0.5f ? 50.0 : 60.0;
     cfg.psu.mainsScale = paramsA.mainsVolts->load();
     auto c = std::make_unique<tc::Chain>();
@@ -130,6 +131,7 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     fadeInLength = std::max(1, juce::roundToInt(sampleRate_ * 0.02));
     activeChannelCount.store(chain->channels());
     activeFactor.store(chain->factor());
+    activePrototypeCompressor.store(chain->config().engine.compactDetector);
     activeLatency.store(chain->latency());
     setLatencySamples(chain->latency());
     prepared.store(true);
@@ -226,6 +228,7 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
         fadeInRemaining = fadeInLength;
         activeChannelCount.store(chain->channels());
         activeFactor.store(chain->factor());
+        activePrototypeCompressor.store(chain->config().engine.compactDetector);
         activeLatency.store(chain->latency());
         swaps.fetch_add(1);
     }

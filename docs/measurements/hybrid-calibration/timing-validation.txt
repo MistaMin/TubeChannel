@@ -1,0 +1,7 @@
+case 0: GR RMS 0.5897 dB, max 3.1555 dB
+case 1: GR RMS 0.4832 dB, max 2.5938 dB
+case 2: GR RMS 0.3786 dB, max 0.7687 dB
+case 3: GR RMS 0.3208 dB, max 1.9855 dB
+case 4: GR RMS 0.3203 dB, max 1.9874 dB
+case 5: GR RMS 0.3202 dB, max 1.9867 dB
+aggregate GR RMS 0.414852 dB

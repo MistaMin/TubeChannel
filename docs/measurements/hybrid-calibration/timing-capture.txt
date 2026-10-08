@@ -1,0 +1,6 @@
+captured timing case 0: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 0.00 release 0.00, manual
+captured timing case 1: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 0.50 release 0.50, manual
+captured timing case 2: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 1.00 release 1.00, manual
+captured timing case 3: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 0.00 release 0.00, Auto
+captured timing case 4: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 0.50 release 0.50, Auto
+captured timing case 5: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack 1.00 release 1.00, Auto

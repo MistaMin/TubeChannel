@@ -47,6 +47,7 @@ public:
     tubechannel::channel::Telemetry telemetry[2];
     int activeChannels() const { return activeChannelCount.load(); }
     int currentFactor() const { return activeFactor.load(); }
+    bool usesPrototypeCompressor() const { return activePrototypeCompressor.load(); }
     int currentLatency() const { return activeLatency.load(); }
     bool isBuilding() const { return building.load(); }
     float cpuLoad() const { return cpu.load(); }
@@ -105,7 +106,8 @@ private:
     juce::SpinLock keyLock;
     Key builtKey;
 
-    std::atomic<int> activeChannelCount { 2 }, activeFactor { 4 }, activeLatency { 0 }, swaps { 0 };
+    std::atomic<int> activeChannelCount { 2 }, activeFactor { 2 }, activeLatency { 0 }, swaps { 0 };
+    std::atomic<bool> activePrototypeCompressor { true };
     std::atomic<bool> prepared { false }, building { false };
     std::atomic<float> cpu { 0.f };
     std::atomic<float> outputMeterPeak[2] {};

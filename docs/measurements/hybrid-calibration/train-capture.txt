@@ -1,0 +1,6 @@
+captured train case 0: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 0.00, manual
+captured train case 1: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 0.50, manual
+captured train case 2: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 1.00, manual
+captured train case 3: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 0.00, Auto
+captured train case 4: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 0.50, Auto
+captured train case 5: 48000 Hz, tone 1000.0 Hz, amplitude 1.800, threshold 0.25 ratio 0.30, attack/release 1.00, Auto

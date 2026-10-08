@@ -18,6 +18,9 @@
 
 namespace tc
 {
+// Overrides support offline circuit comparisons; normal plugin modes follow quality.
+enum class DetectorMode { FollowQuality, Original, Prototype };
+
 struct ChainConfig
 {
     double sampleRate = 48000.0;
@@ -29,6 +32,8 @@ struct ChainConfig
     int seed = 1;
     bool lockstep = true;                // stereo: both channels share SIMD lanes in the circuit solves
     tubechannel::channel::PowerSupplySettings psu;
+    DetectorMode detectorMode = DetectorMode::FollowQuality;
+    tubechannel::hybrid::EngineConfig engine; // calibration plus resolved channel-stage selections
 };
 
 struct ChainGlobals
@@ -51,6 +56,8 @@ public:
     {
         using namespace tubechannel;
         cfg = c;
+        cfg.engine.compactDetector = c.detectorMode == DetectorMode::Prototype
+            || (c.detectorMode == DetectorMode::FollowQuality && c.quality == dsp::Quality::Default);
         nch = std::max(1, std::min(2, c.channels));
         for (int ch = 0; ch < nch; ++ch)
         {
@@ -58,7 +65,7 @@ public:
             osSc[ch].prepare(c.sampleRate, c.maxBlock, 1, c.quality, c.linearPhase);
             model[ch] = std::make_unique<channel::ChannelModel>();
             model[ch]->setControls({});
-            model[ch]->prepare(c.sampleRate * os[ch].factor(), nets, unsigned(c.seed * 2 + ch + 1), c.tolerances, c.psu);
+            model[ch]->prepare(c.sampleRate * os[ch].factor(), nets, unsigned(c.seed * 2 + ch + 1), c.tolerances, c.psu, cfg.engine);
         }
         if (nch == 2)
             tubechannel::channel::ChannelModel::linkPair(*model[0], *model[1]);

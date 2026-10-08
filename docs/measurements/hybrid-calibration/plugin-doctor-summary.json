@@ -1,0 +1,152 @@
+{
+  "analyzer": "Plugin Doctor 2.7.2",
+  "reference_candidate": "plugin-identity.json",
+  "settings": {
+    "sample_rate_hz": 48000,
+    "harmonic_fft": 32768,
+    "hammerstein_fft": 16384,
+    "speed": "realtime",
+    "routing": "1|2 parallel, LR",
+    "level_dbfs": -18,
+    "single_frequency_hz": 999,
+    "hammerstein_order": 6,
+    "controls": "Init; noise off; tolerances, circuit supply and stereo link on"
+  },
+  "harmonic_export_segments": 4,
+  "segment_harmonic_peaks_hz_db": [
+    [
+      [
+        999.08411,
+        -20.32596
+      ],
+      [
+        1998.16833,
+        -60.10788
+      ],
+      [
+        2997.2522,
+        -95.1255
+      ],
+      [
+        3996.33594,
+        -144.22797
+      ],
+      [
+        4995.42285,
+        -124.70112
+      ],
+      [
+        5994.50293,
+        -147.18896
+      ]
+    ],
+    [
+      [
+        999.08411,
+        -20.32596
+      ],
+      [
+        1998.16833,
+        -60.10788
+      ],
+      [
+        2997.2522,
+        -95.1255
+      ],
+      [
+        3996.33594,
+        -144.22797
+      ],
+      [
+        4995.42285,
+        -124.70112
+      ],
+      [
+        5994.50293,
+        -147.18906
+      ]
+    ],
+    [
+      [
+        999.08411,
+        -19.38403
+      ],
+      [
+        1998.16833,
+        -58.22202
+      ],
+      [
+        2997.2522,
+        -92.21708
+      ],
+      [
+        3996.33594,
+        -136.46184
+      ],
+      [
+        4995.42285,
+        -122.75314
+      ],
+      [
+        5994.50293,
+        -143.55164
+      ]
+    ],
+    [
+      [
+        999.08411,
+        -19.38403
+      ],
+      [
+        1998.16833,
+        -58.22202
+      ],
+      [
+        2997.2522,
+        -92.21708
+      ],
+      [
+        3996.33594,
+        -136.46185
+      ],
+      [
+        4995.42285,
+        -122.75315
+      ],
+      [
+        5994.50293,
+        -143.55165
+      ]
+    ]
+  ],
+  "mapping": "Harmonic export order verified: bypassing Chain 2 changes only segments 3/4 to -18 dBFS fundamental with second harmonic below -202 dB; 1/2 retain processed reference spectrum.",
+  "candidate_minus_reference_fundamental_db": 0.9419299999999993,
+  "candidate_minus_reference_second_harmonic_relative_db": 0.9439299999999946,
+  "two_dimensional": "separate identified Chain 1 and Chain 2 cropped exports; 10\u201324000 Hz exponential sweep, displayed spectral axis ends at 22.1 kHz despite 48 kHz settings; no absolute alias-rejection certification",
+  "accepted": false,
+  "one_dimensional_thd": {
+    "fft_samples": 16384,
+    "speed": "ultra",
+    "display": "blank despite exported sweep data",
+    "expected_left_segments": [
+      1,
+      3
+    ],
+    "left_frequency_range_hz": [
+      5.85937,
+      21896.4668
+    ],
+    "caveat": "other exported segments contain a different short frequency grid; treat their identity/data as unresolved. -inf at high excitation frequencies represents no harmonics below Nyquist and is not an audio-sample nonfinite result."
+  },
+  "one_dimensional_fundamental": {
+    "fft_samples": 16384,
+    "speed": "ultra",
+    "points_per_segment": 83,
+    "range_hz": [
+      5.85937,
+      21896.4668
+    ],
+    "candidate_minus_reference_at_1022_hz_db": 0.9424000000000001,
+    "maximum_absolute_gain_difference_20_to_20000_hz_db": 1.0529
+  }
+}

@@ -11,7 +11,7 @@ static int failures = 0;
 static void check(bool ok, const char* what) { std::printf("  %s %s\n", ok ? "ok  " : "FAIL", what); if (!ok) ++failures; }
 
 // returns the difference between the two runs in dB relative to the signal, over the second half of the run
-static double compare(const std::string& dir, double levelDb, bool differentChannels, bool compOn, double thr)
+static double compare(const std::string& dir, double levelDb, bool differentChannels, bool compOn, double thr, bool hybrid = false)
 {
     tubechannel::channel::NetlistSet nets;
     nets.mic = slurp(dir + "/mic.net"); nets.inst = slurp(dir + "/inst.net"); nets.tube = slurp(dir + "/tube.net");
@@ -23,6 +23,8 @@ static double compare(const std::string& dir, double levelDb, bool differentChan
     {
         tc::ChainConfig cfg;
         cfg.channels = 2; cfg.maxBlock = 256; cfg.tolerances = true; cfg.lockstep = mode == 1;
+        cfg.detectorMode = hybrid ? tc::DetectorMode::Prototype : tc::DetectorMode::Original;
+        cfg.engine.compactSupply = hybrid;
         tc::Chain chain;
         chain.prepare(cfg, nets);
         tubechannel::channel::Telemetry tel[2];
@@ -69,6 +71,9 @@ int main(int argc, char** argv)
     check(a < -100.0, "quiet, different channels");
     check(b < -100.0, "loud with compression, different channels");
     check(c < -100.0, "compressor bypassed");
+    const double h = compare(dir, -6.0, true, true, 0.1, true);
+    std::printf("  hybrid lockstep against independent channels: %.1f dB\n", h);
+    check(h < -125.0, "hybrid detector/supply preserve stereo lockstep agreement");
     std::printf(failures ? "FAILED (%d)\n" : "PASSED\n", failures);
     return failures ? 1 : 0;
 }

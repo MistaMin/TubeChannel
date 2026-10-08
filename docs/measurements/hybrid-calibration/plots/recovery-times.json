@@ -1,0 +1,42 @@
+[
+  {
+    "source": "timing-curves.csv",
+    "case": 0,
+    "criterion": "recovery to baseline +3 dB after second burst stops at 1.1 s",
+    "circuit_recovery_seconds": 0.22461395812562301,
+    "prototype_recovery_seconds": 0.24844574840436473,
+    "prototype_minus_circuit_ms": 23.831790278741714
+  },
+  {
+    "source": "timing-curves.csv",
+    "case": 1,
+    "criterion": "recovery to baseline +3 dB after second burst stops at 1.1 s",
+    "circuit_recovery_seconds": 0.5153959074733097,
+    "prototype_recovery_seconds": 0.46623892405063283,
+    "prototype_minus_circuit_ms": -49.156983422676824
+  },
+  {
+    "source": "timing-curves.csv",
+    "case": 2,
+    "criterion": "recovery to baseline +3 dB after second burst stops at 1.1 s",
+    "circuit_recovery_seconds": 4.094453531598512,
+    "prototype_recovery_seconds": 4.05313214990138,
+    "prototype_minus_circuit_ms": -41.32138169713251
+  },
+  {
+    "source": "timing-curves.csv",
+    "case": 3,
+    "criterion": "recovery to baseline +3 dB after second burst stops at 1.1 s",
+    "circuit_recovery_seconds": 0.3434970238095236,
+    "prototype_recovery_seconds": 0.3616368741226017,
+    "prototype_minus_circuit_ms": 18.139850313078078
+  },
+  {
+    "source": "round-8-holdout6.csv",
+    "case": 6,
+    "criterion": "recovery to baseline +3 dB after second burst stops at 1.1 s",
+    "circuit_recovery_seconds": 2.016108667872212,
+    "prototype_recovery_seconds": 2.5025520109119253,
+    "prototype_minus_circuit_ms": 486.44334303971306
+  }
+]

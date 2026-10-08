@@ -6,10 +6,12 @@ Manufacturer: OpenGrid. Product: Tube Channel. Framework: JUCE 8 (C++20) + GoodL
 
 ## 1. Product rules (locked)
 
-1. The DSP is always the full analogue circuit model. There is no clean or digital DSP path.
+1. Audio stages retain the analogue circuit model. Default uses the reduced detector; HQ and
+   Derp use the original detector circuit. Both use the same optical response and compressor audio stage.
 2. The Analogue / Digital switch changes only the UI skin (analogue-like vs flat digital). It is
    stored in plugin state, is not an audio parameter, and never touches the audio thread.
-3. The whole circuit, including the power supply model, runs at the oversampled rate, always.
+3. Audio circuits run at the selected oversampled rate. Detector updates run near 48 kHz and
+   the original supply model runs at its existing 8 kHz cadence.
 4. Power-supply sag is simulated from the real supply circuit and shown as an animated Power panel
    driven by the simulated rail values (not a canned loop).
 5. Channel configurations: Mono, Stereo (one control set, optional linked detector), Dual-mono
@@ -21,17 +23,17 @@ Manufacturer: OpenGrid. Product: Tube Channel. Framework: JUCE 8 (C++20) + GoodL
 
 | Quality | Rate | Min-phase (default) | Linear-phase (+L) |
 |---|---|---|---|
-| Default | 2x at 44.1/48 kHz, always on | IIR half-band cascade | FIR half-band cascade |
-| HQ | 4x at 44.1/48 kHz | IIR | FIR |
-| `\( ᐖ)/ - Derp mode` | 16x at 44.1/48 kHz | IIR | FIR |
+| Default | 2x at 44.1/48 kHz, reduced detector | IIR half-band cascade | FIR half-band cascade |
+| HQ | 2x at 44.1/48 kHz, original detector | IIR | FIR |
+| `\( ᐖ)/ - Derp mode` | 4x at 44.1/48 kHz, original detector | IIR | FIR |
 
 The factor scales down as the session rate goes up, so the oversampled rate stays put:
 
 | Session rate | Default | HQ | `\( ᐖ)/ - Derp mode` |
 |---|---|---|---|
-| 44.1 / 48 kHz | 2x | 4x | 16x |
-| 88.2 / 96 kHz | 1x | 2x | 8x |
-| 176.4 / 192 kHz | 1x | 1x | 4x |
+| 44.1 / 48 kHz | 2x | 2x | 4x |
+| 88.2 / 96 kHz | 1x | 1x | 2x |
+| 176.4 / 192 kHz | 1x | 1x | 1x |
 
 At 1x the engine is an exact passthrough with no latency, +L included. The UI shows the factor
 actually running.
@@ -54,7 +56,7 @@ Modelling approach per block:
 - Nonlinear stages (input pair and current mirrors, triodes, plate-load mirrors, Darlington
   follower, opto LDR, detector, clamps): nodal / state-space (DK) solvers, fitted to the supplied
   device data. Op-amps: GBW, slew, output swing, rail-dependent clipping.
-- Compressor sidechain: modelled at circuit level (Netlists/det.net).
+- Compressor sidechain: reduced detector in Default, original circuit (Netlists/det.net) in HQ/Derp.
   Opto cell: power-law R(I) with the datasheet 3.5 ms rise and ~72 ms fall.
 - Tube stage includes the Warm feedback (R7g, C24, R48, C19, R80 into the tail emitter) and the
   Q17 / Q27 peak-driven bias reduction. The supplied netlist leaves both out, so they are built

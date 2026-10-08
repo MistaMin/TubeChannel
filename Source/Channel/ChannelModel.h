@@ -1,7 +1,8 @@
 #pragma once
 
 // One complete channel: input stage, tube stage, insert-free signal path, opto compressor, four-band
-// EQ, output stage and the power supply, all as circuits solved at the oversampled rate.
+// EQ, output stage and the power supply. The default engine uses circuit stages;
+// comparison builds can select compact detector and supply prototypes at preparation.
 //
 //   process(vin, vsc)  one oversampled sample in volts (differential at the XLR input; the sidechain
 //                      signal is level matched to the detector input), returns the balanced output in volts.
@@ -17,9 +18,11 @@
 #include <string>
 
 #include "../Circuit/Block.h"
+#include "ChannelTypes.h"
 #include "Vactrol.h"
 #include "../Circuit/CircuitPair.h"
 #include "PowerSupply.h"
+#include "../Hybrid/EngineConfig.h"
 
 #ifdef TC_PROFILE
 #define TC_T(slot) { const auto now_ = std::chrono::steady_clock::now(); profile[slot] += std::chrono::duration<double>(now_ - tprev).count(); tprev = now_; }
@@ -29,64 +32,6 @@
 
 namespace tubechannel::channel
 {
-// ---- controls (what the front panel does) ----------------------------------------------------------------
-struct ChannelControls
-{
-    // input
-    bool instrument = false;      // front jack in use: the mic stage is bypassed
-    double gain = 0.0;            // 0..1
-    bool gainPlus20 = false;      // tube stage +20 dB
-    double impedance = 0.4;       // 0..1 -> 150 ohm .. 3.4 k
-    bool phantom = false;
-    bool invert = false;
-    double lowCut = 0.0;          // 0..1 -> 11 .. 250 Hz
-    bool plateHigh = true;
-    double preOut = 1.0;
-    // compressor
-    bool compActive = true;
-    double threshold = 0.25, ratio = 0.3, attack = 0.5, release = 0.5, compOut = 0.88, vactrolCal = 0.5;
-    bool autoDetect = false;
-    bool externalSidechain = false;
-    bool limiter = false;         // RATIO knob popped: the circuit compressor is off, a brickwall limiter takes over
-    double limiterRelease = 0.2;  // seconds
-    // equaliser
-    bool eqActive = true;
-    double low = 0.5, high = 0.5;
-    bool loShift40 = true;        // false = 120 Hz
-    bool hiShift6k = false;       // false = 18 kHz
-    double hmLevel = 0.5, hmFreq = 0.5, lmLevel = 0.5, lmFreq = 0.5;
-    bool hmX10 = false, lmX10 = false;
-    bool hmNarrow = true, lmNarrow = true;
-    // output
-    double master = 0.8;
-    bool outPlus4 = true;         // false = -10 dBV
-    // plugin
-    double micSourceOhms = 150.0;
-    double instSourceOhms = 10000.0;
-
-    bool operator==(const ChannelControls&) const = default;
-};
-
-struct Telemetry
-{
-    std::atomic<float> outPeak { 0.f }, grDb { 0.f }, tubeDrive { 0.f }, clip { 0.f };
-    std::atomic<float> p15 { 15.f }, n15 { -15.f }, p25 { 25.f }, p45 { 45.f }, p75 { 75.f }, p150 { 150.f }, tubeP { 150.f };
-    std::atomic<float> mainsPhase { 0.f }, heaterCurrent { 0.f }, loadP15 { 0.f }, loadTube { 0.f };
-    std::atomic<float> inPeak { 0.f }, outRms { 0.f };
-    std::atomic<float> vuTap[4];     // rms volts at: preamp out, compressor out, EQ out, main out
-    std::atomic<float> clipPre { 0.f };
-    // recent supply rail history at the supply's own rate (about 8 kHz), for the power panel scope
-    static constexpr int kScope = 256;
-    std::atomic<float> scope25[kScope], scope150[kScope], scopeLoad[kScope];
-    std::atomic<int> scopeWrite { 0 };
-    Telemetry() { for (auto& v : vuTap) v = 0.f; for (int i = 0; i < kScope; ++i) { scope25[i] = 26.f; scope150[i] = 150.f; scopeLoad[i] = 0.f; } }
-};
-
-struct NetlistSet
-{
-    std::string mic, inst, tube, preout, comp, det, eq1, eq2, eq3, eq4, out, psu;
-};
-
 // small, cheap, roughly Gaussian white noise (sum of four uniforms)
 class Noise
 {
@@ -134,9 +79,12 @@ public:
     static constexpr int kControlInterval = 64;       // oversampled samples between control updates
 
     void prepare(double oversampledRate, const NetlistSet& nets, unsigned seed, bool tolerances,
-                 const PowerSupplySettings& psuSettings = {})
+                 const PowerSupplySettings& psuSettings = {}, const hybrid::EngineConfig& engine = {})
     {
         using namespace circuit;
+        if (!engine.detector.valid() || !engine.supply.valid())
+            throw std::invalid_argument("invalid hybrid calibration");
+        hybridConfig = engine;
         fs = oversampledRate;
         dt = 1.0 / fs;
         ToleranceSettings tol;
@@ -152,8 +100,11 @@ public:
         // The detector only has to follow envelopes: it runs at about 48 kHz however far the audio is oversampled,
         // fed with the average of the samples in between.
         detDecim = std::max(1, int(std::lround(fs / kDetectorRate)));
+        if (!detectorModel.prepare(fs / detDecim, engine.detector))
+            throw std::invalid_argument("invalid detector sample rate or calibration");
         det.build(nets.det, dt * detDecim, tol, { "VP", "VN" }, { { "O6B", 10.0 } });
-        det.c.maxIter = 20;                         // a rectifier crossing can take a dozen iterations; retrying with damping costs far more
+        det.c.maxIter = 50;                         // guarded crossings finish without restarting the whole solve
+        det.c.guardJunctionUpdates = true;
         det.c.extrapOrder = 0;                      // the rectifier switches hard: start each step from the last solution
         eq1.build(nets.eq1, dt, tol, { "VP", "VN" }, { { "COUT", 10.0 } });
         eq2.build(nets.eq2, dt, tol, {}, { { "X", 10.0 } });
@@ -166,6 +117,10 @@ public:
 
         psu.prepare(nets.psu, psuSettings, tol);
         psu.settle(0.8, controls.plateHigh);
+        if (!supplyModel.prepare(PowerSupply::kRate,
+                            { { psu.p15(), psu.n15(), psu.p25(), psu.p45(), psu.p75(), psu.p150(), psu.tubeP() },
+                              psu.mainsPhase(), psu.heaterCurrent() }, controls.plateHigh, engine.supply))
+            throw std::runtime_error("invalid settled supply snapshot or calibration");
         psuInterval = std::max(1.0, fs / PowerSupply::kRate);
         psuCount = 0.0;
         loadAcc[0] = loadAcc[1] = loadAcc[2] = loadAcc[3] = 0.0;
@@ -269,14 +224,18 @@ private:
         {
             psuCount -= psuInterval;
             const double n = double(std::max(loadN, 1));
-            psu.step(loadAcc[0] / n + 0.075, loadAcc[1] / n + 0.075, loadAcc[2] / n + 0.004, loadAcc[3] / n, controls.plateHigh);
+            if (hybridConfig.compactSupply)
+                supplyModel.step({ loadAcc[0] / n + 0.075, loadAcc[1] / n + 0.075, loadAcc[2] / n + 0.004, loadAcc[3] / n },
+                                 controls.plateHigh, psu.settings.mainsHz, psu.settings.mainsScale);
+            else
+                psu.step(loadAcc[0] / n + 0.075, loadAcc[1] / n + 0.075, loadAcc[2] / n + 0.004, loadAcc[3] / n, controls.plateHigh);
             lastLoadP15 = loadAcc[0] / n + 0.075;
             lastLoadTube = loadAcc[3] / n;
             if (tel != nullptr)
             {
                 const int w = tel->scopeWrite.load(std::memory_order_relaxed);
-                tel->scope25[w].store(float(psu.p25()), std::memory_order_relaxed);
-                tel->scope150[w].store(float(psu.tubeP()), std::memory_order_relaxed);
+                tel->scope25[w].store(float(supplyRail(hybrid::Supply::Raw)), std::memory_order_relaxed);
+                tel->scope150[w].store(float(supplyRail(hybrid::Supply::Plate)), std::memory_order_relaxed);
                 tel->scopeLoad[w].store(float(lastLoadP15), std::memory_order_relaxed);
                 tel->scopeWrite.store((w + 1) % Telemetry::kScope, std::memory_order_release);
             }
@@ -341,11 +300,15 @@ private:
                 }
                 else if (++detCount >= detDecim)
                 {
-                    det.setSourceH(P.detIn, detSum / double(detDecim));
+                    const double input = detSum / double(detDecim);
+                    if (hybridConfig.compactDetector)
+                        ledCurrent = detectorModel.process(input);
+                    else
+                        det.setSourceH(P.detIn, input);
                     detSum = 0.0;
                     detCount = 0;
-                    detStepped = true;
-                    return &det;
+                    detStepped = !hybridConfig.compactDetector;
+                    return hybridConfig.compactDetector ? nullptr : &det;
                 }
                 return nullptr;
             }
@@ -392,9 +355,10 @@ private:
         {
             const double ia = mic.supplyCurrent() + tube.supplyCurrent() + comp.supplyCurrent() + eq1.supplyCurrent() +
                               inst.supplyCurrent() + preout.supplyCurrent() + eq2.supplyCurrent() + eq3.supplyCurrent() +
-                              eq4.supplyCurrent() + out.supplyCurrent() + det.supplyCurrent();
+                              eq4.supplyCurrent() + out.supplyCurrent() + (hybridConfig.compactDetector ? 0.0 : det.supplyCurrent());
             loadAcc[0] += mic.currentVP() + comp.currentVP() + eq1.currentVP() + 0.5 * ia;
-            loadAcc[1] += -(mic.currentVN() + tube.currentVN() + comp.currentVN() + det.currentVN() + eq1.currentVN()) + 0.5 * ia;
+            loadAcc[1] += -(mic.currentVN() + tube.currentVN() + comp.currentVN()
+                          + (hybridConfig.compactDetector ? -ledCurrent : det.currentVN()) + eq1.currentVN()) + 0.5 * ia;
             loadAcc[2] += mic.currentV45() + comp.currentV45();
             loadAcc[3] += tube.currentTube();
             ++loadN;
@@ -420,12 +384,12 @@ public:
         t.tubeDrive.store(float(drive));
         t.clip.store(peak > 12.5 ? 1.f : 0.f);
         for (int i = 0; i < 4; ++i) t.vuTap[i].store(float(std::sqrt(tapMs[i])));
-        t.p15.store(float(psu.p15())); t.n15.store(float(psu.n15()));
-        t.p25.store(float(psu.p25())); t.p45.store(float(psu.p45()));
-        t.p75.store(float(psu.p75())); t.p150.store(float(psu.p150()));
-        t.tubeP.store(float(psu.tubeP()));
-        t.mainsPhase.store(float(psu.mainsPhase()));
-        t.heaterCurrent.store(float(psu.heaterCurrent()));
+        t.p15.store(float(supplyRail(hybrid::Supply::Positive))); t.n15.store(float(supplyRail(hybrid::Supply::Negative)));
+        t.p25.store(float(supplyRail(hybrid::Supply::Raw))); t.p45.store(float(supplyRail(hybrid::Supply::Auxiliary)));
+        t.p75.store(float(supplyRail(hybrid::Supply::Multiplier))); t.p150.store(float(supplyRail(hybrid::Supply::High)));
+        t.tubeP.store(float(supplyRail(hybrid::Supply::Plate)));
+        t.mainsPhase.store(float(supplyPhase()));
+        t.heaterCurrent.store(float(supplyHeaterCurrent()));
         t.loadP15.store(float(lastLoadP15));
         t.loadTube.store(float(lastLoadTube));
     }
@@ -581,6 +545,9 @@ private:
             double& cur = smoothed[k];
             cur = (immediate || isSwitch) ? v : cur + (v - cur) * 0.35;
         }
+        if (hybridConfig.compactDetector)
+            detectorModel.configureElectrical(smoothed.at("THRW"), smoothed.at("RATR"), smoothed.at("ATTR"),
+                                              smoothed.at("RELW"), controls.autoDetect);
         for (auto* b : blocks)
         {
             for (auto& [k, v] : smoothed)
@@ -608,9 +575,31 @@ private:
         }
     }
 
+    double supplyRail(hybrid::Supply::Rail rail) const
+    {
+        if (hybridConfig.compactSupply) return supplyModel.snapshot().volts[rail];
+        switch (rail)
+        {
+            case hybrid::Supply::Positive: return psu.p15();
+            case hybrid::Supply::Negative: return psu.n15();
+            case hybrid::Supply::Raw: return psu.p25();
+            case hybrid::Supply::Auxiliary: return psu.p45();
+            case hybrid::Supply::Multiplier: return psu.p75();
+            case hybrid::Supply::High: return psu.p150();
+            case hybrid::Supply::Plate: return psu.tubeP();
+        }
+        return 0.0;
+    }
+    double supplyPhase() const { return hybridConfig.compactSupply ? supplyModel.snapshot().phase : psu.mainsPhase(); }
+    double supplyHeaterCurrent() const
+    {
+        return hybridConfig.compactSupply ? supplyModel.snapshot().heaterCurrent : psu.heaterCurrent();
+    }
+
     void pushRails()
     {
-        const double vp = psu.p15(), vn = psu.n15(), v45 = psu.p45(), tp = psu.tubeP();
+        const double vp = supplyRail(hybrid::Supply::Positive), vn = supplyRail(hybrid::Supply::Negative);
+        const double v45 = supplyRail(hybrid::Supply::Auxiliary), tp = supplyRail(hybrid::Supply::Plate);
         for (auto* b : blocks)
         {
             b->setRails(vp, vn, v45, tp);
@@ -660,6 +649,9 @@ private:
     }
 
     double fs = 192000.0, dt = 1.0 / 192000.0;
+    hybrid::EngineConfig hybridConfig;
+    hybrid::Detector detectorModel;
+    hybrid::Supply supplyModel;
     Noise noise[3];
     ChannelControls pending;
     bool controlsDirty = true, smoothSettled = true;

@@ -1,0 +1,19 @@
+case 0: GR RMS 1.2899 dB, max 2.7533 dB
+case 1: GR RMS 0.8461 dB, max 2.6027 dB
+case 2: GR RMS 1.1477 dB, max 10.7263 dB
+case 3: GR RMS 2.4529 dB, max 4.9386 dB
+case 4: GR RMS 1.5137 dB, max 4.1611 dB
+case 5: GR RMS 0.9871 dB, max 3.9732 dB
+case 6: GR RMS 1.4334 dB, max 3.0182 dB
+case 7: GR RMS 0.9279 dB, max 3.1967 dB
+case 8: GR RMS 1.3379 dB, max 10.7459 dB
+case 9: GR RMS 0.1969 dB, max 0.8904 dB
+case 10: GR RMS 0.5304 dB, max 6.7417 dB
+case 11: GR RMS 0.4957 dB, max 7.7071 dB
+case 12: GR RMS 0.2263 dB, max 1.0345 dB
+case 13: GR RMS 0.5344 dB, max 6.1278 dB
+case 14: GR RMS 0.5104 dB, max 8.3429 dB
+case 15: GR RMS 0.2421 dB, max 1.1069 dB
+case 16: GR RMS 0.5354 dB, max 5.8005 dB
+case 17: GR RMS 0.5448 dB, max 8.7390 dB
+aggregate GR RMS 1.032990 dB

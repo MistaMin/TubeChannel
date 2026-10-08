@@ -35,6 +35,15 @@ namespace tubechannel::circuit { inline double gProf[16]; inline long gProfN[16]
 
 namespace tubechannel::circuit
 {
+#ifdef TC_DETECTOR_EXPERIMENT
+// Offline experiments only. Plugin targets never define TC_DETECTOR_EXPERIMENT.
+struct ExperimentalLinearSolver
+{
+    virtual ~ExperimentalLinearSolver() = default;
+    virtual bool factor(const std::vector<double>& values, bool baseChanged) = 0;
+    virtual void solve(const double* rhs, double* result) = 0;
+};
+#endif
 constexpr double kVt = 0.025852;     // thermal voltage at 300 K
 constexpr double kGmin = 1e-12;
 
@@ -394,6 +403,24 @@ public:
     SparseLU& luRef() { return lu; }
     const SparseLU& luRef() const { return lu; }
     int lastIterations() const { return iters; }
+#ifdef TC_DETECTOR_EXPERIMENT
+    void setExperimentalSolver(ExperimentalLinearSolver* solver)
+    {
+        experimentalSolver = solver;
+        experimentalBaseChanged = true;
+        needFactor = true;
+    }
+    std::vector<bool> nonlinearNodes() const
+    {
+        std::vector<bool> nodes(size_t(size()), false);
+        const auto mark = [&nodes](int n) { if (n >= 0) nodes[size_t(n)] = true; };
+        for (const auto& d : diodes) { mark(d.a); mark(d.k); }
+        for (const auto& q : bjts) { mark(q.c); mark(q.b); mark(q.e); }
+        for (const auto& t : triodes) { mark(t.p_); mark(t.g_); mark(t.k_); }
+        for (const auto& o : opamps) { mark(o.inp); mark(o.inn); mark(o.out); mark(o.n1); }
+        return nodes;
+    }
+#endif
     int factorCount() const { return factors; }
     int size() const { return lu.size(); }
     double lastMinPivot() const { return lu.minPivot(); }
@@ -677,6 +704,9 @@ private:
 
     void rebuildBase()
     {
+#ifdef TC_DETECTOR_EXPERIMENT
+        experimentalBaseChanged = true;
+#endif
         std::fill(baseVals.begin(), baseVals.end(), 0.0);
         for (auto& r : resistors)
             stamp2(baseVals, r.p, 1.0 / r.R);
@@ -1068,6 +1098,42 @@ private:
 
     bool onlyOpampsBlock() const { return bjts.empty() && triodes.empty() && !opamps.empty(); }
 
+    // Limit the proposed Newton direction, not the signal or the device equations. Preventing
+    // large forward-junction excursions avoids an expensive divergent solve at rectifier crossings.
+    // Use one scale for the entire direction so the coupled linear equations remain consistent.
+    double junctionUpdateScale() const
+    {
+        double alpha = 1.0;
+        auto limit = [&alpha](double oldV, double newV, double vt, double critical) {
+            const double limited = detail::pnjlim(newV, oldV, vt, critical);
+            if (limited != newV && newV != oldV)
+                alpha = std::min(alpha, std::max(0.0, (limited - oldV) / (newV - oldV)));
+        };
+        auto nextV = [this](int node) { return node >= 0 ? xNew[size_t(node)] : 0.0; };
+        for (const auto& d : diodes)
+        {
+            const double oldV = xv(d.a) - xv(d.k), newV = nextV(d.a) - nextV(d.k);
+            limit(oldV, newV, d.m.N * kVt, d.vcrit);
+            if (d.m.BV > 0.0)
+                limit(-oldV - d.m.BV, -newV - d.m.BV, kVt, kVt);
+        }
+        for (const auto& q : bjts)
+        {
+            const double sign = q.m.pnp ? -1.0 : 1.0;
+            limit(sign * (xv(q.b) - xv(q.e)), sign * (nextV(q.b) - nextV(q.e)), kVt, q.vcrit);
+            limit(sign * (xv(q.b) - xv(q.c)), sign * (nextV(q.b) - nextV(q.c)), kVt, q.vcrit);
+        }
+        for (const auto& o : opamps)
+        {
+            const double oldV = xv(o.inp) - xv(o.inn);
+            const double newV = nextV(o.inp) - nextV(o.inn);
+            // Both polarities of the input protection junctions; start guarding before steep conduction.
+            limit(oldV, newV, 1.75 * kVt, 0.6);
+            limit(-oldV, -newV, 1.75 * kVt, 0.6);
+        }
+        return alpha;
+    }
+
     bool newton(int maxIt, bool dc)
     {
         TCP_BEGIN
@@ -1137,6 +1203,14 @@ private:
                 acceptJacobian();
                 vals = baseVals;
                 stampJacobians(vals);
+#ifdef TC_DETECTOR_EXPERIMENT
+                if (experimentalSolver)
+                {
+                    experimentalSolver->factor(vals, experimentalBaseChanged);
+                    experimentalBaseChanged = false;
+                }
+                else
+#endif
                 lu.factor(vals.data());
                 ++factors;
                 needFactor = false;
@@ -1146,24 +1220,40 @@ private:
             std::memcpy(rhs.data(), rhsBase.data(), rhsBase.size() * sizeof(double));
             addDeviceRhs();
             TCP_MARK(4)
+#ifdef TC_DETECTOR_EXPERIMENT
+            if (experimentalSolver) experimentalSolver->solve(rhs.data(), xNew.data());
+            else
+#endif
             lu.solve(rhs.data(), xNew.data());
             applyLowRank(xNew.data());
             TCP_MARK(5)
             double worst = 0.0, big = 0.0;
             for (size_t i = 0; i < x.size(); ++i)
             {
+                if (guardJunctionUpdates && !std::isfinite(xNew[i]))
+                    return false;
                 const double d = xNew[i] - x[i];
                 worst = std::max(worst, std::fabs(d) / (1.0 + 1e-3 * std::fabs(xNew[i])));
                 big = std::max(big, std::fabs(xNew[i]));
             }
-            if (!(big < 1e4))                 // a near-singular matrix produced an absurd solution
-                return false;
             if (traceNewton)
             {
                 int wi = 0; double wd = 0.0;
                 for (size_t i = 0; i < x.size(); ++i) { const double d = std::fabs(xNew[i] - x[i]); if (d > wd) { wd = d; wi = int(i); } }
                 std::fprintf(stderr, "      it %3d worst %.3e at %-8s x=%.6g -> %.6g (limit %d)\n", it, worst, nodeNames[size_t(wi)].c_str(), x[size_t(wi)], xNew[size_t(wi)], limitSteps ? 1 : 0);
             }
+            if (guardJunctionUpdates && !dcMode && !dc && !limitSteps)
+            {
+                const double alpha = junctionUpdateScale();
+                if (alpha < 1.0)
+                {
+                    for (size_t i = 0; i < x.size(); ++i)
+                        x[i] += alpha * (xNew[i] - x[i]);
+                    continue; // A limited direction cannot satisfy the convergence test.
+                }
+            }
+            if (!(big < 1e4)) // Reject an unsafe full step after allowing junction limiting to reduce it.
+                return false;
             // DC / start-up / rescue: damped Newton. The whole update vector is scaled (keeping its
             // direction) so that no node moves more than dcStep volts in one iteration.
             if (dc || limitSteps)
@@ -1361,6 +1451,7 @@ public:
     int extrapOrder = 2;       // starting point of a step: 2 quadratic prediction, 1 linear, 0 the last solution (hard switching)
     bool tightJac = false;
     int maxIter = 12;          // plain Newton iterations before a step is retried with damping
+    bool guardJunctionUpdates = false; // opt-in safeguard for strongly switching rectifiers
     double jacTol = 0.05;      // transient: refactor when a device's linearisation has moved by more than this fraction
     double firstAccept = 8.0;  // multiple of tolStep that a first-iteration update may reach and still be accepted
     double tolStep = 3e-6;     // accept a step when the update is below this (relative to 1 + |x|/1000)
@@ -1388,6 +1479,10 @@ public:
 private:
     bool dirty = true, needFactor = true, dcMode = false, converged = true;
     int iters = 0, factors = 0;
+#ifdef TC_DETECTOR_EXPERIMENT
+    ExperimentalLinearSolver* experimentalSolver = nullptr;
+    bool experimentalBaseChanged = true;
+#endif
     std::vector<double> baseVals, vals, factoredVals, x, xPrev, xPrev2, xPrev3, xNew, rhs, rhsBase;
 };
 } // namespace tubechannel::circuit

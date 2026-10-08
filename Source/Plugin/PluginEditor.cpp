@@ -115,7 +115,7 @@ public:
             for (auto* r : { &powerP, &osP, &unitP })
                 drawPlate(g, r->toFloat());
             line(g, float(powerP.getX() + 14), float(powerP.getRight() - 14), float(powerP.getY() + 14), "POWER SUPPLY");
-            line(g, float(osP.getX() + 14), float(osP.getRight() - 14), float(osP.getY() + 14), "OVERSAMPLING");
+            line(g, float(osP.getX() + 14), float(osP.getRight() - 14), float(osP.getY() + 14), "QUALITY");
             line(g, float(unitP.getX() + 14), float(unitP.getRight() - 14), float(unitP.getY() + 14), "UNIT");
             g.setColour(skin.legend);
             g.setFont(font(11.0f, true));
@@ -500,7 +500,7 @@ void TubeChannelEditor::timerCallback()
     const int f = proc.currentFactor();
     const double fs = proc.getSampleRate();
     const bool lin = proc.apvts.getRawParameterValue(id::linearPhase)->load() > 0.5f;
-    juce::String a = juce::String(f) + "x oversampling, " + juce::String(f * fs / 1000.0, 1) + " kHz";
+    juce::String a = juce::String(proc.usesPrototypeCompressor() ? "Prototype comp, " : "Original comp, ") + juce::String(f) + "x, " + juce::String(f * fs / 1000.0, 1) + " kHz";
     if (proc.isBuilding())
         a = "building the circuit model...";
     content->setStatus(a, (lin ? "linear phase, " : "minimum phase, ") + juce::String(proc.currentLatency()) + " samples latency, CPU " +

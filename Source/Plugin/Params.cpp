@@ -105,7 +105,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addChoice(l, id::alignment, "0 VU level", { "-14 dBFS", "-16 dBFS", "-18 dBFS", "-20 dBFS", "-22 dBFS" }, 2);
     addFloat(l, id::micZ, "Mic source impedance", 50.f, 600.f, 150.f, [](float v, int) { return fmt(v, 0, "ohm"); });
     addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) { return fmt(v / 1000.0, 1, "kohm"); });
-    addChoice(l, id::quality, "Oversampling", { "Default", "HQ", "Derp mode" }, 0);
+    addChoice(l, id::quality, "Quality", { "Default", "HQ", "Derp mode" }, 0);
     addBool(l, id::linearPhase, "Linear phase (+L)", false);
     addBool(l, id::stereoLink, "Stereo link", true);
     addBool(l, id::dualMono, "Dual mono", false);

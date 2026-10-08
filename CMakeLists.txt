@@ -47,11 +47,47 @@ add_executable(TubeChannelRealtimeTest tests/realtime_test.cpp)
 target_include_directories(TubeChannelRealtimeTest PRIVATE Source)
 add_test(NAME realtime COMMAND TubeChannelRealtimeTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
 
+add_executable(TubeChannelDetectorGuardTest tests/detector_guard_test.cpp)
+target_include_directories(TubeChannelDetectorGuardTest PRIVATE Source)
+add_test(NAME detector_guard COMMAND TubeChannelDetectorGuardTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+add_executable(TubeChannelQualityTest tests/quality_mode_test.cpp)
+target_include_directories(TubeChannelQualityTest PRIVATE Source)
+add_test(NAME quality_modes COMMAND TubeChannelQualityTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
 add_executable(TubeChannelChainBench tests/chain_bench.cpp)
 target_include_directories(TubeChannelChainBench PRIVATE Source)
 
+add_executable(TubeChannelHybridModulesTest tests/hybrid_modules_test.cpp)
+target_include_directories(TubeChannelHybridModulesTest PRIVATE Source)
+add_test(NAME hybrid_modules COMMAND TubeChannelHybridModulesTest)
+
+add_executable(TubeChannelHybridLinearValidate tests/hybrid_linear_validate.cpp)
+target_include_directories(TubeChannelHybridLinearValidate PRIVATE Source)
+add_test(NAME hybrid_linear COMMAND TubeChannelHybridLinearValidate ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
+add_executable(TubeChannelHybridLinearCapture tests/hybrid_linear_capture.cpp)
+target_include_directories(TubeChannelHybridLinearCapture PRIVATE Source)
+
+add_executable(TubeChannelHybridSupplyCapture tests/hybrid_supply_capture.cpp)
+target_include_directories(TubeChannelHybridSupplyCapture PRIVATE Source)
+
+add_executable(TubeChannelHybridChainCompare tests/hybrid_chain_compare.cpp)
+target_include_directories(TubeChannelHybridChainCompare PRIVATE Source)
+
+add_executable(TubeChannelHybridCalibrate tests/hybrid_calibrate.cpp)
+target_include_directories(TubeChannelHybridCalibrate PRIVATE Source)
+
+add_executable(TubeChannelHybridDetectorCapture tests/hybrid_detector_capture.cpp)
+target_include_directories(TubeChannelHybridDetectorCapture PRIVATE Source)
+
+add_executable(TubeChannelDetectorCapture tests/detector_capture.cpp)
+target_include_directories(TubeChannelDetectorCapture PRIVATE Source)
+target_compile_definitions(TubeChannelDetectorCapture PRIVATE TC_DETECTOR_EXPERIMENT=1)
+
 # --- JUCE ------------------------------------------------------------------------------------------
 option(TUBECHANNEL_BUILD_PLUGIN "Build the JUCE plugin targets" ON)
+option(TUBECHANNEL_EXPERIMENTAL_SUPPLY "Use the unfitted compact supply in comparison builds" OFF)
 if(NOT TUBECHANNEL_BUILD_PLUGIN)
     return()
 endif()
@@ -144,6 +180,7 @@ target_compile_definitions(TubeChannel PUBLIC
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
     JUCE_DISPLAY_SPLASH_SCREEN=0
+    TC_EXPERIMENTAL_SUPPLY=$<BOOL:${TUBECHANNEL_EXPERIMENTAL_SUPPLY}>
 )
 
 target_link_libraries(TubeChannel

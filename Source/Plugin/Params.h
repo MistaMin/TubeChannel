@@ -4,7 +4,7 @@
 //
 // Every front-panel control exists twice: channel A (no suffix) and channel B ("_b", used in
 // Dual-mono). In Stereo-linked mode channel B follows channel A. Plain ASCII names throughout; the
-// emoticon for the 32x oversampling mode is drawn by the UI.
+// emoticon for Derp mode is drawn by the UI.
 
 #include <juce_audio_processors/juce_audio_processors.h>
 

@@ -1,0 +1,32 @@
+{
+  "False:0": {
+    "case": 0,
+    "csv_sample_rms_error_db": 0.5891609838569957,
+    "csv_sample_max_error_db": 3.1446999999999994,
+    "peak_time_seconds": 0.674
+  },
+  "False:1": {
+    "case": 1,
+    "csv_sample_rms_error_db": 0.48322386832971737,
+    "csv_sample_max_error_db": 2.59234,
+    "peak_time_seconds": 0.862
+  },
+  "False:2": {
+    "case": 2,
+    "csv_sample_rms_error_db": 0.378644482388882,
+    "csv_sample_max_error_db": 0.7681000000000004,
+    "peak_time_seconds": 3.854
+  },
+  "False:3": {
+    "case": 3,
+    "csv_sample_rms_error_db": 0.32084265246520766,
+    "csv_sample_max_error_db": 1.9813399999999994,
+    "peak_time_seconds": 0.762
+  },
+  "True:6": {
+    "case": 6,
+    "csv_sample_rms_error_db": 2.3283190634203774,
+    "csv_sample_max_error_db": 7.50122,
+    "peak_time_seconds": 3.05306
+  }
+}

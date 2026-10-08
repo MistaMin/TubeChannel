@@ -71,7 +71,7 @@ int main()
     }
 
     // 2. Audio: level, latency and the oversampling factors at 96 kHz (Default = 1x there)
-    for (int quality = 0; quality < 2; ++quality)
+    for (int quality = 0; quality < 3; ++quality)
         for (bool lin : { false, true })
         {
             TubeChannelProcessor p;
@@ -79,7 +79,8 @@ int main()
             setBool(p, id::linearPhase, lin);
             p.setRateAndBufferSizeDetails(96000.0, 256);
             p.prepareToPlay(96000.0, 256);
-            const int expected = quality == 0 ? 1 : 2;
+            const int expected = quality == 2 ? 2 : 1;
+            check(p.usesPrototypeCompressor() == (quality == 0), "quality selects the compressor backend");
             check(p.currentFactor() == expected, "factor adapts to the session rate", p.currentFactor());
             check(lin && expected > 1 ? p.getLatencySamples() > 0 : p.getLatencySamples() == 0, "latency only for +L", p.getLatencySamples());
             juce::AudioBuffer<float> buf(2, 256);
@@ -122,18 +123,27 @@ int main()
             for (int i = 0; i < 256; ++i) finite = finite && std::isfinite(buf.getSample(0, i));
         }
         check(finite, "finite while switching");
-        check(p.currentFactor() == 2, "HQ at 96 kHz is 2x", p.currentFactor());
-        for (int quality : { 0, 1, 0 })
+        check(p.currentFactor() == 1 && !p.usesPrototypeCompressor(), "HQ at 96 kHz uses original detector at 1x", p.currentFactor());
+        for (int quality : { 0, 1, 2, 1, 0 })
         {
             const int before = p.swapCount();
             setChoice(p, id::quality, quality);
             pump(1);
             buf.clear();
             p.processBlock(buf, midi);
+            check(p.usesPrototypeCompressor() == (quality == 0), "live switching adopts requested compressor backend");
             check(p.swapCount() == before + 1, "successive mode switches always have a retirement slot");
-            check(p.currentFactor() == (quality == 0 ? 1 : 2), "successive mode switch adopts requested factor");
+            check(p.currentFactor() == (quality == 2 ? 2 : 1), "successive mode switch adopts requested factor");
         }
-        std::printf("  live switching ok (swaps %d)\n", p.swapCount());
+        // The saved choice must restore the backend even when the factor stays unchanged.
+        setChoice(p, id::quality, 1); pump(1); buf.clear(); p.processBlock(buf, midi);
+        juce::MemoryBlock saved; p.getStateInformation(saved);
+        setChoice(p, id::quality, 0); pump(1); buf.clear(); p.processBlock(buf, midi);
+        check(p.usesPrototypeCompressor(), "Default restores the prototype after HQ");
+        p.setStateInformation(saved.getData(), int(saved.getSize()));
+        pump(1); buf.clear(); p.processBlock(buf, midi);
+        check(!p.usesPrototypeCompressor() && p.currentFactor() == 1, "saved HQ state restores original response at unchanged factor");
+        std::printf("  live switching and state restoration ok (swaps %d)\n", p.swapCount());
     }
     std::printf("%s (%d failure%s)\n", failures == 0 ? "ALL PASSED" : "FAILED", failures, failures == 1 ? "" : "s");
     return failures == 0 ? 0 : 1;

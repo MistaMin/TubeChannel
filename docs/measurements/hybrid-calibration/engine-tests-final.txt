@@ -1,0 +1,25 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/hybrid
+      Start  1: oversampler
+ 1/10 Test  #1: oversampler ......................   Passed   18.16 sec
+      Start  2: sparse_lu
+ 2/10 Test  #2: sparse_lu ........................   Passed    0.16 sec
+      Start  3: circuit
+ 3/10 Test  #3: circuit ..........................   Passed    0.02 sec
+      Start  4: sidechain
+ 4/10 Test  #4: sidechain ........................   Passed    6.20 sec
+      Start  5: limiter
+ 5/10 Test  #5: limiter ..........................   Passed    1.33 sec
+      Start  6: lockstep
+ 6/10 Test  #6: lockstep .........................   Passed   11.26 sec
+      Start  7: realtime
+ 7/10 Test  #7: realtime .........................   Passed    7.34 sec
+      Start  8: detector_guard
+ 8/10 Test  #8: detector_guard ...................   Passed   32.62 sec
+      Start  9: hybrid_modules
+ 9/10 Test  #9: hybrid_modules ...................   Passed    0.22 sec
+      Start 10: hybrid_linear
+10/10 Test #10: hybrid_linear ....................   Passed    0.63 sec
+
+100% tests passed out of 10
+
+Total Test time (real) =  78.08 sec

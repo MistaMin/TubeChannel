@@ -1,0 +1,7 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/hybrid
+    Start 7: realtime
+1/1 Test #7: realtime .........................   Passed    9.87 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   9.87 sec

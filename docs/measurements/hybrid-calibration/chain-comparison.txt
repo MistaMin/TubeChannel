@@ -1,0 +1,4 @@
+default quiet: audio error -19.045 dB relative RMS, GR RMS 0.604 dB, max 0.607 dB, candidate peak 0.108519, finite yes
+maximum manual attack/release: audio error -17.090 dB relative RMS, GR RMS 1.382 dB, max 2.071 dB, candidate peak 0.350122, finite yes
+Auto bursts: audio error -31.516 dB relative RMS, GR RMS 0.166 dB, max 0.340 dB, candidate peak 0.512292, finite yes
+external sidechain, maximum manual timing: audio error -29.428 dB relative RMS, GR RMS 0.293 dB, max 0.341 dB, candidate peak 0.096019, finite yes

@@ -1,0 +1,85 @@
+{
+  "configuration": {
+    "channels": 2,
+    "sample_rate_hz": 48000,
+    "host_block_samples": 1024,
+    "oversampling": 2,
+    "tolerances": true,
+    "psu_enabled": true,
+    "peak_input_amplitude": 0.8,
+    "attack": 1,
+    "release": 1,
+    "auto": false,
+    "burst_sine_hz": 220,
+    "total_blocks": 350,
+    "excluded_warmup_blocks": 51,
+    "automation": false
+  },
+  "order": "reference, detector, detector+supply, detector+supply, detector, reference",
+  "runs": [
+    {
+      "file": "benchmark-1-d0-s0.txt",
+      "detector": 0,
+      "supply": 0,
+      "cpu_ms": 13.769,
+      "cpu_percent_of_realtime": 64.5,
+      "wall_deadline_misses": 3,
+      "measured_blocks": 299
+    },
+    {
+      "file": "benchmark-2-d1-s0.txt",
+      "detector": 1,
+      "supply": 0,
+      "cpu_ms": 11.308,
+      "cpu_percent_of_realtime": 53.0,
+      "wall_deadline_misses": 0,
+      "measured_blocks": 299
+    },
+    {
+      "file": "benchmark-3-d1-s1.txt",
+      "detector": 1,
+      "supply": 1,
+      "cpu_ms": 10.08,
+      "cpu_percent_of_realtime": 47.3,
+      "wall_deadline_misses": 1,
+      "measured_blocks": 299
+    },
+    {
+      "file": "benchmark-4-d1-s1.txt",
+      "detector": 1,
+      "supply": 1,
+      "cpu_ms": 10.073,
+      "cpu_percent_of_realtime": 47.2,
+      "wall_deadline_misses": 2,
+      "measured_blocks": 299
+    },
+    {
+      "file": "benchmark-5-d1-s0.txt",
+      "detector": 1,
+      "supply": 0,
+      "cpu_ms": 11.286,
+      "cpu_percent_of_realtime": 52.9,
+      "wall_deadline_misses": 1,
+      "measured_blocks": 299
+    },
+    {
+      "file": "benchmark-6-d0-s0.txt",
+      "detector": 0,
+      "supply": 0,
+      "cpu_ms": 13.404,
+      "cpu_percent_of_realtime": 62.8,
+      "wall_deadline_misses": 2,
+      "measured_blocks": 299
+    }
+  ],
+  "mean_cpu_ms": {
+    "reference": 13.586500000000001,
+    "detector_only": 11.297,
+    "detector_and_supply": 10.0765
+  },
+  "cpu_reduction_percent": {
+    "detector_only": 16.851286203216432,
+    "detector_and_supply": 25.83446803812609
+  },
+  "limitation": "Unfitted detector and supply alter the sound. Detector fixtures show up to 18.698 dB optical gain-reduction difference. CPU result is not sound-matched and is not a multi-instance readiness claim."
+}

@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0] [automate=0]");
+        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0] [automate=0] [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1:quality/0:circuit/1:prototype] [compactSupply=0]");
         return 2;
     }
     const std::string dir = argv[1];
@@ -25,8 +25,12 @@ int main(int argc, char** argv)
     const int block = argc > 7 ? std::atoi(argv[7]) : 256;
     const int quality = argc > 8 ? std::atoi(argv[8]) : 0;
     const bool automate = argc > 9 && std::atoi(argv[9]) != 0;
+    const double attack = argc > 10 ? std::atof(argv[10]) : 0.5;
+    const double release = argc > 11 ? std::atof(argv[11]) : 0.5;
+    const bool bursts = argc > 12 && std::atoi(argv[12]) != 0;
     constexpr int warmup = 51;
-    if (channels < 1 || channels > 2 || blocks <= warmup || block < 1 || quality < 0 || quality > 2 || !std::isfinite(amplitude))
+    if (channels < 1 || channels > 2 || blocks <= warmup || block < 1 || quality < 0 || quality > 2 || !std::isfinite(amplitude)
+        || !std::isfinite(attack) || !std::isfinite(release) || attack < 0 || attack > 1 || release < 0 || release > 1)
     {
         std::puts("invalid benchmark configuration");
         return 2;
@@ -42,13 +46,23 @@ int main(int argc, char** argv)
     cfg.quality = static_cast<tubechannel::dsp::Quality>(quality);
     cfg.tolerances = argc > 3 ? std::atoi(argv[3]) != 0 : true;
     cfg.lockstep = !std::getenv("NOLOCK");
+    const int detectorOverride = argc > 13 ? std::atoi(argv[13]) : -1;
+    if (detectorOverride < -1 || detectorOverride > 1) { std::puts("invalid detector override"); return 2; }
+    cfg.detectorMode = detectorOverride < 0 ? tc::DetectorMode::FollowQuality
+        : detectorOverride == 0 ? tc::DetectorMode::Original : tc::DetectorMode::Prototype;
+    cfg.engine.compactSupply = argc > 14 && std::atoi(argv[14]) != 0;
     tc::Chain chain;
     const auto t0 = std::chrono::steady_clock::now();
     chain.prepare(cfg, nets);
+    std::printf("engine: detector %s, supply %s\n", chain.config().engine.compactDetector ? "prototype" : "circuit",
+                chain.config().engine.compactSupply ? "prototype" : "circuit");
     std::printf("prepare %.2f s (%d ch, factor %dx, automation %s)\n", std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count(), channels, chain.factor(), automate ? "on" : "off");
     tubechannel::channel::Telemetry tel[2];
     tubechannel::channel::Telemetry* tp[2] = { &tel[0], &tel[1] };
     tubechannel::channel::ChannelControls ca, cb;
+    ca.attack = cb.attack = attack;
+    ca.release = cb.release = release;
+    std::printf("attack %.2f, release %.2f, stimulus %s\n", attack, release, bursts ? "bursts" : "continuous sine");
     tc::ChainGlobals g;
     g.psuModel = argc > 4 ? std::atoi(argv[4]) != 0 : true;
     std::vector<float> L(size_t(block), 0.f), R(size_t(block), 0.f);
@@ -59,10 +73,17 @@ int main(int argc, char** argv)
     double worst = 0, total = 0, totalCpu = 0;
     const double budget = double(block) / 48000.0;
     int late = 0;
+    int nonfinite = 0;
+    double peakOutput = 0.0;
     for (int b = 0; b < blocks; ++b)
     {
         for (int i = 0; i < block; ++i, ++ph)
-            L[size_t(i)] = R[size_t(i)] = float(amplitude * std::sin(2.0 * 3.14159265 * 220.0 * double(ph) / 48000.0));
+        {
+            const double t = double(ph) / 48000.0;
+            const double cycle = t - std::floor(t);
+            const double envelope = bursts ? std::clamp(std::min((cycle - 0.1) / 0.005, (0.4 - cycle) / 0.005), 0.0, 1.0) : 1.0;
+            L[size_t(i)] = R[size_t(i)] = float(amplitude * envelope * std::sin(2.0 * 3.14159265 * 220.0 * t));
+        }
         if (automate)
             ca.gain = 0.1 + 0.1 * std::sin(b * 0.05);
         const auto cpuStart = std::clock();
@@ -70,6 +91,10 @@ int main(int argc, char** argv)
         chain.process(audio, block, nullptr, 0, ca, cb, g, tp);
         const double t = std::chrono::duration<double>(std::chrono::steady_clock::now() - a).count();
         const double cpuTime = double(std::clock() - cpuStart) / CLOCKS_PER_SEC;
+        for (int ch = 0; ch < channels; ++ch)
+            for (int i = 0; i < block; ++i)
+                if (!std::isfinite(audio[ch][i])) ++nonfinite;
+                else peakOutput = std::max(peakOutput, std::fabs(double(audio[ch][i])));
         if (b >= warmup)
         {
             worst = std::max(worst, t);
@@ -87,4 +112,6 @@ int main(int argc, char** argv)
     std::printf("deadline %.3f ms: %d/%zu blocks missed\n", budget * 1e3, late, times.size());
     std::printf("process CPU: avg %.3f ms/block, %.1f%% of realtime (excludes time descheduled)\n",
                 totalCpu / double(times.size()) * 1e3, totalCpu / double(times.size()) / budget * 100.0);
+    std::printf("output peak %.6f, nonfinite samples %d\n", peakOutput, nonfinite);
+    return nonfinite ? 1 : 0;
 }

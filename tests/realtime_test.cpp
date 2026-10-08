@@ -50,21 +50,27 @@ int main(int argc, char** argv)
     nets.eq1 = slurp(dir + "/eq1.net"); nets.eq2 = slurp(dir + "/eq2.net"); nets.eq3 = slurp(dir + "/eq3.net");
     nets.eq4 = slurp(dir + "/eq4.net"); nets.out = slurp(dir + "/out.net"); nets.psu = slurp(dir + "/psu.net");
     int failures = 0;
-    for (int scenario = 0; scenario < 8; ++scenario)
+    for (int scenario = 0; scenario < 15; ++scenario)
     {
         tc::ChainConfig cfg;
-        cfg.channels = scenario % 2 + 1;
+        const bool qualityMode = scenario >= 12;
+        cfg.channels = qualityMode ? 2 : scenario % 2 + 1;
         cfg.maxBlock = 256;
-        cfg.sampleRate = scenario >= 6 ? 96000.0 : 48000.0;
-        cfg.quality = scenario == 4 ? tubechannel::dsp::Quality::HQ : tubechannel::dsp::Quality::Default;
+        cfg.sampleRate = scenario >= 6 && !qualityMode ? 96000.0 : 48000.0;
+        cfg.quality = qualityMode ? static_cast<tubechannel::dsp::Quality>(scenario - 12)
+            : scenario == 4 ? tubechannel::dsp::Quality::Derp : tubechannel::dsp::Quality::Default;
         cfg.linearPhase = scenario == 5;
+        cfg.detectorMode = qualityMode ? tc::DetectorMode::FollowQuality
+            : scenario >= 8 ? tc::DetectorMode::Prototype : tc::DetectorMode::Original;
+        cfg.engine.compactSupply = scenario == 10 || scenario == 11;
         tc::Chain chain;
         chain.prepare(cfg, nets);
         tubechannel::channel::Telemetry tel[2];
         tubechannel::channel::Telemetry* tp[] = { &tel[0], &tel[1] };
         tubechannel::channel::ChannelControls ca, cb;
         tc::ChainGlobals g;
-        g.dualMono = scenario == 3;
+        g.dualMono = scenario == 3 || scenario == 9;
+        g.stereoLink = scenario != 11;
         ca.instrument = scenario == 2;
         ca.limiter = scenario == 7;
         std::vector<float> L(256), R(256);
@@ -75,12 +81,20 @@ int main(int argc, char** argv)
         {
             const int count = b % 3 == 0 ? 63 : b % 3 == 1 ? 256 : 127;
             // Exercise continuous smoothing and independent stereo controls.
-            if (scenario == 3 || scenario == 6)
+            if (scenario == 3 || scenario == 6 || scenario >= 8)
             {
                 ca.gain = 0.18 + 0.15 * std::sin(b * 0.07);
                 ca.low = 0.5 + 0.2 * std::sin(b * 0.13);
                 ca.hmFreq = 0.4 + 0.3 * std::sin(b * 0.09);
                 ca.threshold = 0.3 + 0.15 * std::sin(b * 0.04);
+                if (scenario >= 8)
+                {
+                    ca.attack = 0.5 + 0.5 * std::sin(b * 0.09);
+                    ca.release = 1.0;
+                    ca.autoDetect = b >= 90;
+                    ca.compActive = b < 130 || b >= 150;
+                    ca.limiter = b >= 160;
+                }
                 cb = ca;
                 cb.gain *= 0.8;
             }

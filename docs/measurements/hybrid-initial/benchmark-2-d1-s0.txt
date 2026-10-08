@@ -1,0 +1,7 @@
+engine: detector prototype, supply circuit
+prepare 0.21 s (2 ch, factor 2x, automation off)
+attack 1.00, release 1.00, stimulus bursts
+block of 1024 @48k: avg 11.40 ms, p99 13.23 ms, worst 13.93 ms -> 53% of realtime (2.78 us per oversampled sample per channel)
+deadline 21.333 ms: 0/299 blocks missed
+process CPU: avg 11.308 ms/block, 53.0% of realtime (excludes time descheduled)
+output peak 0.832491, nonfinite samples 0
