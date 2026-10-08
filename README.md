@@ -55,6 +55,11 @@ harmonic within 0.1 dB).
 
 ## CPU
 
+Development 1.1.3 adds an exact stereo matrix-layout optimization, measured at about 3.7% lower
+processing CPU for steady Default and 2.5% during EQ automation. Its node/audio comparisons match
+the preceding solver; all hardware-model stages remain. This is a modest further saving, with
+multi-instance playback still to verify. See [measurements](docs/measurements/eq-optimization-1.1.3/README.md).
+
 Earlier all-circuit measurements on an Apple M1 Max, 2x at 48 kHz, 256-sample blocks, circuit noise and component
 tolerances on, a -18 dBFS sine (the machine was not idle, so read these as upper bounds):
 

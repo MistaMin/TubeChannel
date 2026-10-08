@@ -1,4 +1,4 @@
-# v1.1.0 optimization work
+# Optimization history and development 1.1.3
 
 The subsequent v1.1.2 redesign now permits behavioral approximations, targeting more than 80% CPU
 reduction subject to listening approval. See [efficient sound model](SOUND_MODEL_PLAN.md). The
@@ -34,7 +34,7 @@ Build `TubeChannelChainBench` in a Release configuration. Arguments are:
 
 ```text
 TubeChannelChainBench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400]
-                     [amplitude=0.126] [block=256] [quality=0] [automate=0]
+                     [amplitude=0.126] [block=256] [quality=0] [automate=0:off/1:gain/2:EQ]
                      [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1] [compactSupply=0]
 ```
 
@@ -61,7 +61,7 @@ changing their circuits. Multi-instance host playback remains to be verified.
 
 ## Next profiling priorities
 
-An instrumented stereo Default run identified the detector as the largest individual stage (about
+Before the reduced detector was selected for Default, an instrumented stereo run identified the detector as the largest individual stage (about
 28% of measured stage time), followed by the tube and compressor audio circuits (about 16% each)
 and the microphone circuit (about 14%). Timing instrumentation and scheduling affect these figures;
 they identify priorities rather than predict an exact speedup.
@@ -86,3 +86,24 @@ excursions and unnecessary solve restarts. The new `detector_guard` test compare
 much tighter solves of the same equations and checks overload convergence and stereo agreement.
 See the detector investigation for numerical differences and validation limits. This addresses
 expensive recovery spikes; multi-instance host performance still needs measurement.
+
+
+## 1.1.3 paired linear solves
+
+Profile Default with `TubeChannelChainProfile`; profiling is a separate target and does not enable
+per-sample timers in the plugin. Both scalar and stereo profiles now identify all eleven stages plus
+control/supply and meter/load work. Warm-up is excluded from the chain profile.
+
+The retained EQ and other linear blocks use four-output inverse tiles for paired stereo. This cuts
+intermediate memory traffic and avoids zero padding arithmetic while maintaining every node voltage,
+capacitor/inductor/op-amp history and the original overload solver. Inverse storage is allocated during
+preparation and refreshed in place when parameters change. No fitted EQ profile is promoted yet.
+
+`REFERENCE_LINEAR=1` selects the preceding paired inverse layout in the offline chain benchmark;
+`NOLOCK=1` selects the scalar path. Neither is a plugin parameter. Automation mode 2 exercises all
+EQ levels/frequencies, bypass, range and bandwidth changes; mode 1 retains the original gain test.
+
+The measured further reductions are 3.7% steady and 2.5% under continuous EQ automation. These are
+relative process CPU savings from the 1.1.2 Default backend, not percentage points of host CPU or
+an 80% reduction. The new profile identifies retained microphone, tube and compressor audio solves
+as the largest remaining combined cost. See [raw results and validation](measurements/eq-optimization-1.1.3/README.md).

@@ -1,0 +1,8 @@
+paired linear layout: tiled
+engine: detector prototype, supply circuit
+prepare 0.21 s (2 ch, factor 2x, automation on)
+attack 1.00, release 1.00, stimulus continuous sine
+block of 1024 @48k: avg 13.01 ms, p99 29.56 ms, worst 74.70 ms -> 61% of realtime (3.18 us per oversampled sample per channel)
+deadline 21.333 ms: 4/299 blocks missed
+process CPU: avg 12.545 ms/block, 58.8% of realtime (excludes time descheduled)
+output peak 1.083923, nonfinite samples 0

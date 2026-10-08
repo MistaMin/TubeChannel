@@ -1,0 +1,3 @@
+VST3: codesign --verify --strict passed (local ad-hoc bundle)
+AU: codesign --verify --strict passed (local ad-hoc bundle)
+Standalone: codesign --verify --strict passed (local ad-hoc bundle)

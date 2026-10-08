@@ -30,6 +30,7 @@ struct ChainConfig
     bool linearPhase = false;
     bool tolerances = true;
     int seed = 1;
+    bool tiledLinear = true;             // offline comparison can select the previous inverse layout
     bool lockstep = true;                // stereo: both channels share SIMD lanes in the circuit solves
     tubechannel::channel::PowerSupplySettings psu;
     DetectorMode detectorMode = DetectorMode::FollowQuality;
@@ -68,7 +69,7 @@ public:
             model[ch]->prepare(c.sampleRate * os[ch].factor(), nets, unsigned(c.seed * 2 + ch + 1), c.tolerances, c.psu, cfg.engine);
         }
         if (nch == 2)
-            tubechannel::channel::ChannelModel::linkPair(*model[0], *model[1]);
+            tubechannel::channel::ChannelModel::linkPair(*model[0], *model[1], c.tiledLinear);
         const int cap = c.maxBlock * os[0].factor();
         for (int ch = 0; ch < 2; ++ch)
         {
@@ -86,6 +87,20 @@ public:
     int latency() const { return os[0].latencySamples(); }
     int channels() const { return nch; }
     const ChainConfig& config() const { return cfg; }
+
+#ifdef TC_PROFILE
+    void resetProfile()
+    {
+        for (int ch = 0; ch < nch; ++ch)
+            for (auto& t : model[ch]->profile) t = 0.0;
+    }
+    double stageTime(int slot) const
+    {
+        double t = 0.0;
+        for (int ch = 0; ch < nch; ++ch) t += model[ch]->profile[slot];
+        return t;
+    }
+#endif
 
     // audio: in place. sc: optional sidechain channels (may be null / fewer than nch).
     void process(float* const* audio, int n, const float* const* sc, int nsc, const tubechannel::channel::ChannelControls& ctrlA,

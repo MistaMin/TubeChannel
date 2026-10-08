@@ -24,12 +24,6 @@
 #include "PowerSupply.h"
 #include "../Hybrid/EngineConfig.h"
 
-#ifdef TC_PROFILE
-#define TC_T(slot) { const auto now_ = std::chrono::steady_clock::now(); profile[slot] += std::chrono::duration<double>(now_ - tprev).count(); tprev = now_; }
-#else
-#define TC_T(slot)
-#endif
-
 namespace tubechannel::channel
 {
 // small, cheap, roughly Gaussian white noise (sum of four uniforms)
@@ -156,9 +150,13 @@ public:
 
     double process(double vin, double vsc)
     {
+#ifdef TC_PROFILE
+        const auto start = std::chrono::steady_clock::now();
+#endif
         beginSample(vin, vsc);
 #ifdef TC_PROFILE
         auto tprev = std::chrono::steady_clock::now();
+        profile[11] += std::chrono::duration<double>(tprev - start).count();
         for (int k = 0; k < kStages; ++k)
         {
             if (auto* b = stage(k))
@@ -172,14 +170,29 @@ public:
             if (auto* b = stage(k))
                 b->step();
 #endif
+#ifdef TC_PROFILE
+        const auto beforeEnd = std::chrono::steady_clock::now();
+        const double y = endSample();
+        profile[12] += std::chrono::duration<double>(std::chrono::steady_clock::now() - beforeEnd).count();
+        return y;
+#else
         return endSample();
+#endif
     }
 
     // Two channels in lockstep. The stage blocks must have been linked with linkPair().
     static void processPair(ChannelModel& A, ChannelModel& B, double vinA, double vscA, double vinB, double vscB, double& yA, double& yB)
     {
+#ifdef TC_PROFILE
+        auto tprev = std::chrono::steady_clock::now();
+#endif
         A.beginSample(vinA, vscA);
         B.beginSample(vinB, vscB);
+#ifdef TC_PROFILE
+        auto now = std::chrono::steady_clock::now();
+        A.profile[11] += std::chrono::duration<double>(now - tprev).count();
+        tprev = now;
+#endif
         for (int k = 0; k < kStages; ++k)
         {
             auto* a = A.stage(k);
@@ -191,16 +204,24 @@ public:
                 if (a != nullptr) a->step();
                 if (b != nullptr) b->step();
             }
+#ifdef TC_PROFILE
+            now = std::chrono::steady_clock::now();
+            A.profile[k] += std::chrono::duration<double>(now - tprev).count();
+            tprev = now;
+#endif
         }
         yA = A.endSample();
         yB = B.endSample();
+#ifdef TC_PROFILE
+        A.profile[12] += std::chrono::duration<double>(std::chrono::steady_clock::now() - tprev).count();
+#endif
     }
 
     // Build the paired solvers for two models prepared from the same netlists.
-    static void linkPair(ChannelModel& A, ChannelModel& B)
+    static void linkPair(ChannelModel& A, ChannelModel& B, bool tiledLinear = true)
     {
         for (int k = 0; k < kStages; ++k)
-            A.pairs[size_t(k)] = std::make_unique<circuit::CircuitPair>(A.stageBlock(k).c, B.stageBlock(k).c);
+            A.pairs[size_t(k)] = std::make_unique<circuit::CircuitPair>(A.stageBlock(k).c, B.stageBlock(k).c, tiledLinear);
     }
 
 private:
@@ -417,7 +438,9 @@ public:
     void setMains(double hz, double scale) { psu.settings.mainsHz = hz; psu.settings.mainsScale = scale; }
 
 #ifdef TC_PROFILE
-    double profile[16] = {};
+    // Slots 0..10 follow the circuit stages; 11 is beginSample, 12 is endSample.
+    // Paired processing records both lanes in A, so summing channel profiles doesn't double count.
+    double profile[13] = {};
 #endif
     ChannelControls controls;
     Vactrol vactrol;

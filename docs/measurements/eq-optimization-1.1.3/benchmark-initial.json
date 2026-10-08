@@ -1,0 +1,32 @@
+[
+  {
+    "file": "benchmark-0-reference.txt",
+    "reference": true,
+    "cpu_ms": 10.984
+  },
+  {
+    "file": "benchmark-1-tiled.txt",
+    "reference": false,
+    "cpu_ms": 10.953
+  },
+  {
+    "file": "benchmark-2-tiled.txt",
+    "reference": false,
+    "cpu_ms": 10.761
+  },
+  {
+    "file": "benchmark-3-reference.txt",
+    "reference": true,
+    "cpu_ms": 11.151
+  },
+  {
+    "file": "benchmark-4-reference.txt",
+    "reference": true,
+    "cpu_ms": 10.922
+  },
+  {
+    "file": "benchmark-5-tiled.txt",
+    "reference": false,
+    "cpu_ms": 10.493
+  }
+]

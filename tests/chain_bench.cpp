@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0] [automate=0] [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1:quality/0:circuit/1:prototype] [compactSupply=0]");
+        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0] [automate=0:off/1:gain/2:EQ] [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1:quality/0:circuit/1:prototype] [compactSupply=0]");
         return 2;
     }
     const std::string dir = argv[1];
@@ -24,12 +24,12 @@ int main(int argc, char** argv)
     const double amplitude = argc > 6 ? std::atof(argv[6]) : 0.126;
     const int block = argc > 7 ? std::atoi(argv[7]) : 256;
     const int quality = argc > 8 ? std::atoi(argv[8]) : 0;
-    const bool automate = argc > 9 && std::atoi(argv[9]) != 0;
+    const int automate = argc > 9 ? std::atoi(argv[9]) : 0;
     const double attack = argc > 10 ? std::atof(argv[10]) : 0.5;
     const double release = argc > 11 ? std::atof(argv[11]) : 0.5;
     const bool bursts = argc > 12 && std::atoi(argv[12]) != 0;
     constexpr int warmup = 51;
-    if (channels < 1 || channels > 2 || blocks <= warmup || block < 1 || quality < 0 || quality > 2 || !std::isfinite(amplitude)
+    if (channels < 1 || channels > 2 || blocks <= warmup || block < 1 || quality < 0 || quality > 2 || automate < 0 || automate > 2 || !std::isfinite(amplitude)
         || !std::isfinite(attack) || !std::isfinite(release) || attack < 0 || attack > 1 || release < 0 || release > 1)
     {
         std::puts("invalid benchmark configuration");
@@ -45,7 +45,9 @@ int main(int argc, char** argv)
     cfg.maxBlock = block;
     cfg.quality = static_cast<tubechannel::dsp::Quality>(quality);
     cfg.tolerances = argc > 3 ? std::atoi(argv[3]) != 0 : true;
+    cfg.tiledLinear = !std::getenv("REFERENCE_LINEAR");
     cfg.lockstep = !std::getenv("NOLOCK");
+    std::printf("paired linear layout: %s\n", cfg.tiledLinear ? "tiled" : "reference columns");
     const int detectorOverride = argc > 13 ? std::atoi(argv[13]) : -1;
     if (detectorOverride < -1 || detectorOverride > 1) { std::puts("invalid detector override"); return 2; }
     cfg.detectorMode = detectorOverride < 0 ? tc::DetectorMode::FollowQuality
@@ -84,8 +86,20 @@ int main(int argc, char** argv)
             const double envelope = bursts ? std::clamp(std::min((cycle - 0.1) / 0.005, (0.4 - cycle) / 0.005), 0.0, 1.0) : 1.0;
             L[size_t(i)] = R[size_t(i)] = float(amplitude * envelope * std::sin(2.0 * 3.14159265 * 220.0 * t));
         }
-        if (automate)
+        if (automate == 1)
             ca.gain = 0.1 + 0.1 * std::sin(b * 0.05);
+        if (automate == 2)
+        {
+            ca.low = ca.hmLevel = 0.5 + 0.45 * std::sin(b * 0.07);
+            ca.high = ca.lmLevel = 1.0 - ca.low;
+            ca.hmFreq = ca.lmFreq = 0.5 + 0.45 * std::sin(b * 0.03);
+            ca.eqActive = (b / 20) % 2 != 0;
+            ca.hmNarrow = ca.lmNarrow = (b / 30) % 2 != 0;
+            ca.hmX10 = ca.lmX10 = (b / 40) % 2 != 0;
+        }
+#ifdef TC_PROFILE
+        if (b == warmup) chain.resetProfile();
+#endif
         const auto cpuStart = std::clock();
         const auto a = std::chrono::steady_clock::now();
         chain.process(audio, block, nullptr, 0, ca, cb, g, tp);
@@ -113,5 +127,13 @@ int main(int argc, char** argv)
     std::printf("process CPU: avg %.3f ms/block, %.1f%% of realtime (excludes time descheduled)\n",
                 totalCpu / double(times.size()) * 1e3, totalCpu / double(times.size()) / budget * 100.0);
     std::printf("output peak %.6f, nonfinite samples %d\n", peakOutput, nonfinite);
+#ifdef TC_PROFILE
+    const char* names[] = { "mic", "instrument", "tube", "preout", "compressor audio", "detector", "opto + eq1", "eq2", "eq3", "eq4", "output", "controls + supply", "metering + loads" };
+    double measured = 0.0;
+    for (int i = 0; i < 13; ++i) measured += chain.stageTime(i);
+    std::puts("Instrumented stage times (timers affect cost; excludes chain oversampling/scaling):");
+    for (int i = 0; i < 13; ++i)
+        std::printf("  %-20s %.3f ms/block %5.1f%%\n", names[i], 1000.0 * chain.stageTime(i) / times.size(), 100.0 * chain.stageTime(i) / measured);
+#endif
     return nonfinite ? 1 : 0;
 }

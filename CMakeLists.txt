@@ -58,6 +58,14 @@ add_test(NAME quality_modes COMMAND TubeChannelQualityTest ${CMAKE_CURRENT_SOURC
 add_executable(TubeChannelChainBench tests/chain_bench.cpp)
 target_include_directories(TubeChannelChainBench PRIVATE Source)
 
+add_executable(TubeChannelChainProfile tests/chain_bench.cpp)
+target_include_directories(TubeChannelChainProfile PRIVATE Source)
+target_compile_definitions(TubeChannelChainProfile PRIVATE TC_PROFILE=1)
+
+add_executable(TubeChannelLinearLayoutTest tests/linear_layout_test.cpp)
+target_include_directories(TubeChannelLinearLayoutTest PRIVATE Source)
+add_test(NAME linear_layout COMMAND TubeChannelLinearLayoutTest ${CMAKE_CURRENT_SOURCE_DIR}/Netlists)
+
 add_executable(TubeChannelHybridModulesTest tests/hybrid_modules_test.cpp)
 target_include_directories(TubeChannelHybridModulesTest PRIVATE Source)
 add_test(NAME hybrid_modules COMMAND TubeChannelHybridModulesTest)
@@ -193,6 +201,17 @@ target_link_libraries(TubeChannel
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags
 )
+
+# Refresh local ad-hoc bundle seals after relinking and resource generation. JUCE writes VST3
+# moduleinfo.json after its initial check; Developer ID signing stays in the installer flow.
+if(APPLE)
+    foreach(local_bundle TubeChannel_VST3 TubeChannel_AU TubeChannel_Standalone)
+        add_custom_command(TARGET ${local_bundle} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} "-Dsrc=$<TARGET_BUNDLE_DIR:${local_bundle}>"
+                -P "${JUCE_SOURCE_DIR}/extras/Build/CMake/checkBundleSigning.cmake"
+            VERBATIM)
+    endforeach()
+endif()
 
 if(TUBECHANNEL_BUILD_CLAP)
     clap_juce_extensions_plugin(TARGET TubeChannel

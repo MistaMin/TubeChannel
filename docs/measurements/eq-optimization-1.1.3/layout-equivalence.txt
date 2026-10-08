@@ -1,0 +1,12 @@
+44.1 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+48.0 kHz tolerances off: 3178496 node comparisons, worst 0 V, 0 failures
+88.2 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+96.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+192.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+384.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+chain 48 kHz quality 0: residual -300.00 dB, 0 failures
+chain 48 kHz quality 1: residual -300.00 dB, 0 failures
+chain 48 kHz quality 2: residual -300.00 dB, 0 failures
+chain 96 kHz quality 0: residual -300.00 dB, 0 failures
+chain 96 kHz quality 1: residual -300.00 dB, 0 failures
+chain 96 kHz quality 2: residual -300.00 dB, 0 failures

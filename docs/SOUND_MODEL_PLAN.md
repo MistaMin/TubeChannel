@@ -1,4 +1,4 @@
-# v1.1.2 efficient sound model
+# Efficient sound model — development 1.1.3
 
 ## Scope and acceptance
 
@@ -14,7 +14,7 @@ target, not an acceptance requirement that overrides retained circuits. No addit
 threads are part of this redesign. Saved parameter IDs, automation, gain staging, sidechain routing
 and stereo modes must remain compatible. Keep the original circuit engine as the comparison reference.
 
-VERSION reads 1.1.2. This is the development version for this work, not a newly released binary.
+VERSION reads 1.1.3. The 1.1.2 detector/quality checkpoint is committed; 1.1.3 adds an exact paired linear-solver optimization. This is the development version for this work, not a newly released binary.
 Default now uses the reduced detector; HQ and Derp preserve the original detector at 2x and 4x
 respectively at 44.1/48 kHz. Supply remains a separate comparison option; EQ/output modules accept fitted profiles but are not yet substituted
 into the channel. See [HYBRID_ENGINE.md](HYBRID_ENGINE.md) for implementation and validation status.

@@ -1,4 +1,4 @@
-# Hybrid engine development — 1.1.2
+# Hybrid engine development — 1.1.3
 
 ## Structure
 
@@ -123,7 +123,7 @@ missed. See [initial measurements](measurements/hybrid-initial/README.md) for ra
 
 ## Repeated build/test/calibration results
 
-The latest cycle built v1.1.2 standard VST3/AU/standalone and a separate detector-only prototype VST3.
+The detector calibration cycle built v1.1.2 standard VST3/AU/standalone and a separate detector-only prototype VST3.
 All 10 native checks passed, and both builds passed the processor and GUI checks. Eight detector fits
 were explored, including a two-path scalar circuit with a shared timing capacitor. Its fresh long
 recovery checks still differ by up to 7.50 dB in optical gain reduction. Complete-channel manual
@@ -135,3 +135,18 @@ Normal-level default EQ/output filter fits pass independent waveform checks, but
 one-pole supply fits also miss high-rail dynamics. EQ/output/supply replacements remain outside the standard
 engine. The user subsequently selected the prototype detector for Default, with the original in HQ/Derp. See [calibration measurements](measurements/hybrid-calibration/README.md) for settings,
 profiles, failed fidelity checks, Plugin Doctor exports and remaining domains to calibrate.
+
+
+## 1.1.3 matrix optimization
+
+The paired linear stages now use a four-output tiled inverse. Outputs stay in registers through the
+matrix product; zero padding columns and extra output rows are omitted. The original passive,
+op-amp and protection-device equations, physical histories and nonlinear fallback remain in use.
+This applies to stereo linear solves in all quality modes; mono retains the scalar solver. The fitted
+EQ/output profiles remain offline modules until their control/rate/overload domain is calibrated.
+
+The new Default profile puts the detector near 1% of instrumented stage time, four EQ stages near
+15.5%, and microphone/tube/compressor audio together near 62%. These timings include timer overhead
+and exclude host scaling/oversampling. The next major savings therefore require work on the retained
+nonlinear solvers as well as the EQ. See [1.1.3 measurements](measurements/eq-optimization-1.1.3/README.md)
+for matching checks, actual CPU reductions and reproduction settings.

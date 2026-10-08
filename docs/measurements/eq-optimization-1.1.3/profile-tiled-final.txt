@@ -1,0 +1,22 @@
+paired linear layout: tiled
+engine: detector prototype, supply circuit
+prepare 0.20 s (2 ch, factor 2x, automation off)
+attack 0.50, release 0.50, stimulus continuous sine
+block of 1024 @48k: avg 11.48 ms, p99 12.14 ms, worst 12.34 ms -> 54% of realtime (2.80 us per oversampled sample per channel)
+deadline 21.333 ms: 0/129 blocks missed
+process CPU: avg 11.344 ms/block, 53.2% of realtime (excludes time descheduled)
+output peak 0.132553, nonfinite samples 0
+Instrumented stage times (timers affect cost; excludes chain oversampling/scaling):
+  mic                  2.330 ms/block  20.5%
+  instrument           0.449 ms/block   3.9%
+  tube                 2.467 ms/block  21.7%
+  preout               0.205 ms/block   1.8%
+  compressor audio     2.356 ms/block  20.7%
+  detector             0.118 ms/block   1.0%
+  opto + eq1           0.312 ms/block   2.7%
+  eq2                  0.419 ms/block   3.7%
+  eq3                  0.465 ms/block   4.1%
+  eq4                  0.487 ms/block   4.3%
+  output               0.459 ms/block   4.0%
+  controls + supply    1.207 ms/block  10.6%
+  metering + loads     0.096 ms/block   0.8%

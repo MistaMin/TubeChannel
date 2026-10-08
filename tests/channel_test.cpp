@@ -89,6 +89,9 @@ int main(int argc, char** argv)
 
     // timing
     const int N = int(fs * 2.0);
+#ifdef TC_PROFILE
+    for (auto& t : m.profile) t = 0.0;
+#endif
     const auto t1 = std::chrono::steady_clock::now();
     for (int n = 0; n < N; ++n)
         m.process((std::getenv("AMP") ? std::atof(std::getenv("AMP")) : 0.003) * std::sin(2.0 * 3.14159265358979 * 1000.0 * double(n) / fs), 0.0);
@@ -96,10 +99,10 @@ int main(int argc, char** argv)
     std::printf("\nspeed: %.2f us per oversampled sample = %.2fx realtime for one channel at %.0f kHz\n", el / N * 1e6, 2.0 / el, fs / 1000.0);
 #ifdef TC_PROFILE
     {
-        const char* names[] = { "control tick", "supply + rails", "mic (step+noise)", "inst", "tube", "preout", "comp", "opto + ldr", "eq1-4 + out", "loads" };
+        const char* names[] = { "mic", "instrument", "tube", "preout", "compressor audio", "detector", "opto + eq1", "eq2", "eq3", "eq4", "output", "controls + supply", "metering + loads" };
         double tot = 0;
-        for (int i = 0; i < 10; ++i) tot += m.profile[i];
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 13; ++i) tot += m.profile[i];
+        for (int i = 0; i < 13; ++i)
             std::printf("  %-18s %6.2f us/sample  (%4.1f%%)\n", names[i], m.profile[i] / (N + 0.0) * 1e6, 100.0 * m.profile[i] / tot);
     }
 #endif

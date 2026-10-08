@@ -15,9 +15,10 @@ namespace tubechannel::circuit
 class CircuitPair
 {
 public:
-    CircuitPair(Circuit& a, Circuit& b) : c { &a, &b }
+    CircuitPair(Circuit& a, Circuit& b, bool tiledLinear = true) : c { &a, &b }, tiled(tiledLinear)
     {
         assert(a.lu.size() == b.lu.size() && a.lu.nnz() == b.lu.nnz());
+        assert(a.rhsIdx == b.rhsIdx);
         for (const auto& [r, col] : a.lu.entryList())
             lu2.add(r, col);
         lu2.analyze();
@@ -25,7 +26,7 @@ public:
         vals2.assign(size_t(lu2.nnz()), V2(0.0));
         rhs2.assign(size_t(n), V2(0.0));
         x2.assign(size_t(n), V2(0.0));
-        minv2.assign(a.minvCols.size(), V2(0.0));
+        minv2.assign(tiled ? ((size_t(n) + 3) & ~size_t(3)) * a.invCols : a.minvCols.size(), V2(0.0));
         packInverse();
     }
 
@@ -65,6 +66,78 @@ private:
         a.buildFastRhs();
         b.buildFastRhs();
         packInverse();
+        if (tiled)
+            applyTiledInverse(a, b);
+        else
+            applyColumnInverse(a, b);
+        if (!a.checkOpampsLinear() || !b.checkOpampsLinear())
+        {
+            a.x = a.xPrev;
+            b.x = b.xPrev;
+            return false;
+        }
+        ++a.iters;
+        ++b.iters;
+        a.updateHistories();
+        b.updateHistories();
+        return true;
+    }
+
+    // Keep four output nodes in registers through the complete product. Each four-term sum has
+    // the same grouping as the column layout; all nodes and physical histories are still solved.
+    template<int Rows>
+    void applyInverseTile(const V2* m, int first, Circuit& a, Circuit& b)
+    {
+        V2 y[Rows];
+        const double* ra = a.rhsLocal.data();
+        const double* rb = b.rhsLocal.data();
+        const size_t full = a.rhsIdx.size() & ~size_t(3);
+        for (size_t j = 0; j < full; j += 4, m += 16)
+        {
+            const V2 r0(ra[j], rb[j]), r1(ra[j + 1], rb[j + 1]), r2(ra[j + 2], rb[j + 2]), r3(ra[j + 3], rb[j + 3]);
+            for (int k = 0; k < Rows; ++k)
+                y[k] += m[k] * r0 + m[4 + k] * r1 + m[8 + k] * r2 + m[12 + k] * r3;
+        }
+        // Padding columns are identically zero. Preserve the grouping of the live terms while
+        // omitting those multiplications, and don't solve padded output rows in the last tile.
+        const size_t tail = a.rhsIdx.size() - full;
+        if (tail != 0)
+        {
+            const V2 r0(ra[full], rb[full]);
+            const V2 r1 = tail > 1 ? V2(ra[full + 1], rb[full + 1]) : V2(0.0);
+            const V2 r2 = tail > 2 ? V2(ra[full + 2], rb[full + 2]) : V2(0.0);
+            for (int k = 0; k < Rows; ++k)
+            {
+                V2 term = m[k] * r0;
+                if (tail > 1) term += m[4 + k] * r1;
+                if (tail > 2) term += m[8 + k] * r2;
+                y[k] += term;
+            }
+        }
+        for (int k = 0; k < Rows; ++k)
+        {
+            a.x[size_t(first + k)] = y[k].lane0();
+            b.x[size_t(first + k)] = y[k].lane1();
+        }
+    }
+
+    void applyTiledInverse(Circuit& a, Circuit& b)
+    {
+        const V2* m = minv2.data();
+        int i = 0;
+        for (; i + 3 < n; i += 4, m += 4 * a.invCols)
+            applyInverseTile<4>(m, i, a, b);
+        switch (n - i)
+        {
+            case 1: applyInverseTile<1>(m, i, a, b); break;
+            case 2: applyInverseTile<2>(m, i, a, b); break;
+            case 3: applyInverseTile<3>(m, i, a, b); break;
+            default: break;
+        }
+    }
+
+    void applyColumnInverse(Circuit& a, Circuit& b)
+    {
         const size_t cols = a.invCols;
         const V2* m = minv2.data();
         V2* xo = x2.data();
@@ -82,17 +155,6 @@ private:
                 xo[i] += m[i] * r0 + c1[i] * r1 + c2[i] * r2 + c3[i] * r3;
         }
         unpack(xo, a.x, b.x);
-        if (!a.checkOpampsLinear() || !b.checkOpampsLinear())
-        {
-            a.x = a.xPrev;
-            b.x = b.xPrev;
-            return false;
-        }
-        ++a.iters;
-        ++b.iters;
-        a.updateHistories();
-        b.updateHistories();
-        return true;
     }
 
     void packInverse()
@@ -101,8 +163,20 @@ private:
         Circuit& b = *c[1];
         if (!minv2.empty() && verA == a.invVersion && verB == b.invVersion)
             return;
-        for (size_t i = 0; i < minv2.size(); ++i)
-            minv2[i] = V2(a.minvCols[i], b.minvCols[i]);
+        if (tiled)
+        {
+            size_t dst = 0;
+            for (int i = 0; i < n; i += 4)
+                for (size_t j = 0; j < a.invCols; ++j)
+                    for (int k = 0; k < 4; ++k, ++dst)
+                    {
+                        const size_t src = j * size_t(n) + size_t(i + k);
+                        minv2[dst] = i + k < n ? V2(a.minvCols[src], b.minvCols[src]) : V2(0.0);
+                    }
+        }
+        else
+            for (size_t i = 0; i < minv2.size(); ++i)
+                minv2[i] = V2(a.minvCols[i], b.minvCols[i]);
         verA = a.invVersion;
         verB = b.invVersion;
     }
@@ -257,6 +331,7 @@ private:
 
     Circuit* c[2];
     SparseLU2 lu2;
+    bool tiled = true;
     int n = 0;
     std::vector<V2> vals2, rhs2, x2, minv2;
     unsigned long verA = 0, verB = 0;

@@ -1,0 +1,32 @@
+engine: detector prototype, supply circuit
+prepare 0.20 s (2 ch, factor 2x, automation off)
+attack 0.50, release 0.50, stimulus continuous sine
+block of 1024 @48k: avg 11.41 ms, p99 15.39 ms, worst 17.55 ms -> 53% of realtime (2.78 us per oversampled sample per channel)
+deadline 21.333 ms: 0/129 blocks missed
+process CPU: avg 11.221 ms/block, 52.6% of realtime (excludes time descheduled)
+output peak 0.132553, nonfinite samples 0
+  stage: 40 nodes, 23 active / 24 RHS columns, 0/240 nonzero four-column groups
+  stage: 15 nodes, 12 active / 12 RHS columns, 45/45 nonzero four-column groups
+  stage: 33 nodes, 21 active / 24 RHS columns, 0/198 nonzero four-column groups
+  stage: 7 nodes, 6 active / 8 RHS columns, 14/14 nonzero four-column groups
+  stage: 36 nodes, 28 active / 28 RHS columns, 0/252 nonzero four-column groups
+  stage: 35 nodes, 8 active / 8 RHS columns, 0/70 nonzero four-column groups
+  stage: 8 nodes, 6 active / 8 RHS columns, 16/16 nonzero four-column groups
+  stage: 14 nodes, 11 active / 12 RHS columns, 42/42 nonzero four-column groups
+  stage: 18 nodes, 11 active / 12 RHS columns, 54/54 nonzero four-column groups
+  stage: 18 nodes, 11 active / 12 RHS columns, 54/54 nonzero four-column groups
+  stage: 17 nodes, 12 active / 12 RHS columns, 51/51 nonzero four-column groups
+Instrumented stage times (timers affect cost; excludes chain oversampling/scaling):
+  mic                  2.313 ms/block  20.5%
+  instrument           0.435 ms/block   3.9%
+  tube                 2.429 ms/block  21.5%
+  preout               0.233 ms/block   2.1%
+  compressor audio     2.405 ms/block  21.3%
+  detector             0.120 ms/block   1.1%
+  opto + eq1           0.320 ms/block   2.8%
+  eq2                  0.405 ms/block   3.6%
+  eq3                  0.448 ms/block   4.0%
+  eq4                  0.457 ms/block   4.0%
+  output               0.460 ms/block   4.1%
+  controls + supply    1.180 ms/block  10.4%
+  metering + loads     0.096 ms/block   0.8%
