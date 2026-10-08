@@ -114,7 +114,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addBool(l, id::tolerances, "Component tolerances", true);
     addFloat(l, id::seed, "Unit seed", 0.f, 99.f, 1.f, [](float v, int) { return juce::String(juce::roundToInt(v)); });
     addBool(l, id::noise, "Circuit noise", true);
-    addBool(l, id::psuModel, "Power supply model", true);
+    addBool(l, id::psuModel, "Power supply model", false);
 
     addChannel(l, true);
     return l;
