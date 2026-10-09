@@ -1,0 +1,17 @@
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+-- AAX SDK not used; building VST3;Standalone;LV2;AU
+-- Building CLAP with CLAP_CXX_STANDARD=20
+-- CLAP version: 1.2.7
+-- Creating CLAP TubeChannel_CLAP from TubeChannel
+-- Setting Misbehaviour handler level to 'Ignore'
+-- Setting Checking handler level to 'Minimal'
+-- Setting event resolution to 0 samples (no sample-accurate automation)
+-- Setting "Always split block" to OFF
+-- Setting "Use JUCE parameter ranges" to OFF
+-- Configuring done (9.8s)
+-- Generating done (0.6s)
+-- Build files have been written to: /Volumes/Developer/Developer/TubeChannel/build/universal

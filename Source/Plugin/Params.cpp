@@ -29,9 +29,9 @@ void addFloat(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const
     layout.add(std::make_unique<AudioParameterFloat>(ParameterID { idStr, kVersion }, name, NormalisableRange<float>(lo, hi), def, a));
 }
 
-void addBool(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name, bool def)
+void addBool(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name, bool def, int versionHint = kVersion)
 {
-    layout.add(std::make_unique<AudioParameterBool>(ParameterID { idStr, kVersion }, name, def));
+    layout.add(std::make_unique<AudioParameterBool>(ParameterID { idStr, versionHint }, name, def));
 }
 
 void addChoice(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name,
@@ -105,7 +105,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addChoice(l, id::alignment, "0 VU level", { "-14 dBFS", "-16 dBFS", "-18 dBFS", "-20 dBFS", "-22 dBFS" }, 2);
     addFloat(l, id::micZ, "Mic source impedance", 50.f, 600.f, 150.f, [](float v, int) { return fmt(v, 0, "ohm"); });
     addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) { return fmt(v / 1000.0, 1, "kohm"); });
-    addChoice(l, id::quality, "Quality", { "Default", "HQ", "Derp mode" }, 0);
+    addChoice(l, id::quality, "Quality", { "Circuit", "HQ", "HQ (legacy Derp)" }, 0);
     addBool(l, id::linearPhase, "Linear phase (+L)", false);
     addBool(l, id::stereoLink, "Stereo link", true);
     addBool(l, id::dualMono, "Dual mono", false);
@@ -117,6 +117,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addBool(l, id::psuModel, "Power supply model", false);
 
     addChannel(l, true);
+    // Append, with a new AU version hint, to preserve every released parameter index.
+    addBool(l, id::eco, "Eco mode", true, 2);
+    l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { id::oversampling, 2 },
+        "Oversampling", juce::StringArray { "Legacy", "Off (1x)", "2x", "4x", "8x (Derp)" }, 1));
     return l;
 }
 
@@ -161,6 +165,8 @@ ParameterValues::ParameterValues(const juce::AudioProcessorValueTreeState& s, bo
     micZ = s.getRawParameterValue(id::micZ);
     instZ = s.getRawParameterValue(id::instZ);
     quality = s.getRawParameterValue(id::quality);
+    eco = s.getRawParameterValue(id::eco);
+    oversampling = s.getRawParameterValue(id::oversampling);
     linearPhase = s.getRawParameterValue(id::linearPhase);
     stereoLink = s.getRawParameterValue(id::stereoLink);
     dualMono = s.getRawParameterValue(id::dualMono);

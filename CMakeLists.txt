@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Single source of truth for the plugin version: VERSION (MAJOR.MINOR.PATCH).
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION")
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" TUBECHANNEL_VERSION_STR)
 string(STRIP "${TUBECHANNEL_VERSION_STR}" TUBECHANNEL_VERSION_STR)
 # Release builds for macOS: -DTUBECHANNEL_UNIVERSAL=ON gives an arm64 + x86_64 binary. Off by default
@@ -115,6 +116,20 @@ add_executable(TubeChannelDetectorCapture tests/detector_capture.cpp)
 target_include_directories(TubeChannelDetectorCapture PRIVATE Source)
 target_compile_definitions(TubeChannelDetectorCapture PRIVATE TC_DETECTOR_EXPERIMENT=1)
 
+# Eco measurements and regression tools use the retained circuit as an offline reference.
+add_executable(TubeChannelEcoTest tests/eco_test.cpp)
+target_include_directories(TubeChannelEcoTest PRIVATE Source)
+add_test(NAME eco COMMAND TubeChannelEcoTest)
+
+add_executable(TubeChannelEcoListen tests/eco_listen.cpp)
+target_include_directories(TubeChannelEcoListen PRIVATE Source)
+
+add_executable(TubeChannelEcoCompare tests/eco_compare.cpp)
+target_include_directories(TubeChannelEcoCompare PRIVATE Source)
+
+add_executable(TubeChannelEcoCapture tests/eco_capture.cpp)
+target_include_directories(TubeChannelEcoCapture PRIVATE Source)
+
 # --- JUCE ------------------------------------------------------------------------------------------
 option(TUBECHANNEL_BUILD_PLUGIN "Build the JUCE plugin targets" ON)
 option(TUBECHANNEL_EXPERIMENTAL_SUPPLY "Use the unfitted compact supply in comparison builds" OFF)
@@ -130,7 +145,7 @@ endif()
 FetchContent_Declare(
     JUCE
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG        8.0.4
+    GIT_TAG        9.0.3
 )
 FetchContent_MakeAvailable(JUCE)
 

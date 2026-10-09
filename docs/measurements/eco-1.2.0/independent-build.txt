@@ -1,0 +1,711 @@
+[0/2] Re-checking globbed directories...
+[1/14] Building VST3 manifest helper for TubeChannel
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Volumes/Developer/Developer/TubeChannel/build/juce/vst3_helpers/TubeChannel
+ninja: no work to do.
+[2/14] Building CXX object CMakeFiles/TubeChannelGuiTest.dir/tests/gui_test.cpp.o
+In file included from <built-in>:499:
+<command line>:21:9: warning: 'JUCE_STANDALONE_APPLICATION' macro redefined [-Wmacro-redefined]
+   21 | #define JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
+      |         ^
+<command line>:20:9: note: previous definition is here
+   20 | #define JUCE_STANDALONE_APPLICATION 1
+      |         ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:20:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:12:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Netlist.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:354:15: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  354 |         if (R != r.R)
+      |             ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1011:115: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1011 |             if (differs(o.gmEff, o.gmEffF) || differs(o.dOut, o.dOutF) || differs(o.gclamp, o.gclampF) || o.gwind != o.gwindF) return true;
+      |                                                                                                           ~~~~~~~ ^  ~~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1154:25: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                 ~~~~~~~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1154:41: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                                    ~~~~ ^  ~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:20:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:25:110: warning: declaration shadows a field of 'tubechannel::circuit::Block' [-Wshadow]
+   25 |                const std::vector<std::string>& railNames, const std::vector<std::pair<std::string, double>>& inputs,
+      |                                                                                                              ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:104:39: note: previous declaration is here
+  104 |     std::map<std::string, int> rails, inputs, loads;
+      |                                       ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:148:17: note: in defaulted equality comparison operator for 'ChannelControls' first required here
+  148 |         if (!(c == pending))
+      |                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:353:26: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  353 |                 if (rldr != lastLdr && std::fabs(rldr - lastLdr) > 2e-5 * lastLdr)
+      |                     ~~~~ ^  ~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:2:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:85:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   85 |             return sampleRate == o.sampleRate && maxBlock == o.maxBlock && channels == o.channels && quality == o.quality &&
+      |                    ~~~~~~~~~~ ^  ~~~~~~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:88:69: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   88 |         check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"Derp independently selects 8x");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:90:60: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   90 |         check(p.apvts.getRawParameterValue(id::eco)->load()==0 && p.apvts.getRawParameterValue(id::quality)->load()==1,"HQ is third engine button");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:90:116: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   90 |         check(p.apvts.getRawParameterValue(id::eco)->load()==0 && p.apvts.getRawParameterValue(id::quality)->load()==1,"HQ is third engine button");
+      |                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:91:69: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   91 |         check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"mode click preserves oversampling");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:93:60: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   93 |         check(p.apvts.getRawParameterValue(id::eco)->load()==1,"Eco is first engine button");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:94:69: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   94 |         check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"Eco retains independently selected 8x");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:96:69: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   96 |         check(p.apvts.getRawParameterValue(id::oversampling)->load()==1,"selected oversampling toggles off to 1x");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:100:64: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  100 |         check(p.apvts.getRawParameterValue(id::quality)->load()==0,"Circuit is second engine button");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+/Volumes/Developer/Developer/TubeChannel/tests/gui_test.cpp:101:69: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  101 |         check(p.apvts.getRawParameterValue(id::oversampling)->load()==2,"mode change freezes restored legacy 2x at 96k");
+      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^ ~
+37 warnings generated.
+[3/14] Building CXX object CMakeFiles/TubeChannelSnapshot.dir/tests/ui_snapshot.cpp.o
+In file included from <built-in>:499:
+<command line>:21:9: warning: 'JUCE_STANDALONE_APPLICATION' macro redefined [-Wmacro-redefined]
+   21 | #define JUCE_STANDALONE_APPLICATION JucePlugin_Build_Standalone
+      |         ^
+<command line>:20:9: note: previous definition is here
+   20 | #define JUCE_STANDALONE_APPLICATION 1
+      |         ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:20:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:12:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Netlist.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:354:15: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  354 |         if (R != r.R)
+      |             ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1011:115: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1011 |             if (differs(o.gmEff, o.gmEffF) || differs(o.dOut, o.dOutF) || differs(o.gclamp, o.gclampF) || o.gwind != o.gwindF) return true;
+      |                                                                                                           ~~~~~~~ ^  ~~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1154:25: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                 ~~~~~~~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1154:41: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                                    ~~~~ ^  ~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:20:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:25:110: warning: declaration shadows a field of 'tubechannel::circuit::Block' [-Wshadow]
+   25 |                const std::vector<std::string>& railNames, const std::vector<std::pair<std::string, double>>& inputs,
+      |                                                                                                              ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:104:39: note: previous declaration is here
+  104 |     std::map<std::string, int> rails, inputs, loads;
+      |                                       ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:148:17: note: in defaulted equality comparison operator for 'ChannelControls' first required here
+  148 |         if (!(c == pending))
+      |                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:353:26: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  353 |                 if (rldr != lastLdr && std::fabs(rldr - lastLdr) > 2e-5 * lastLdr)
+      |                     ~~~~ ^  ~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:85:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   85 |             return sampleRate == o.sampleRate && maxBlock == o.maxBlock && channels == o.channels && quality == o.quality &&
+      |                    ~~~~~~~~~~ ^  ~~~~~~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:4:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:205:70: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  205 |         auto number=[&](int n){std::size_t end=0;float v=std::stof(f[n],&end);
+      |                                                                    ~ ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:206:23: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  206 |             if(end!=f[n].size())throw std::runtime_error("Invalid number");return v;};
+      |                     ~ ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:5:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:201:20: warning: declaration shadows a local variable [-Wshadow]
+  201 |         juce::Path grain;
+      |                    ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:187:97: note: previous declaration is here
+  187 | inline void woodKnob(const Ctx& k, Colour side1, Colour side2, Colour top1, Colour top2, Colour grain) {
+      |                                                                                                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:37:93: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   37 |             for(float x=x0;x<=x1;x+=6.0f){const float yy=y+std::sin(x*0.045f+y*0.31f)*2.2f;x==x0?p.startNewSubPath(x,yy):p.lineTo(x,yy);}
+      |                                                                                            ~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                            ~~~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:53: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                                                  ~~~^ ~~
+In file included from /Volumes/Developer/Developer/TubeChannel/tests/ui_snapshot.cpp:6:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:11:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:124:85: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  124 |         const bool lit = levelDb >= db - 48.0f / float(segments) * 0.5f || float(i) == peakIdx;
+      |                                                                            ~~~~~~~~ ^  ~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:129:62: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  129 |         g.setColour(lit && (levelDb >= db - 1.5f || float(i) == peakIdx) ? c : lit ? c.darker(0.2f) : c.withAlpha(0.14f));
+      |                                                     ~~~~~~~~ ^  ~~~~~~~
+36 warnings generated.
+[4/14] Building CXX object CMakeFiles/TubeChannel.dir/Source/Plugin/PluginEditor.cpp.o
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:20:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:12:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Netlist.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:354:15: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  354 |         if (R != r.R)
+      |             ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1011:115: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1011 |             if (differs(o.gmEff, o.gmEffF) || differs(o.dOut, o.dOutF) || differs(o.gclamp, o.gclampF) || o.gwind != o.gwindF) return true;
+      |                                                                                                           ~~~~~~~ ^  ~~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1154:25: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                 ~~~~~~~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Circuit.h:1154:41: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                                    ~~~~ ^  ~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:20:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:25:110: warning: declaration shadows a field of 'tubechannel::circuit::Block' [-Wshadow]
+   25 |                const std::vector<std::string>& railNames, const std::vector<std::pair<std::string, double>>& inputs,
+      |                                                                                                              ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/../Circuit/Block.h:104:39: note: previous declaration is here
+  104 |     std::map<std::string, int> rails, inputs, loads;
+      |                                       ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:148:17: note: in defaulted equality comparison operator for 'ChannelControls' first required here
+  148 |         if (!(c == pending))
+      |                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/Chain.h:16:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/../Channel/ChannelModel.h:353:26: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  353 |                 if (rldr != lastLdr && std::fabs(rldr - lastLdr) > 2e-5 * lastLdr)
+      |                     ~~~~ ^  ~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:3:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/../Plugin/PluginProcessor.h:85:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   85 |             return sampleRate == o.sampleRate && maxBlock == o.maxBlock && channels == o.channels && quality == o.quality &&
+      |                    ~~~~~~~~~~ ^  ~~~~~~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:4:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:205:70: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  205 |         auto number=[&](int n){std::size_t end=0;float v=std::stof(f[n],&end);
+      |                                                                    ~ ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:206:23: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  206 |             if(end!=f[n].size())throw std::runtime_error("Invalid number");return v;};
+      |                     ~ ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:5:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:201:20: warning: declaration shadows a local variable [-Wshadow]
+  201 |         juce::Path grain;
+      |                    ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:187:97: note: previous declaration is here
+  187 | inline void woodKnob(const Ctx& k, Colour side1, Colour side2, Colour top1, Colour top2, Colour grain) {
+      |                                                                                                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:37:93: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   37 |             for(float x=x0;x<=x1;x+=6.0f){const float yy=y+std::sin(x*0.045f+y*0.31f)*2.2f;x==x0?p.startNewSubPath(x,yy):p.lineTo(x,yy);}
+      |                                                                                            ~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                            ~~~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:53: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                                                  ~~~^ ~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:11:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:124:85: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  124 |         const bool lit = levelDb >= db - 48.0f / float(segments) * 0.5f || float(i) == peakIdx;
+      |                                                                            ~~~~~~~~ ^  ~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:129:62: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  129 |         g.setColour(lit && (levelDb >= db - 1.5f || float(i) == peakIdx) ? c : lit ? c.darker(0.2f) : c.withAlpha(0.14f));
+      |                                                     ~~~~~~~~ ^  ~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.cpp:3:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:36:27: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   36 |         if (p->getValue() == want) return;
+      |             ~~~~~~~~~~~~~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:79:11: warning: field 'proc' will be initialized after field 'skin' [-Wreorder-ctor]
+   79 |         : proc(p), skin(s), chB(std::move(channelB)), editor(p.apvts), fft(kOrder), window(size_t(kN), juce::dsp::WindowingFunction<float>::hann)
+      |           ^~~~~~~  ~~~~~~~
+      |           skin(s)  proc(p)
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:102:45: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  102 |             g.setColour(sk.line.withAlpha(f == 100 || f == 1000 || f == 10000 ? 0.45f : 0.2f));
+      |                                           ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:102:57: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  102 |             g.setColour(sk.line.withAlpha(f == 100 || f == 1000 || f == 10000 ? 0.45f : 0.2f));
+      |                                                       ~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:102:70: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  102 |             g.setColour(sk.line.withAlpha(f == 100 || f == 1000 || f == 10000 ? 0.45f : 0.2f));
+      |                                                                    ~ ^  ~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:104:19: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  104 |             if (f == 100 || f == 1000 || f == 10000)
+      |                 ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:104:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  104 |             if (f == 100 || f == 1000 || f == 10000)
+      |                             ~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:104:44: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  104 |             if (f == 100 || f == 1000 || f == 10000)
+      |                                          ~ ^  ~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:113:46: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  113 |             g.setColour(sk.line.withAlpha(db == 0 ? 0.55f : 0.2f));
+      |                                           ~~ ^  ~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:115:20: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  115 |             if (db != 0)
+      |                 ~~ ^  ~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:315:11: warning: field 'proc' will be initialized after field 'skin' [-Wreorder-ctor]
+  315 |         : proc(p), skin(s), chB(std::move(channelB)), editor(p.apvts) { startTimerHz(30); }
+      |           ^~~~~~~  ~~~~~~~
+      |           skin(s)  proc(p)
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:331:46: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  331 |             g.setColour(sk.line.withAlpha(db == 0 ? 0.5f : 0.2f));
+      |                                           ~~ ^  ~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Digital.h:354:16: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  354 |             in == kLo ? curve.startNewSubPath(x, y) : curve.lineTo(x, y);
+      |             ~~ ^  ~~~
+48 warnings generated.
+[5/14] Building CXX object CMakeFiles/TubeChannel.dir/Source/Plugin/PluginProcessor.cpp.o
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:20:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:12:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Netlist.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:354:15: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  354 |         if (R != r.R)
+      |             ~ ^  ~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1011:115: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1011 |             if (differs(o.gmEff, o.gmEffF) || differs(o.dOut, o.dOutF) || differs(o.gclamp, o.gclampF) || o.gwind != o.gwindF) return true;
+      |                                                                                                           ~~~~~~~ ^  ~~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1154:25: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                 ~~~~~~~ ^  ~~~~
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Circuit.h:1154:41: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+ 1154 |             if (limited != newV && newV != oldV)
+      |                                    ~~~~ ^  ~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:20:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:25:110: warning: declaration shadows a field of 'tubechannel::circuit::Block' [-Wshadow]
+   25 |                const std::vector<std::string>& railNames, const std::vector<std::pair<std::string, double>>& inputs,
+      |                                                                                                              ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/../Circuit/Block.h:104:39: note: previous declaration is here
+  104 |     std::map<std::string, int> rails, inputs, loads;
+      |                                       ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:148:17: note: in defaulted equality comparison operator for 'ChannelControls' first required here
+  148 |         if (!(c == pending))
+      |                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:21:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelTypes.h:43:59: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   43 |     bool operator==(const ChannelControls&) const = default;
+      |                                                           ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:8:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/Chain.h:16:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/../Channel/ChannelModel.h:353:26: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  353 |                 if (rldr != lastLdr && std::fabs(rldr - lastLdr) > 2e-5 * lastLdr)
+      |                     ~~~~ ^  ~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:1:
+/Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.h:85:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   85 |             return sampleRate == o.sampleRate && maxBlock == o.maxBlock && channels == o.channels && quality == o.quality &&
+      |                    ~~~~~~~~~~ ^  ~~~~~~~~~~~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:4:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:205:70: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  205 |         auto number=[&](int n){std::size_t end=0;float v=std::stof(f[n],&end);
+      |                                                                    ~ ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/include/goodlookinui/Design.h:206:23: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  206 |             if(end!=f[n].size())throw std::runtime_error("Invalid number");return v;};
+      |                     ~ ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+In file included from /Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:5:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:201:20: warning: declaration shadows a local variable [-Wshadow]
+  201 |         juce::Path grain;
+      |                    ^
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Knobs.h:187:97: note: previous declaration is here
+  187 | inline void woodKnob(const Ctx& k, Colour side1, Colour side2, Colour top1, Colour top2, Colour grain) {
+      |                                                                                                 ^
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:9:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:37:93: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   37 |             for(float x=x0;x<=x1;x+=6.0f){const float yy=y+std::sin(x*0.045f+y*0.31f)*2.2f;x==x0?p.startNewSubPath(x,yy):p.lineTo(x,yy);}
+      |                                                                                            ~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:31: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                            ~~~^ ~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/GoodLookinUI.h:72:53: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+   72 |             const float sx=c.x==x0?1.0f:-1.0f,sy=c.y==y0?1.0f:-1.0f;
+      |                                                  ~~~^ ~~
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginProcessor.cpp:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/PluginEditor.h:3:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Panels.h:4:
+In file included from /Volumes/Developer/Developer/TubeChannel/Source/Plugin/../UI/Widgets.h:11:
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:124:85: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  124 |         const bool lit = levelDb >= db - 48.0f / float(segments) * 0.5f || float(i) == peakIdx;
+      |                                                                            ~~~~~~~~ ^  ~~~~~~~
+/Volumes/Developer/Developer/TubeChannel/third_party/GoodLookinUI/adapters/juce/Meters.h:129:62: warning: comparing floating point with == or != is unsafe [-Wfloat-equal]
+  129 |         g.setColour(lit && (levelDb >= db - 1.5f || float(i) == peakIdx) ? c : lit ? c.darker(0.2f) : c.withAlpha(0.14f));
+      |                                                     ~~~~~~~~ ^  ~~~~~~~
+35 warnings generated.
+[6/14] Linking CXX static library "TubeChannel_artefacts/Release/libTube Channel_SharedCode.a"
+[7/14] Linking CXX executable TubeChannelGuiTest_artefacts/Release/TubeChannelGuiTest
+[8/14] Linking CXX CFBundle shared module "TubeChannel_artefacts/Release/CLAP/Tube Channel.clap/Contents/MacOS/Tube Channel"
+[9/14] Linking CXX CFBundle shared module "TubeChannel_artefacts/Release/AU/Tube Channel.component/Contents/MacOS/Tube Channel"
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/AU/Tube Channel.component: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/AU/Tube Channel.component: replacing existing signature
+[10/14] Linking CXX executable "TubeChannel_artefacts/Release/Standalone/Tube Channel.app/Contents/MacOS/Tube Channel"
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/Standalone/Tube Channel.app: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/Standalone/Tube Channel.app: replacing existing signature
+[11/14] Linking CXX CFBundle shared module "TubeChannel_artefacts/Release/VST3/Tube Channel.vst3/Contents/MacOS/Tube Channel"
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3: replacing existing signature
+removing moduleinfo.json
+creating /Volumes/Developer/Developer/TubeChannel/build/juce/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3/Contents/Resources/moduleinfo.json
+[12/14] Linking CXX shared module "TubeChannel_artefacts/Release/LV2/Tube Channel.lv2/libTube Channel.so"
+[13/14] Linking CXX executable TubeChannelSnapshot_artefacts/Release/TubeChannelSnapshot

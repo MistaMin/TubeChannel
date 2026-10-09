@@ -1,0 +1,12 @@
+HOST 48000 32 0 instances 16 CPU_ms 4.821480 worst_ms 4.960625 missed 256/256
+HOST 48000 32 3 instances 16 CPU_ms 0.182566 worst_ms 0.201542 missed 0/256
+HOST 48000 64 0 instances 16 CPU_ms 9.594023 worst_ms 9.881000 missed 256/256
+HOST 48000 64 3 instances 16 CPU_ms 0.360094 worst_ms 0.395583 missed 0/256
+HOST 48000 256 0 instances 16 CPU_ms 37.216062 worst_ms 38.328916 missed 256/256
+HOST 48000 256 3 instances 16 CPU_ms 1.391168 worst_ms 1.580833 missed 0/256
+HOST 96000 32 0 instances 16 CPU_ms 2.323379 worst_ms 2.547333 missed 256/256
+HOST 96000 32 3 instances 16 CPU_ms 0.169168 worst_ms 0.176209 missed 0/256
+HOST 96000 64 0 instances 16 CPU_ms 4.625832 worst_ms 4.819667 missed 256/256
+HOST 96000 64 3 instances 16 CPU_ms 0.334266 worst_ms 0.343959 missed 0/256
+HOST 96000 256 0 instances 16 CPU_ms 18.404805 worst_ms 19.034000 missed 256/256
+HOST 96000 256 3 instances 16 CPU_ms 1.324336 worst_ms 1.369125 missed 0/256

@@ -1,0 +1,11 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/hybrid
+    Start  7: realtime
+1/3 Test  #7: realtime .........................   Passed    9.90 sec
+    Start  9: quality_modes
+2/3 Test  #9: quality_modes ....................   Passed    7.52 sec
+    Start 14: eco
+3/3 Test #14: eco ..............................   Passed    0.90 sec
+
+100% tests passed out of 3
+
+Total Test time (real) =  18.33 sec

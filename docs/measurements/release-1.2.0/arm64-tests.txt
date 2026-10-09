@@ -1,0 +1,9 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/universal
+    Start 15: processor_stress
+1/2 Test #15: processor_stress .................   Passed   16.11 sec
+    Start 16: gui
+2/2 Test #16: gui ..............................   Passed    2.33 sec
+
+100% tests passed out of 2
+
+Total Test time (real) =  18.47 sec

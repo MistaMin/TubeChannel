@@ -6,11 +6,12 @@
 // the session rate rises and the effective rate stays the same):
 //
 //                      44.1/48k   88.2/96k   176.4/192k
+//   Quality::Eco          1x         1x          1x     residual ADAA
 //   Quality::Default      2x         1x          1x
 //   Quality::HQ           2x         1x          1x
 //   Quality::Derp         4x         2x          1x     "\( ᐖ)/ - Derp mode"
 //
-// Each can use minimum-phase IIR half-bands (zero reported latency) or, with linearPhase = true
+// The original modes can use minimum-phase IIR half-bands (zero reported latency) or, with linearPhase = true
 // (the "+L" modes), linear-phase FIR half-bands. The whole circuit runs at the oversampled rate;
 // the decimation filters bring it back to the base Nyquist.
 
@@ -18,12 +19,13 @@
 
 namespace tubechannel::dsp
 {
-enum class Quality { Default = 0, HQ = 1, Derp = 2 };
+enum class Quality { Default = 0, HQ = 1, Derp = 2, Eco = 3 };
 
 inline int nominalStages(Quality q)
 {
     switch (q)
     {
+        case Quality::Eco:     return 0;     // residual ADAA in the reduced engine
         case Quality::Default: return 1;     // 2x at 44.1 / 48 kHz
         case Quality::HQ:      return 1;     // 2x; original detector selected by the chain
         case Quality::Derp:    return 2;     // 4x; original detector
@@ -45,7 +47,7 @@ public:
     static constexpr double kPassbandHz = 20000.0;
 
     // Not real-time safe: allocates and designs filters. Call from the message thread, then swap.
-    void prepare(double baseSampleRate, int maxBlock, int channels, Quality q, bool linearPhase)
+    void prepare(double baseSampleRate, int maxBlock, int channels, Quality q, bool linearPhase, int explicitStages = -1)
     {
         fs = baseSampleRate;
         maxBlockSize = maxBlock;
@@ -53,7 +55,7 @@ public:
         quality = q;
         linear = linearPhase;
 
-        const int S = stagesFor(q, fs);
+        const int S = explicitStages < 0 ? stagesFor(q, fs) : std::clamp(explicitStages, 0, 3);
         factor_ = 1 << S;
         stages.clear();
         upStages.clear();

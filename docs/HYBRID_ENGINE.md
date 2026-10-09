@@ -1,4 +1,9 @@
-# Hybrid engine development — 1.1.3
+# Hybrid engine implementation history
+
+> Current direction: [1.2.0 reduced sound engine](SOUND_MODEL_PLAN.md) supersedes
+> the retained-circuit constraints and 80% target below. All stages may be reduced;
+> the minimum target is 10x, with 20x as the stretch target. The sections below
+> describe existing implementation and historical measurements.
 
 ## Structure
 

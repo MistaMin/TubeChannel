@@ -25,6 +25,18 @@ static void click(juce::Component& parent, const char* id)
     if (button) { button->triggerClick(); pump(30); }
 }
 
+static void clickKey(juce::Component& editor, const char* id, int index)
+{
+    auto* bank = find(editor,id); check(bank != nullptr,"mode/oversampling bank exists");
+    if(!bank)return;
+    juce::Point<float> pos(float(bank->getWidth())*(float(index)+.5f)/3.f,float(bank->getHeight())*.5f);
+    const auto now=juce::Time::getCurrentTime();
+    juce::MouseEvent event(juce::Desktop::getInstance().getMainMouseSource(),pos,
+        juce::ModifierKeys(juce::ModifierKeys::leftButtonModifier),1.f,0.f,0.f,0.f,0.f,
+        bank,bank,now,pos,now,1,false);
+    bank->mouseDown(event);pump(20);
+}
+
 int main()
 {
     juce::ScopedJuceInitialiser_GUI init;
@@ -69,6 +81,24 @@ int main()
         check(digital->getTitle().contains("-20.0 VU"), "mono meter ignores stale right-channel history");
         click(*editor, "system-page");
         check(!digital->isVisible(), "system page hides digital main meter");
+        namespace id=tc::params::id;
+        check(find(*editor,"engine-mode")->getRight() < find(*editor,"oversampling")->getX(),"mode and oversampling banks do not overlap");
+        check(find(*editor,"oversampling")->getRight() <= 918,"oversampling fits inside its system panel");
+        clickKey(*editor,"oversampling",2);
+        check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"Derp independently selects 8x");
+        clickKey(*editor,"engine-mode",2);
+        check(p.apvts.getRawParameterValue(id::eco)->load()==0 && p.apvts.getRawParameterValue(id::quality)->load()==1,"HQ is third engine button");
+        check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"mode click preserves oversampling");
+        clickKey(*editor,"engine-mode",0);
+        check(p.apvts.getRawParameterValue(id::eco)->load()==1,"Eco is first engine button");
+        check(p.apvts.getRawParameterValue(id::oversampling)->load()==4,"Eco retains independently selected 8x");
+        clickKey(*editor,"oversampling",2);
+        check(p.apvts.getRawParameterValue(id::oversampling)->load()==1,"selected oversampling toggles off to 1x");
+        auto set=[&](const char* key,float value){auto* prm=p.apvts.getParameter(key);prm->setValueNotifyingHost(prm->convertTo0to1(value));};
+        set(id::eco,0);set(id::quality,2);set(id::oversampling,0);pump(30);
+        clickKey(*editor,"engine-mode",1);
+        check(p.apvts.getRawParameterValue(id::quality)->load()==0,"Circuit is second engine button");
+        check(p.apvts.getRawParameterValue(id::oversampling)->load()==2,"mode change freezes restored legacy 2x at 96k");
         click(*editor, "skin-switch");
         check(p.skin() == 0 && int(p.apvts.state.getProperty("sysPage")) == 1, "skin switching preserves system page");
         click(*editor, "system-page");

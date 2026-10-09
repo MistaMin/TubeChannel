@@ -76,26 +76,30 @@ Tube Channel is a channel-strip plug-in with an input/preamp section, a compress
 
 ![Analogue-style System page with the same settings](ui-system-analogue.png)
 
-### Quality and stereo
+### Modes, oversampling and stereo
+
+The engine buttons are ordered **Eco · Circuit · HQ**.
 
 | Control | What it does |
 |---|---|
-| **Default** | Uses the lower-CPU prototype compressor detector at the current mode's oversampling factor. At 44.1/48 kHz that is 2x. |
-| **HQ** | Uses the original modeled compressor detector curve, still at 2x at 44.1/48 kHz. HQ keeps the modeled equalizer and all other modeled stages. |
-| **Derp mode** | Uses the original modeled compressor detector with one extra oversampling stage: 4x at 44.1/48 kHz. |
-| **+L Min Ph / +L Linear** | Chooses minimum-phase IIR or linear-phase FIR oversampling filters. Linear phase reports its latency to the host. |
+| **Eco** | New-instance default. Uses calibrated filters and nonlinear maps, residual ADAA and no circuit solves. Heavy-drive behavior can differ from Circuit/HQ. |
+| **Circuit** | Renamed Default mode. Retains the circuit audio stages and prototype compressor detector. |
+| **HQ** | Retains the circuit audio stages and original modeled compressor detector. |
+| **2x / 4x / Derp symbol** | Independent oversampling at exactly 2x, 4x or 8x, at any session rate and with any engine. Click the lit button again to switch off (1x, no button lit). New instances start at 1x. |
+| **+L Min Ph / +L Linear** | Chooses minimum-phase IIR or linear-phase FIR oversampling filters. Linear phase reports latency when oversampling is active. |
 | **Link / Unlink** | Links or separates the left and right channel controls. |
 | **Mono / Dual** | Selects a single linked stereo path or independent Dual Mono channel settings. In Dual Mono, use CH A and CH B to edit each side. |
 
-Oversampling decreases at higher session sample rates:
+The status text reports the engine, effective factor/internal sample rate, phase,
+latency and CPU use. Oversampling increases CPU cost; Eco's published speed results
+use 1x. Eco uses reduced supply/load states and seeded gain/noise variation rather
+than per-component circuit-equivalent behavior.
 
-| Session rate | Default | HQ | Derp mode |
-|---|---:|---:|---:|
-| 44.1 / 48 kHz | 2x | 2x | 4x |
-| 88.2 / 96 kHz | 1x | 1x | 2x |
-| 176.4 / 192 kHz | 1x | 1x | 1x |
-
-The status text below the quality buttons identifies the detector, internal sample rate, filter phase, latency, and estimated CPU use.
+The existing three-choice Quality automation range is preserved. Eco and independent
+Oversampling have separate automation parameters. Loading a pre-Eco state keeps Eco
+off. Loading a state from before the independent oversampling control preserves its
+previous adaptive factor; the first engine click freezes that factor, so subsequent
+mode changes keep oversampling unchanged.
 
 ### Unit and power supply
 
@@ -129,5 +133,5 @@ The main audio moves through the channel in this order. The detector listens to 
 
 - The plugin's first/default state has PSU SIM off. Turning it on uses more CPU.
 - In a saved project, the host-restored parameter value takes precedence over the new-instance default.
-- If you hear crackling or breakup, first check the host's audio buffer and real-time CPU load, then try Default mode and turn off PSU SIM.
+- If you hear crackling or breakup, first check the host's audio buffer and real-time CPU load, then try Eco mode and turn off PSU SIM.
 - Source code is MIT licensed. The installer includes the applicable third-party license texts. See [LICENSE](../LICENSE) and [THIRD_PARTY_LICENSES.md](../THIRD_PARTY_LICENSES.md).

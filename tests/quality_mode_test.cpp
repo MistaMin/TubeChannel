@@ -66,5 +66,12 @@ int main(int argc, char** argv)
                 selected.factor, selected.prototype ? "prototype" : "original", equal ? "exact" : "FAILED");
         }
     }
+    for (double fs : { 44100.0, 48000.0, 96000.0, 192000.0 })
+    {
+        // Empty netlists are intentional: Eco must not construct a circuit.
+        const auto eco = run({}, fs, Quality::Eco, tc::DetectorMode::FollowQuality);
+        if (!eco.finite || !eco.prototype || eco.factor != 1) ++failures;
+        std::printf("%.0f Hz Eco: solver-free preparation, 1x, finite %s\n", fs, eco.finite ? "yes" : "FAILED");
+    }
     std::printf("quality selection failures %d\n", failures); return failures ? 1 : 0;
 }

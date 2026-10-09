@@ -1,0 +1,480 @@
+Start testing: Oct 09 14:59 CEST
+----------------------------------------------------------
+1/13 Testing: oversampler
+1/13 Test: oversampler
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelOversamplerTest"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"oversampler" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+Oversampler test
+  factor table (Default/HQ/Derp) checked for 44.1k to 384k
+  fs  44100  Default min   2x  stages: 10   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -149.8 dB (float output)
+      alias rejection: worst -130.0 dB over 398 in-band alias tones
+      image rejection: worst -129.7 dB relative to the tone
+      latency: reported 0, measured 5, peak 0.5660
+      speed: 1163x realtime (1 ch, filters only)
+  fs  44100  Default +L    2x  stages: 171   latency 85 samples
+      passband: worst gain error 0.00001 dB, worst residual -150.2 dB (float output)
+      alias rejection: worst -119.7 dB over 398 in-band alias tones
+      image rejection: worst -129.6 dB relative to the tone
+      latency: reported 85, measured 85, peak 0.9854
+      speed: 223x realtime (1 ch, filters only)
+  fs  44100  HQ      min   2x  stages: 10   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -149.8 dB (float output)
+      alias rejection: worst -130.0 dB over 398 in-band alias tones
+      image rejection: worst -129.7 dB relative to the tone
+      latency: reported 0, measured 5, peak 0.5660
+      speed: 1200x realtime (1 ch, filters only)
+  fs  44100  HQ      +L    2x  stages: 171   latency 85 samples
+      passband: worst gain error 0.00001 dB, worst residual -150.2 dB (float output)
+      alias rejection: worst -119.7 dB over 398 in-band alias tones
+      image rejection: worst -129.6 dB relative to the tone
+      latency: reported 85, measured 85, peak 0.9854
+      speed: 227x realtime (1 ch, filters only)
+  fs  44100  Derp    min   4x  stages: 10 4   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -150.5 dB (float output)
+      alias rejection: worst -125.3 dB over 373 in-band alias tones
+      image rejection: worst -123.9 dB relative to the tone
+      latency: reported 0, measured 7, peak 0.5529
+      speed: 509x realtime (1 ch, filters only)
+  fs  44100  Derp    +L    4x  stages: 171 31   latency 93 samples
+      passband: worst gain error 0.00001 dB, worst residual -150.4 dB (float output)
+      alias rejection: worst -118.3 dB over 373 in-band alias tones
+      image rejection: worst -125.3 dB relative to the tone
+      latency: reported 93, measured 93, peak 0.9854
+      speed: 166x realtime (1 ch, filters only)
+  fs  48000  Default min   2x  stages: 8   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -150.7 dB (float output)
+      alias rejection: worst -127.9 dB over 399 in-band alias tones
+      image rejection: worst -127.9 dB relative to the tone
+      latency: reported 0, measured 5, peak 0.6185
+      speed: 1046x realtime (1 ch, filters only)
+  fs  48000  Default +L    2x  stages: 95   latency 47 samples
+      passband: worst gain error 0.00001 dB, worst residual -150.6 dB (float output)
+      alias rejection: worst -119.7 dB over 399 in-band alias tones
+      image rejection: worst -124.2 dB relative to the tone
+      latency: reported 47, measured 47, peak 0.9737
+      speed: 460x realtime (1 ch, filters only)
+  fs  48000  HQ      min   2x  stages: 8   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -150.7 dB (float output)
+      alias rejection: worst -127.9 dB over 399 in-band alias tones
+      image rejection: worst -127.9 dB relative to the tone
+      latency: reported 0, measured 5, peak 0.6185
+      speed: 1129x realtime (1 ch, filters only)
+  fs  48000  HQ      +L    2x  stages: 95   latency 47 samples
+      passband: worst gain error 0.00001 dB, worst residual -150.6 dB (float output)
+      alias rejection: worst -119.7 dB over 399 in-band alias tones
+      image rejection: worst -124.2 dB relative to the tone
+      latency: reported 47, measured 47, peak 0.9737
+      speed: 458x realtime (1 ch, filters only)
+  fs  48000  Derp    min   4x  stages: 8 4   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -150.7 dB (float output)
+      alias rejection: worst -127.9 dB over 352 in-band alias tones
+      image rejection: worst -126.6 dB relative to the tone
+      latency: reported 0, measured 6, peak 0.5861
+      speed: 482x realtime (1 ch, filters only)
+  fs  48000  Derp    +L    4x  stages: 95 31   latency 55 samples
+      passband: worst gain error 0.00003 dB, worst residual -149.9 dB (float output)
+      alias rejection: worst -118.4 dB over 352 in-band alias tones
+      image rejection: worst -117.3 dB relative to the tone
+      latency: reported 55, measured 55, peak 0.9737
+      speed: 253x realtime (1 ch, filters only)
+  fs  96000  Default min   1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs  96000  Default +L    1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs  96000  HQ      min   1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs  96000  HQ      +L    1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs  96000  Derp    min   2x  stages: 4   latency 0 samples
+      passband: worst gain error 0.00000 dB, worst residual -150.9 dB (float output)
+      alias rejection: worst -132.5 dB over 399 in-band alias tones
+      image rejection: worst -132.5 dB relative to the tone
+      latency: reported 0, measured 3, peak 0.6755
+      speed: 811x realtime (1 ch, filters only)
+  fs  96000  Derp    +L    2x  stages: 31   latency 15 samples
+      passband: worst gain error 0.00002 dB, worst residual -150.2 dB (float output)
+      alias rejection: worst -118.3 dB over 399 in-band alias tones
+      image rejection: worst -118.3 dB relative to the tone
+      latency: reported 15, measured 15, peak 0.9175
+      speed: 864x realtime (1 ch, filters only)
+  fs 192000  Default min   1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs 192000  Default +L    1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs 192000  HQ      min   1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs 192000  HQ      +L    1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs 192000  Derp    min   1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+  fs 192000  Derp    +L    1x  stages:   latency 0 samples
+      1x passthrough: max error 0, latency 0
+
+ALL PASSED (0 failures)
+<end of output>
+Test time =   7.05 sec
+----------------------------------------------------------
+Test Passed.
+"oversampler" end time: Oct 09 14:59 CEST
+"oversampler" time elapsed: 00:00:07
+----------------------------------------------------------
+
+2/13 Testing: sparse_lu
+2/13 Test: sparse_lu
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelSparseLUTest"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"sparse_lu" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+PASSED (0 failures)
+<end of output>
+Test time =   0.15 sec
+----------------------------------------------------------
+Test Passed.
+"sparse_lu" end time: Oct 09 14:59 CEST
+"sparse_lu" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/13 Testing: circuit
+3/13 Test: circuit
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelCircuitTest"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"circuit" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+  RC     100 Hz  gain 0.99812 (analytic 0.99803)  error +0.0007 dB
+  RC    1000 Hz  gain 0.85040 (analytic 0.84673)  error +0.0376 dB
+  RC    5000 Hz  gain 0.30665 (analytic 0.30331)  error +0.0949 dB
+  RC   10000 Hz  gain 0.15791 (analytic 0.15718)  error +0.0405 dB
+  RC   20000 Hz  gain 0.07768 (analytic 0.07933)  error -0.1827 dB
+  OPA   1000 Hz  gain 10.0015  phase 179.95 deg
+  OPA  20000 Hz  gain 10.0063  phase 178.63 deg
+  diode clipper: peak 0.548 V, max Newton iterations 3, factorisations 2975
+PASSED (0 failures)
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"circuit" end time: Oct 09 14:59 CEST
+"circuit" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/13 Testing: sidechain
+4/13 Test: sidechain
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelSidechainTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"sidechain" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+  internal, loud main:                 GR 5.20 dB
+  external, loud sidechain, quiet main: GR 15.63 dB
+  external, silent sidechain, loud main: GR 0.07 dB
+  internal, quiet main, loud sidechain: GR 0.07 dB
+  ok   internal detector compresses a loud main signal
+  ok   external detector compresses on the sidechain alone
+  ok   external detector ignores the main input
+  ok   internal detector ignores the sidechain input
+  ok   external (feed-forward) reduction is at least the internal one
+  ok   compact detector follows external sidechain
+  ok   compact detector respects internal/external routing
+PASSED
+<end of output>
+Test time =   5.70 sec
+----------------------------------------------------------
+Test Passed.
+"sidechain" end time: Oct 09 14:59 CEST
+"sidechain" time elapsed: 00:00:05
+----------------------------------------------------------
+
+5/13 Testing: limiter
+5/13 Test: limiter
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelLimiterTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"limiter" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+  ceiling 0.347 V peak; comp output peak: loud, limiter off 0.562 V; loud, limiter on 0.347 V; quiet, limiter on 0.019 V
+  ok   the compressor output never exceeds the ceiling
+  ok   the limiter holds the level at the ceiling
+  ok   without the limiter the same signal is above the ceiling
+  ok   a signal below the ceiling is untouched
+PASSED
+<end of output>
+Test time =   1.30 sec
+----------------------------------------------------------
+Test Passed.
+"limiter" end time: Oct 09 14:59 CEST
+"limiter" time elapsed: 00:00:01
+----------------------------------------------------------
+
+6/13 Testing: lockstep
+6/13 Test: lockstep
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelLockstepTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"lockstep" start time: Oct 09 14:59 CEST
+Output:
+----------------------------------------------------------
+  difference, lockstep against independent channels: quiet -136.1 dB, loud and compressing -134.5 dB, mono-compatible bypassed -172.4 dB
+  ok   quiet, different channels
+  ok   loud with compression, different channels
+  ok   compressor bypassed
+  hybrid lockstep against independent channels: -131.9 dB
+  ok   hybrid detector/supply preserve stereo lockstep agreement
+PASSED
+<end of output>
+Test time =  10.48 sec
+----------------------------------------------------------
+Test Passed.
+"lockstep" end time: Oct 09 15:00 CEST
+"lockstep" time elapsed: 00:00:10
+----------------------------------------------------------
+
+7/13 Testing: realtime
+7/13 Test: realtime
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelRealtimeTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"realtime" start time: Oct 09 15:00 CEST
+Output:
+----------------------------------------------------------
+scenario 0 (1 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 1 (2 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 2 (1 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 3 (2 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 4 (1 channels, 48000 Hz, 4x): allocations 0, frees 0
+scenario 5 (2 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 6 (1 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 7 (2 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 8 (1 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 9 (2 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 10 (1 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 11 (2 channels, 96000 Hz, 1x): allocations 0, frees 0
+scenario 12 (2 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 13 (2 channels, 48000 Hz, 2x): allocations 0, frees 0
+scenario 14 (2 channels, 48000 Hz, 4x): allocations 0, frees 0
+PASSED (0 failures)
+<end of output>
+Test time =   9.82 sec
+----------------------------------------------------------
+Test Passed.
+"realtime" end time: Oct 09 15:00 CEST
+"realtime" time elapsed: 00:00:09
+----------------------------------------------------------
+
+8/13 Testing: detector_guard
+8/13 Test: detector_guard
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelDetectorGuardTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"detector_guard" start time: Oct 09 15:00 CEST
+Output:
+----------------------------------------------------------
+44100 Hz case 0: LED -40.3 dB, timing -40.3 dB, load -35.6 dB, paired -174.8 dB
+  vs tighter solves: LED -199.2 dB, timing -199.4 dB, load -193.4 dB
+44100 Hz case 1: LED -49.0 dB, timing -49.0 dB, load -35.7 dB, paired -181.3 dB
+  vs tighter solves: LED -195.8 dB, timing -195.9 dB, load -193.2 dB
+44100 Hz case 2: LED -60.2 dB, timing -60.2 dB, load -35.7 dB, paired -182.0 dB
+  vs tighter solves: LED -210.0 dB, timing -211.0 dB, load -193.2 dB
+44100 Hz case 3: LED -48.3 dB, timing -48.2 dB, load -35.7 dB, paired -180.8 dB
+  vs tighter solves: LED -194.5 dB, timing -194.5 dB, load -193.2 dB
+44100 Hz case 4: LED -77.5 dB, timing -84.4 dB, load -75.5 dB, paired -167.5 dB
+  vs tighter solves: LED -178.4 dB, timing -178.4 dB, load -193.8 dB
+44100 Hz case 5: LED -85.2 dB, timing -91.9 dB, load -87.2 dB, paired -169.4 dB
+  vs tighter solves: LED -168.8 dB, timing -168.8 dB, load -195.6 dB
+44100 Hz case 6: LED -209.0 dB, timing -250.5 dB, load -216.6 dB, paired -179.5 dB
+  vs tighter solves: LED -187.6 dB, timing -192.1 dB, load -193.5 dB
+44100 Hz case 7: LED -203.8 dB, timing -208.6 dB, load -215.7 dB, paired -169.4 dB
+  vs tighter solves: LED -168.8 dB, timing -168.8 dB, load -195.7 dB
+48000 Hz case 0: LED -40.5 dB, timing -40.5 dB, load -35.6 dB, paired -175.1 dB
+  vs tighter solves: LED -200.2 dB, timing -200.3 dB, load -193.3 dB
+48000 Hz case 1: LED -48.5 dB, timing -48.5 dB, load -35.6 dB, paired -183.0 dB
+  vs tighter solves: LED -194.8 dB, timing -194.9 dB, load -193.3 dB
+48000 Hz case 2: LED -59.0 dB, timing -59.0 dB, load -34.3 dB, paired -182.4 dB
+  vs tighter solves: LED -210.7 dB, timing -211.6 dB, load -193.2 dB
+48000 Hz case 3: LED -52.4 dB, timing -52.3 dB, load -38.2 dB, paired -184.9 dB
+  vs tighter solves: LED -198.0 dB, timing -198.0 dB, load -193.3 dB
+48000 Hz case 4: LED -105.3 dB, timing -105.2 dB, load -83.9 dB, paired -168.1 dB
+  vs tighter solves: LED -177.5 dB, timing -177.5 dB, load -193.4 dB
+48000 Hz case 5: LED -91.4 dB, timing -91.7 dB, load -87.6 dB, paired -168.3 dB
+  vs tighter solves: LED -168.0 dB, timing -168.0 dB, load -195.9 dB
+48000 Hz case 6: LED -208.8 dB, timing -250.1 dB, load -218.0 dB, paired -179.4 dB
+  vs tighter solves: LED -190.3 dB, timing -191.0 dB, load -193.2 dB
+48000 Hz case 7: LED -203.9 dB, timing -209.0 dB, load -216.9 dB, paired -168.3 dB
+  vs tighter solves: LED -167.9 dB, timing -168.0 dB, load -195.9 dB
+96000 Hz case 0: LED -40.8 dB, timing -40.8 dB, load -35.9 dB, paired -175.7 dB
+  vs tighter solves: LED -201.6 dB, timing -201.6 dB, load -190.2 dB
+96000 Hz case 1: LED -48.0 dB, timing -47.9 dB, load -35.9 dB, paired -189.7 dB
+  vs tighter solves: LED -192.5 dB, timing -192.5 dB, load -190.2 dB
+96000 Hz case 2: LED -60.9 dB, timing -60.8 dB, load -35.9 dB, paired -183.5 dB
+  vs tighter solves: LED -212.6 dB, timing -212.7 dB, load -190.1 dB
+96000 Hz case 3: LED -52.5 dB, timing -52.4 dB, load -38.7 dB, paired -188.6 dB
+  vs tighter solves: LED -193.9 dB, timing -193.9 dB, load -190.2 dB
+96000 Hz case 4: LED -125.0 dB, timing -124.5 dB, load -84.8 dB, paired -168.5 dB
+  vs tighter solves: LED -173.4 dB, timing -173.4 dB, load -190.6 dB
+96000 Hz case 5: LED -204.5 dB, timing -212.8 dB, load -225.4 dB, paired -164.4 dB
+  vs tighter solves: LED -164.2 dB, timing -164.2 dB, load -193.4 dB
+96000 Hz case 6: LED -207.7 dB, timing -260.7 dB, load -226.0 dB, paired -181.3 dB
+  vs tighter solves: LED -188.3 dB, timing -188.5 dB, load -190.7 dB
+96000 Hz case 7: LED -204.5 dB, timing -212.9 dB, load -225.5 dB, paired -164.5 dB
+  vs tighter solves: LED -164.2 dB, timing -164.2 dB, load -193.4 dB
+retries: legacy 47521, guarded 0; failures 0
+unsuccessful solves: legacy L/R 86/115, guarded L/R 0/0, pair 0, tighter L/R 0/0
+<end of output>
+Test time =  32.51 sec
+----------------------------------------------------------
+Test Passed.
+"detector_guard" end time: Oct 09 15:00 CEST
+"detector_guard" time elapsed: 00:00:32
+----------------------------------------------------------
+
+9/13 Testing: quality_modes
+9/13 Test: quality_modes
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelQualityTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"quality_modes" start time: Oct 09 15:00 CEST
+Output:
+----------------------------------------------------------
+48000 Hz mode 0: 2x, prototype detector, forced-backend waveform match exact
+48000 Hz mode 1: 2x, original detector, forced-backend waveform match exact
+48000 Hz mode 2: 4x, original detector, forced-backend waveform match exact
+96000 Hz mode 0: 1x, prototype detector, forced-backend waveform match exact
+96000 Hz mode 1: 1x, original detector, forced-backend waveform match exact
+96000 Hz mode 2: 2x, original detector, forced-backend waveform match exact
+quality selection failures 0
+<end of output>
+Test time =   7.63 sec
+----------------------------------------------------------
+Test Passed.
+"quality_modes" end time: Oct 09 15:00 CEST
+"quality_modes" time elapsed: 00:00:07
+----------------------------------------------------------
+
+10/13 Testing: linear_layout
+10/13 Test: linear_layout
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelLinearLayoutTest" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"linear_layout" start time: Oct 09 15:00 CEST
+Output:
+----------------------------------------------------------
+44.1 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+48.0 kHz tolerances off: 3178496 node comparisons, worst 0 V, 0 failures
+88.2 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+96.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+192.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+384.0 kHz tolerances on: 3178496 node comparisons, worst 0 V, 0 failures
+chain 48 kHz quality 0: residual -300.00 dB, 0 failures
+chain 48 kHz quality 1: residual -300.00 dB, 0 failures
+chain 48 kHz quality 2: residual -300.00 dB, 0 failures
+chain 96 kHz quality 0: residual -300.00 dB, 0 failures
+chain 96 kHz quality 1: residual -300.00 dB, 0 failures
+chain 96 kHz quality 2: residual -300.00 dB, 0 failures
+<end of output>
+Test time =  10.25 sec
+----------------------------------------------------------
+Test Passed.
+"linear_layout" end time: Oct 09 15:01 CEST
+"linear_layout" time elapsed: 00:00:10
+----------------------------------------------------------
+
+11/13 Testing: triode_lookup
+11/13 Test: triode_lookup
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelTriodeLookupTest"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"triode_lookup" start time: Oct 09 15:01 CEST
+Output:
+----------------------------------------------------------
+EX 1.1: relative max errors current 1.8e-12, derivative 6.4e-10, softplus 1.55e-10, sigmoid 3.07e-08
+EX 1.2: relative max errors current 3.3e-12, derivative 1.08e-09, softplus 1.55e-10, sigmoid 3.07e-08
+EX 1.4: relative max errors current 5.14e-12, derivative 1.44e-09, softplus 1.55e-10, sigmoid 3.07e-08
+triode curve failures 0
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"triode_lookup" end time: Oct 09 15:01 CEST
+"triode_lookup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/13 Testing: hybrid_modules
+12/13 Test: hybrid_modules
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelHybridModulesTest"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"hybrid_modules" start time: Oct 09 15:01 CEST
+Output:
+----------------------------------------------------------
+ok   accept stable fitted section
+ok   impulse agrees with independent one-pole solution
+ok   reject unstable coefficients
+ok   reject nonfinite coefficients
+ok   reject invalid detector calibration
+ok   accept measured EQ sections
+ok   retain separate filtered and bypass taps
+ok   wet filters continue settling while dry tap is selected
+ok   accept asymmetric measured transfer
+ok   interpolate both polarities without symmetry assumptions
+ok   bound transfer outside captured range
+ok   reject ambiguous transfer coordinates
+ok   prepare detector at test rate
+ok   silence does not light the optical element
+ok   prepare short-attack comparison
+ok   short attack responds sooner to the same step
+ok   unlit charging paths discharge with the passive RC time constant
+ok   prepare Auto comparisons
+ok   Auto timing is independent of disconnected manual controls
+ok   control update preserves the existing optical drive state
+ok   Auto and overloaded bursts remain bounded through recovery
+ok   prepare detector at test rate
+ok   silence does not light the optical element
+ok   prepare short-attack comparison
+ok   short attack responds sooner to the same step
+ok   unlit charging paths discharge with the passive RC time constant
+ok   prepare Auto comparisons
+ok   Auto timing is independent of disconnected manual controls
+ok   control update preserves the existing optical drive state
+ok   Auto and overloaded bursts remain bounded through recovery
+ok   prepare detector at test rate
+ok   silence does not light the optical element
+ok   prepare short-attack comparison
+ok   short attack responds sooner to the same step
+ok   unlit charging paths discharge with the passive RC time constant
+ok   prepare Auto comparisons
+ok   Auto timing is independent of disconnected manual controls
+ok   control update preserves the existing optical drive state
+ok   Auto and overloaded bursts remain bounded through recovery
+ok   initialize compact supply from settled circuit rails
+ok   resting loads preserve rail anchors exactly
+ok   supply load response agrees with analytic recovery
+ok   plate selection recovers toward the low rail
+PASSED (0 failures)
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"hybrid_modules" end time: Oct 09 15:01 CEST
+"hybrid_modules" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/13 Testing: hybrid_linear
+13/13 Test: hybrid_linear
+Command: "/Volumes/Developer/Developer/TubeChannel/build/hybrid/TubeChannelHybridLinearValidate" "/Volumes/Developer/Developer/TubeChannel/Netlists"
+Directory: /Volumes/Developer/Developer/TubeChannel/build/hybrid
+"hybrid_linear" start time: Oct 09 15:01 CEST
+Output:
+----------------------------------------------------------
+37 Hz 0.25 V: EQ error -48.118 dB relative RMS, EQ+output -49.051 dB 
+997 Hz 2.00 V: EQ error -76.056 dB relative RMS, EQ+output -75.685 dB 
+4001 Hz 0.25 V: EQ error -85.633 dB relative RMS, EQ+output -84.382 dB 
+14003 Hz 2.00 V: EQ error -84.055 dB relative RMS, EQ+output -84.685 dB 
+997 Hz 17.00 V: EQ error -15.846 dB relative RMS, EQ+output -15.847 dB (overload diagnostic; linear profile not accepted here)
+linear holdout failures 0
+<end of output>
+Test time =   0.63 sec
+----------------------------------------------------------
+Test Passed.
+"hybrid_linear" end time: Oct 09 15:01 CEST
+"hybrid_linear" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 09 15:01 CEST

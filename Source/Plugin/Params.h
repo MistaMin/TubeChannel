@@ -56,7 +56,9 @@ inline constexpr const char* outputTrim = "outputtrim";
 inline constexpr const char* alignment = "alignment";
 inline constexpr const char* micZ = "micz";
 inline constexpr const char* instZ = "instz";
+inline constexpr const char* oversampling = "oversampling";
 inline constexpr const char* quality = "quality";
+inline constexpr const char* eco = "ecomode";
 inline constexpr const char* linearPhase = "linearphase";
 inline constexpr const char* stereoLink = "stereolink";
 inline constexpr const char* dualMono = "dualmono";
@@ -142,7 +144,7 @@ struct ParameterValues
     std::atomic<float>* loShift, *high, *hiShift, *hmLevel, *hmFreq;
     std::atomic<float>* hmX10, *hmNarrow, *lmLevel, *lmFreq, *lmX10;
     std::atomic<float>* lmNarrow, *master, *outLevel, *inputTrim, *outputTrim;
-    std::atomic<float>* alignment, *micZ, *instZ, *quality, *linearPhase;
+    std::atomic<float>* alignment, *micZ, *instZ, *quality, *eco, *oversampling, *linearPhase;
     std::atomic<float>* stereoLink, *dualMono, *mains, *mainsVolts, *tolerances;
     std::atomic<float>* seed, *noise, *psuModel;
 };

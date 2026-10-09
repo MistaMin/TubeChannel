@@ -1,4 +1,9 @@
-# Optimization history and development 1.1.3
+# Optimization history
+
+> Current direction: [1.2.0 reduced sound engine](SOUND_MODEL_PLAN.md) supersedes
+> the retained-circuit constraints and 80% target below. All stages may be reduced;
+> the minimum target is 10x, with 20x as the stretch target. The sections below
+> describe existing implementation and historical measurements.
 
 The subsequent v1.1.2 redesign now permits behavioral approximations, targeting more than 80% CPU
 reduction subject to listening approval. See [efficient sound model](SOUND_MODEL_PLAN.md). The
@@ -36,6 +41,7 @@ Build `TubeChannelChainBench` in a Release configuration. Arguments are:
 TubeChannelChainBench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400]
                      [amplitude=0.126] [block=256] [quality=0] [automate=0:off/1:gain/2:EQ]
                      [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1] [compactSupply=0]
+                     [sampleRate=48000] [noise=1] [warmupBlocks=51]
 ```
 
 Example from the repository root:
@@ -45,10 +51,13 @@ cmake --build build/juce --target TubeChannelChainBench
 build/juce/TubeChannelChainBench Netlists 2 1 1 800 0.126 256 0 1
 ```
 
-Quality values are 0 for Default (prototype, 2x), 1 for HQ (original, 2x) and 2 for Derp mode (original, 4x) at 44.1/48 kHz. A detector override of 0/1 forces circuit/prototype for comparison; -1 follows quality. `NOLOCK=1` selects independent scalar
+Quality values are 0 for Default (prototype, 2x), 1 for HQ (original, 2x) 2 for Derp mode (original, 4x), and 3 for Eco (reduced, 1x) at 44.1/48 kHz. A detector override of 0/1 forces circuit/prototype for comparison; -1 follows quality. `NOLOCK=1` selects independent scalar
 channels for comparison. The benchmark reports average, p99 and worst wall time, deadline misses,
 and average process CPU time. Process CPU excludes time spent descheduled; wall time determines
 whether playback can meet a deadline. Run timing comparisons without other builds or tests running.
+The optional final arguments select session rate (8–384 kHz), noise and excluded warmup blocks. Session rate
+sets preparation, stimulus timing and callback deadline together; omitted values preserve
+the historical 48 kHz/noise-on workload.
 Attack and release are normalized knob positions from 0 to 1. Burst mode uses a 220 Hz sine with
 5 ms ramps, active from 0.1 to 0.4 seconds in each one-second cycle. The benchmark also reports
 output peak and nonfinite samples; finite output alone does not establish that audio is free of clicks.

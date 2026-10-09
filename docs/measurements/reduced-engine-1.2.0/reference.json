@@ -1,0 +1,15 @@
+{
+  "reference_version": "1.1.4",
+  "reference_commit": "a80455549b9b92466f73d9017b8127fad779f013",
+  "development_version": "1.2.0",
+  "minimum_speedup": 10,
+  "stretch_speedup": 20,
+  "reference_binaries": {
+    "build/reference-1.1.4/TubeChannelChainBench": "2253e5f5aa0a12834a0fd60bd940f26b59a5f364fcf07be90ce46ae8bc5e698c",
+    "build/reference-1.1.4/TubeChannelChainProfile": "1e194004a4e3cabc1b4ed1a5b4022686f40c7f7b64382527c1d9b31edd435382"
+  },
+  "architecture": "arm64",
+  "compiler": "Apple system c++",
+  "build_flags": "-O3 -DNDEBUG -std=gnu++20 -mmacosx-version-min=11.0",
+  "note": "Binaries are local ignored build artifacts. Regenerate the reference from its pinned source commit if unavailable. No reduced runtime engine has been accepted."
+}

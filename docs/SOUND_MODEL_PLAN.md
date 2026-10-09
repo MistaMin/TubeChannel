@@ -1,122 +1,129 @@
-# Efficient sound model — development 1.1.3
+# Reduced sound engine — development 1.2.0
 
-## Scope and acceptance
+## Direction and version boundary
 
-The approved direction is a hybrid engine. Preserve the actual microphone/instrument preamp,
-tube stage and warm-feedback circuit, and retain the existing optical-response algorithm. Simplify
-the surrounding stages only after measurement and listening comparisons. The compressor audio
-stage contains additional tube coloration and is a retention candidate until comparisons establish
-that a cheaper implementation is acceptable.
+The user's October 9, 2026 brief supersedes the earlier requirement to retain the
+microphone/instrument preamp, tube and warm-feedback circuits. Every runtime circuit
+stage may now be replaced by a measured reduced model. Preserve audible nonlinear
+character, loading, asymmetry, compression and relevant memory; component-level
+circuit equivalence is no longer the implementation requirement.
 
-The user permits some behavioral approximation, but preserving audible character takes priority
-over the earlier aspiration of more than 80% lower CPU. That reduction remains an investigation
-target, not an acceptance requirement that overrides retained circuits. No additional processing
-threads are part of this redesign. Saved parameter IDs, automation, gain staging, sidechain routing
-and stereo modes must remain compatible. Keep the original circuit engine as the comparison reference.
+VERSION is **1.2.0**. Eco is implemented as the default for new instances. The
+current engine selector is Eco, Circuit, HQ, with independent oversampling. The
+original circuit engine and legacy Derp processing remain available. Older states without the new Eco flag restore
+with Eco off. Existing quality parameter IDs, values, ordering and automation ranges
+are unchanged; a new boolean is appended with AU version hint 2.
 
-VERSION reads 1.1.3. The 1.1.2 detector/quality checkpoint is committed; 1.1.3 adds an exact paired linear-solver optimization. This is the development version for this work, not a newly released binary.
-Default now uses the reduced detector; HQ and Derp preserve the original detector at 2x and 4x
-respectively at 44.1/48 kHz. Supply remains a separate comparison option; EQ/output modules accept fitted profiles but are not yet substituted
-into the channel. See [HYBRID_ENGINE.md](HYBRID_ENGINE.md) for implementation and validation status.
+The [measurement report](measurements/eco-1.2.0/README.md) records a passing 10x
+minimum across the declared matrix, with 20x reached at 48 kHz only. The user subsequently requested packaging and publication of 1.2.0; see the
+[release verification](measurements/release-1.2.0/README.md). Program-material
+listening acceptance and actual multi-instance DAW playback remain unverified
+and are disclosed in the release notes. The version bump alone does not certify sound.
 
-CPU reduction means processing time below 20% of the current v1.1.1 reference on identical inputs,
-settings, hardware, compiler and buffer size. The observed steady stereo reference of 3.946 ms at
-48 kHz/256 samples gives a target below 0.7892 ms per block. The demanding stereo recording replay
-averaged about 22.38 ms of process CPU at 48 kHz/1,024 samples, giving a target below about 4.48 ms.
-These are budgets, not achieved results or performance predictions. Re-measure references alongside
-each candidate, including callback tails and multiple active instances.
+Keep v1.1.4 as the sound and performance reference. Its exact clean source checkpoint
+is `a80455549b9b92466f73d9017b8127fad779f013`. Retain the original circuit engine for
+offline dataset generation and A/B comparison. Work is isolated on
+`codex/reduced-engine-1.2.0`; the installed release is not replaced.
 
-"90% of the sound" is a listening preference, not a defined numerical measure. Final acceptance needs
-level-matched comparisons with the user. Numerical comparisons diagnose what changed; a waveform
-error percentage alone cannot certify perceived similarity.
+Saved parameter IDs, automation, state restoration, gain staging, external sidechain,
+stereo link, dual mono, bypass and reported latency must stay compatible. Keep the
+existing optical-response model initially. No additional audio processing threads.
 
-## Replacement signal path
+## Independent controls follow-up
 
-```text
-input trim / calibration
-  -> retained input/preamp circuit
-  -> retained tube and warm-feedback circuit
-  -> preamp output gain
-  -> feedback compressor gain cell + compressor coloration
-  -> compressor output gain
-  -> fitted shelving and parametric EQ filters
-  -> output coloration + master/output calibration
-  -> output trim / meters
+The engine selector is now Eco, Circuit (renamed Default), HQ. Oversampling is a
+separate control: 2x, 4x, 8x (Derp symbol), or 1x when the selected button is toggled
+off. Every factor is available in every engine. New instances retain Eco at 1x.
+Old states keep their adaptive oversampling until the user changes an engine or
+factor. The first engine click freezes the old effective factor. The legacy Quality
+parameter range and original engine code are retained.
 
-compressor output or external sidechain
-  -> rectification + detector states + attack/release/Auto behavior
-  -> existing optical-response model
-  -> compressor gain cell (preserve causal feedback timing)
+## Performance acceptance
 
-estimated signal load
-  -> compact supply-sag/ripple states
-  -> modulation of relevant nonlinear models
-```
+**Minimum: 10x faster than v1.1.4. Stretch: 20x faster.**
 
-## What changes
+Define speedup as reference process CPU time divided by candidate process CPU time
+for identical input, controls, session rate, buffer size, channel count, quality,
+noise, tolerances, supply setting, hardware and compiler optimization.
+10x requires at most 10% of reference cost (90% lower CPU); 20x requires at most 5%
+(95% lower CPU). The previous 5x / 80% goal is superseded. Results are recorded separately in the measurement report.
 
-| Existing work | Proposed replacement | Character to measure and retain |
-| --- | --- | --- |
-| Microphone and instrument circuits | Retain the existing circuits; optimize implementation | Gain-knob law, impedance/loading response, low cut, overload onset and recovery |
-| Tube circuit and its feedback network | Retain the tube and warm-feedback circuits | Asymmetry, harmonics versus drive/frequency, both gain and plate settings, transient memory |
-| Compressor detector circuit | Small stateful detector model fitted to transient measurements | Threshold/ratio dependence, slow timing, program dependence, Auto behavior and feedback topology |
-| Compressor audio circuit | Retain initially; evaluate simplifying buffers while preserving tube coloration | Compression amount, makeup-gain law, tube coloration and behavior under overload |
-| EQ circuits and intermediate buffers | Cascaded digital filters fitted across knob settings, with coloration retained where audible | Actual shelf/peak shapes, phase, bandwidth/range switches and control interactions |
-| Output circuit | Calibrated gain, filters and nonlinear output model | Output level, drive response and clipping character |
-| Power-supply circuit | Low-cost load envelope, sag/recovery and ripple model | Audible modulation under sustained drive and changing loads |
-| Full-path oversampling | Local oversampling around nonlinear coloration stages | Aliasing and transient response; account for changed filter phase/delay |
+The initial October 9 native arm64 Release stereo Default measurement, 48 kHz,
+PSU off, noise/tolerances on, seed 1, 0.126-peak 220 Hz sine, 350 blocks with the
+first 51 excluded, yielded:
 
-The existing Vactrol model is already a small stateful optical-response algorithm. Reuse it initially;
-evaluate replacing the detector that feeds it. Retain the compressor audio circuit initially. Do not reduce the whole
-compressor to a generic peak detector and one gain multiplier without measuring its dynamic behavior.
-Likewise, one generic saturation curve is not sufficient evidence of a tube-stage match.
+| Buffer | v1.1.4 CPU ms/block | 10x budget | 20x budget |
+| --- | ---: | ---: | ---: |
+| 256 samples | 2.346 | 0.2346 ms | 0.1173 ms |
+| 64 samples | 0.582 | 0.0582 ms | 0.0291 ms |
 
-The current implementation runs all audio-stage circuits at the oversampled rate, while the detector
-already runs at approximately 48 kHz. Merely lowering the whole chain's Default rate from 2x to 1x
-cannot by itself deliver an 80% reduction and can increase aliasing. Retain the existing 2x filtering
-around the retained nonlinear circuits; validate any further reduction separately. Run ordinary linear
-filters and gain stages at the host rate when their fitted response permits it. Detector and supply
-state cadence must be selected through transient and modulation tests, not an arbitrary low rate.
+These single short runs establish provisional budgets only. They are not an idle-M1
+certification, a maximum-load benchmark or a claim of multi-instance reliability.
+The 256-sample instrumented profile attributes about 69.5% of stage time to microphone,
+tube and compressor audio, about 16.6% to EQ, and 1.2% to the detector. Timers affect
+cost and exclude chain oversampling/scaling. GUI work is not measured by this native
+harness. Neither the old tube-law lookup nor replacing EQ alone can meet this budget.
 
-## Development order
+Freeze repeated baseline workloads before evaluating candidates: mono/stereo,
+48/96 kHz, buffers 32/64/256, silence, ordinary input, full scale, bursts, loud gain,
+slow compression, Auto, sidechain, PSU on/off and gain/EQ automation. Use equal audio
+durations across buffer sizes and sufficient warmup. Alternate reference/candidate
+order, with builds/tests/analyzers stopped. Record mean process CPU plus p99/worst
+wall time, deadline misses and nonfinite samples. Use matched absolute budgets per
+workload; do not select the slowest reference or change controls to inflate speedup.
 
-1. Freeze reproducible reference workloads and collect stage measurements. Record gain/frequency
-   response, distortion versus drive/frequency, overload recovery, compression curves and transient
-   histories across control settings. Include combined stages: downstream loading and supply feedback
-   mean isolated measurements alone cannot establish a complete-channel match.
-2. Establish Plugin Doctor baselines for the released reference and solver-fixed engine, with
-   explicit matched states. The Plugin Doctor captures compare released and solver-fixed circuits; do not label them
-   as a hybrid comparison. Follow the supplied v2.7 manual and the measurement protocol.
-3. Prototype cheaper EQ/buffer processing and a stateful detector while retaining the preamp,
-   tube, warm-feedback and compressor audio circuits. Validate each change against the baseline.
-4. Evaluate a compact supply model through sag, recovery and modulation measurements. Retain
-   the circuit supply option until listening demonstrates that its approximation is acceptable.
-5. Evaluate running fitted linear processing at the session rate while retained nonlinear circuits
-   remain oversampled. Re-check response, phase, latency and aliasing after any routing change.
-6. Integrate validated replacements with controls, saved states and meters. Compare complete-channel
-   sound and CPU in Plugin Doctor and host playback, including slow compressor timing. Report the
-   attainable CPU reduction honestly; retained nonlinear circuits limit the potential saving.
+## Runtime design
 
-Detector-only optimization cannot deliver an 80% whole-plugin reduction: the earlier instrumented
-run attributed about 28% of stage time to it. The tube, compressor audio and microphone stages were
-about 16%, 16% and 14% respectively. These measurements prioritize work; they do not predict the
-speed or quality of replacements. An 80% reduction may be unattainable while retaining the selected circuit stages. Measure the hybrid
-before setting a firm saving target.
+Replace Newton/matrix work with fixed-cost measured stages:
 
-## Validation gates
+1. Preamp, tube/warm feedback and compressor audio: fitted pre/post filters around
+   asymmetric nonlinear maps, with one or a few measured dynamic states. Sweep drive,
+   gain, input/plate switches, warm feedback and relevant slow state offline. Factor
+   out controls that only scale gain or time constants.
+2. EQ/buffers/output: stable fitted filters over the actual control/rate domain,
+   with a reduced coloration/overload model where measurements show it matters.
+   The existing default-only 96 kHz fit is not sufficient for general use.
+3. Detector and optical path: preserve causal feedback and the existing optical model;
+   validate manual/Auto histories and slow release. The released Default detector
+   already differs from the circuit detector, so compare against the correct mode.
+4. Supply: fitted load/recovery/ripple states with measured rail/plate transitions.
+   Control-rate updates must pass modulation tests. Do not initialize a runtime
+   reduced engine by solving all original circuits.
+5. Antialiasing: evaluate ADAA and local 2x nonlinear oversampling against the reference.
+   Linear EQ, detectors and meters run at session/control rate when validated.
+   The original quality modes retain their behavior; Eco is a separate host flag and
+   runs at 1x with residual ADAA, with zero reported latency.
+6. Runtime tables and coefficients are allocated/prepared outside processing.
+   Block updates and parameter ramps feed fixed-size states; vectorize independent
+   work where beneficial. No callback allocation, locks, circuit solves or live
+   table fitting in the final reduced runtime path.
 
-- Keep independent measurement fixtures separate from those used to fit models. Cover multiple
-  rates, drive levels, tolerance seeds, controls, source impedances and input combinations.
-- Compare complete-channel frequency response, harmonics, gain-reduction trajectories, attack/release,
-  Auto timing, silence/noise, clipping and overload recovery. Publish errors rather than claiming
-  "90%" from a single correlation or null test.
-- Include vocals, drums, bass, dense mixes, impulses, bursts and high-frequency signals. Preserve
-  private recordings outside the repository. Use matched output levels for listening comparisons.
-- Require finite stable output, clean silence, safe bypass transitions and no callback allocations.
-  Test automation, restoration, external sidechain, linked stereo and dual mono.
-- Alternate benchmark order with no concurrent builds or tests, repeat runs and compare both average
-  CPU and callback tails. Verify actual multi-instance host playback at 48 kHz/1,024 samples and
-  smaller buffers. An inexpensive steady tone alone is not success.
+A generic saturator is not a calibrated replacement. Tiny device-law approximation
+errors previously changed the nonlinear solver's recovery path; the new work must
+identify complete stage behavior rather than insert another LUT into Newton.
 
-Keep the UI focused on the sound and controls. Do not expose circuit implementation details as a
-mandatory step in ordinary use. Signing/notarization continues through the user's Terminal workflow.
+## Delivery sequence and gates
+
+1. Version and freeze the reference; make sample-rate/noise settings explicit in the
+   benchmark. Establish the workload matrix and retain raw timing and sound captures.
+2. Generate offline nonlinear datasets and fit the dominant preamp/tube/compressor
+   stages. Separate fitting fixtures from fresh validation. Measure individual and
+   combined stages, including downstream loading and supply feedback.
+3. Assemble a complete experimental reduced chain, retaining original-engine A/B
+   tools. Integrate control/rate-aware EQ, output, detector and supply models.
+4. Check full-channel response, harmonic levels 2–5 versus drive/frequency, two-tone
+   IMD, aliasing, impulses, bursts, gain-reduction trajectories and overload recovery.
+   Preserve raw gain/delay differences; any level-matched listening normalization
+   must be separately reported. Null differences diagnose changes, not a sound score.
+5. Run no-allocation, finite/silence, automation, routing, state restoration, bypass,
+   stereo and latency regression checks. Assess click-free transitions and recovery.
+6. Require at least 10x CPU improvement across the declared operating workload matrix;
+   report any failing mode or workload. Seek 20x without abandoning sound gates.
+   Verify actual multi-instance host playback and callback tails on the target M1.
+7. Present level-matched program-material A/Bs for listening acceptance before
+   packaging a public release. Eco is already the local new-instance default as requested. Include vocals, drums, bass and
+   dense mixes, with private recordings kept outside the repository.
+
+No speedup or perceptual sound-match claim is accepted from a single sine benchmark.
+The minimum performance target and sound acceptance both apply; a fast but rejected
+model remains experimental. The reference implementation remains available offline.

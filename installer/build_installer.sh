@@ -31,6 +31,8 @@ mkdir -p "$LICENSE_ROOT/Tube Channel" "$LICENSE_ROOT/GoodLookinUI" "$LICENSE_ROO
 mkdir -p "$RESOURCE_ROOT/Manual"
 cp docs/USER_MANUAL.md docs/ui-analogue.png docs/ui-digital.png docs/ui-system-analogue.png \
    docs/ui-system-digital.png docs/signal-path.svg "$RESOURCE_ROOT/Manual/"
+cp LICENSE "$RESOURCE_ROOT/LICENSE"
+cp THIRD_PARTY_LICENSES.md "$RESOURCE_ROOT/THIRD_PARTY_LICENSES.md"
 cp LICENSE "$LICENSE_ROOT/Tube Channel/LICENSE"
 cp THIRD_PARTY_LICENSES.md "$LICENSE_ROOT/Tube Channel/THIRD_PARTY_LICENSES.md"
 cp third_party/GoodLookinUI/LICENSE "$LICENSE_ROOT/GoodLookinUI/LICENSE"
@@ -95,6 +97,15 @@ for entry in "${BUNDLES[@]}"; do
   pkgbuild --root "$OUT/stage/$id" --install-location "$dest" --identifier "com.opengrid.tubechannel.$id" \
            --version "$VERSION" "$OUT/pkgs/TubeChannel-$id.pkg" >/dev/null
 done
+
+# Include an exact build/dependency and license inventory with the installed documentation.
+if [ -f "$BUILD/release-manifest.json" ]; then
+  cp "$BUILD/release-manifest.json" "$RESOURCE_ROOT/Manual/release-manifest.json"
+fi
+if [ -f "docs/RELEASE_$VERSION.md" ]; then
+  cp "docs/RELEASE_$VERSION.md" "$RESOURCE_ROOT/Manual/"
+fi
+find "$LICENSE_ROOT" -type f | LC_ALL=C sort | sed "s|^$LICENSE_ROOT/||" > "$LICENSE_ROOT/INDEX.txt"
 
 pkgbuild --root "$OUT/stage/licenses" --install-location "/Library/Application Support" \
          --identifier "com.opengrid.tubechannel.licenses" --version "$VERSION" \

@@ -404,12 +404,40 @@ public:
     void bind(juce::AudioProcessorValueTreeState& apvts, const juce::String& id)
     {
         attachment.reset();
+        ecoAttachment.reset(); ecoSelected = false; modeBank = osBank = false;
         param = static_cast<juce::RangedAudioParameter*>(apvts.getParameter(id));
-        attachment = std::make_unique<juce::ParameterAttachment>(*param, [this](float v) { selected = juce::roundToInt(v); repaint(); });
+        attachment = std::make_unique<juce::ParameterAttachment>(*param, [this](float v) { legacyQuality = juce::roundToInt(v); selected = ecoSelected ? 3 : legacyQuality; repaint(); });
+        attachment->sendInitialUpdate();
+    }
+    // Eco has its own saved flag so the released quality automation range
+    // remains unchanged, including ramps between the original choices.
+    void bindQuality(juce::AudioProcessorValueTreeState& apvts, const juce::String& qualityId, const juce::String& ecoId,
+                     const juce::String& osId, std::function<double()> rate)
+    {
+        bind(apvts, qualityId);
+        modeBank = true;
+        oversamplingParam = apvts.getParameter(osId);
+        sampleRate = std::move(rate);
+        attachment = std::make_unique<juce::ParameterAttachment>(*param, [this](float v) {
+            legacyQuality = juce::roundToInt(v); updateMode();
+        });
+        ecoAttachment = std::make_unique<juce::ParameterAttachment>(*apvts.getParameter(ecoId), [this](float v) {
+            ecoSelected = v > .5f; updateMode();
+        });
+        attachment->sendInitialUpdate(); ecoAttachment->sendInitialUpdate();
+    }
+    void bindOversampling(juce::AudioProcessorValueTreeState& apvts, const juce::String& id, std::function<int()> legacyStages)
+    {
+        bind(apvts, id); osBank = true;
+        legacyOsStages = std::move(legacyStages);
+        attachment = std::make_unique<juce::ParameterAttachment>(*param, [this](float v) {
+            selected = juce::roundToInt(v) - 2; repaint();
+        });
         attachment->sendInitialUpdate();
     }
     void paint(Graphics& g) override
     {
+        refreshLegacyOversampling();
         const auto& sk = *skin;
         float x = 0;
         for (int i = 0; i < keys.size(); ++i)
@@ -425,7 +453,7 @@ public:
             g.fillRoundedRectangle(r, 2.5f);
             const Colour ink = lit ? juce::Colours::black : sk.legend;
             if (i == derp)
-                drawDerpFace(g, r.reduced(8, 5), ink);
+                drawDerpFace(g, r.reduced(r.getWidth() < 45.f ? 3.f : 8.f, 5.f), ink);
             else
             {
                 g.setColour(ink);
@@ -436,6 +464,7 @@ public:
     }
     void mouseDown(const juce::MouseEvent& e) override
     {
+        refreshLegacyOversampling();
         float x = 0;
         int hit = keys.size() - 1;
         for (int i = 0; i < keys.size(); ++i)
@@ -443,8 +472,24 @@ public:
             x += float(getWidth()) * weights[size_t(i)] / total;
             if (float(e.x) < x) { hit = i; break; }
         }
+        if (modeBank)
+        {
+            // Freeze legacy rate-dependent oversampling before changing modes.
+            // From this point the two controls are independent.
+            if (juce::roundToInt(oversamplingParam->convertFrom0to1(oversamplingParam->getValue())) == 0)
+            {
+                const int shift = std::max(0, int(std::lround(std::log2(std::max(1.0, sampleRate()) / 48000.0))));
+                const int stages = ecoSelected ? 0 : std::max(0, (legacyQuality == 2 ? 2 : 1) - shift);
+                oversamplingParam->beginChangeGesture();
+                oversamplingParam->setValueNotifyingHost(oversamplingParam->convertTo0to1(float(stages + 1)));
+                oversamplingParam->endChangeGesture();
+            }
+            if (hit != 0) attachment->setValueAsCompleteGesture(float(hit == 1 ? 0 : 1));
+            ecoAttachment->setValueAsCompleteGesture(hit == 0 ? 1.0f : 0.0f);
+            return;
+        }
         if (attachment != nullptr)
-            attachment->setValueAsCompleteGesture(float(hit));
+            attachment->setValueAsCompleteGesture(float(osBank ? (hit == selected ? 1 : hit + 2) : hit));
     }
     const Skin* skin;
 private:
@@ -453,6 +498,16 @@ private:
     std::vector<float> weights;
     float total = 1;
     juce::RangedAudioParameter* param = nullptr;
-    std::unique_ptr<juce::ParameterAttachment> attachment;
+    std::unique_ptr<juce::ParameterAttachment> attachment, ecoAttachment;
+    int legacyQuality = 0;
+    bool ecoSelected = false, modeBank = false, osBank = false;
+    juce::RangedAudioParameter* oversamplingParam = nullptr;
+    std::function<double()> sampleRate;
+    std::function<int()> legacyOsStages;
+    void refreshLegacyOversampling() {
+        if(osBank && juce::roundToInt(param->convertFrom0to1(param->getValue())) == 0)
+            selected = legacyOsStages() - 1;
+    }
+    void updateMode() { selected = ecoSelected ? 0 : legacyQuality == 0 ? 1 : 2; repaint(); }
 };
 } // namespace tc::ui

@@ -78,12 +78,12 @@ private:
     struct Key
     {
         double sampleRate = 0;
-        int maxBlock = 0, channels = 0, quality = 0, seed = 0;
+        int maxBlock = 0, channels = 0, quality = 0, oversampling = 1, seed = 0;
         bool linear = false, tolerances = false;
         bool operator==(const Key& o) const
         {
             return sampleRate == o.sampleRate && maxBlock == o.maxBlock && channels == o.channels && quality == o.quality &&
-                   seed == o.seed && linear == o.linear && tolerances == o.tolerances;
+                   oversampling == o.oversampling && seed == o.seed && linear == o.linear && tolerances == o.tolerances;
         }
     };
     Key requestedKey() const;

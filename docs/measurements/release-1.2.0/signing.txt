@@ -1,0 +1,60 @@
+dist/release-1.2.0/stage/vst3/Tube Channel.vst3: replacing existing signature
+dist/release-1.2.0/stage/vst3/Tube Channel.vst3: valid on disk
+dist/release-1.2.0/stage/vst3/Tube Channel.vst3: satisfies its Designated Requirement
+dist/release-1.2.0/stage/au/Tube Channel.component: replacing existing signature
+dist/release-1.2.0/stage/au/Tube Channel.component: valid on disk
+dist/release-1.2.0/stage/au/Tube Channel.component: satisfies its Designated Requirement
+dist/release-1.2.0/stage/clap/Tube Channel.clap: replacing existing signature
+dist/release-1.2.0/stage/clap/Tube Channel.clap: valid on disk
+dist/release-1.2.0/stage/clap/Tube Channel.clap: satisfies its Designated Requirement
+dist/release-1.2.0/stage/lv2/Tube Channel.lv2/libTube Channel.so: replacing existing signature
+dist/release-1.2.0/stage/lv2/Tube Channel.lv2/libTube Channel.so: valid on disk
+dist/release-1.2.0/stage/lv2/Tube Channel.lv2/libTube Channel.so: satisfies its Designated Requirement
+dist/release-1.2.0/stage/app/Tube Channel.app: replacing existing signature
+dist/release-1.2.0/stage/app/Tube Channel.app: valid on disk
+dist/release-1.2.0/stage/app/Tube Channel.app: satisfies its Designated Requirement
+built dist/release-1.2.0/TubeChannel-1.2.0-unsigned.pkg
+productsign: using timestamp authority for signature
+productsign: signing product with identity "Developer ID Installer: Marcos Deida (ZQYU67JUBH)" from keychain /Users/marcosdeida/Library/Keychains/login.keychain-db
+productsign: adding certificate "Developer ID Certification Authority"
+productsign: adding certificate "Apple Root CA"
+productsign: Wrote signed product archive to dist/release-1.2.0/TubeChannel-1.2.0.pkg
+Package "TubeChannel-1.2.0.pkg":
+   Status: signed by a developer certificate issued by Apple for distribution
+   Signed with a trusted timestamp on: 2026-10-09 16:28:49 +0000
+   Certificate Chain:
+    1. Developer ID Installer: Marcos Deida (ZQYU67JUBH)
+       Expires: 2027-02-01 22:12:15 +0000
+       SHA256 Fingerprint:
+           AA 66 2C 8E 32 2B 7C 09 D3 29 D8 21 BC 3F 94 F6 F8 2D D7 9D CB 8A 
+           23 19 6E 0D 8E B7 81 FE 40 F0
+       ------------------------------------------------------------------------
+    2. Developer ID Certification Authority
+       Expires: 2027-02-01 22:12:15 +0000
+       SHA256 Fingerprint:
+           7A FC 9D 01 A6 2F 03 A2 DE 96 37 93 6D 4A FE 68 09 0D 2D E1 8D 03 
+           F2 9C 88 CF B0 B1 BA 63 58 7F
+       ------------------------------------------------------------------------
+    3. Apple Root CA
+       Expires: 2035-02-09 21:40:36 +0000
+       SHA256 Fingerprint:
+           B0 B1 73 0E CB C7 FF 45 05 14 2C 49 F1 29 5E 6E DA 6B CA ED 7E 2C 
+           68 C5 BE 91 B5 A1 10 01 F0 24
+
+Conducting pre-submission checks for TubeChannel-1.2.0.pkg and initiating connection to the Apple notary service...
+Submission ID received
+  id: 9bdc6f64-a053-44c6-b6de-093a0f82db71
+Successfully uploaded file
+  id: 9bdc6f64-a053-44c6-b6de-093a0f82db71
+  path: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.0/TubeChannel-1.2.0.pkg
+Waiting for processing to complete.
+Current status: In Progress...Current status: In Progress....Current status: In Progress.....Current status: In Progress......Current status: Accepted.......Processing complete
+  id: 9bdc6f64-a053-44c6-b6de-093a0f82db71
+  status: Accepted
+
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.0/TubeChannel-1.2.0.pkg
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.0/TubeChannel-1.2.0.pkg
+The staple and validate action worked!
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.0/TubeChannel-1.2.0.pkg
+The validate action worked!
+signed, notarized and stapled: dist/release-1.2.0/TubeChannel-1.2.0.pkg

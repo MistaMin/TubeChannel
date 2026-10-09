@@ -1,0 +1,31 @@
+AudioUnit-SDK/LICENSE.txt
+CLAP/clap-LICENSE
+CLAP/clap-helpers-LICENSE
+CLAP/clap-juce-extensions-LICENSE.md
+GoodLookinUI/LICENSE
+INDEX.txt
+JUCE/LICENSE.md
+JUCE/modules/juce_audio_formats/codecs/ogg/COPYING
+JUCE/modules/juce_audio_formats/codecs/opus/libopusenc/COPYING
+JUCE/modules/juce_audio_formats/codecs/opus/opus/COPYING
+JUCE/modules/juce_audio_formats/codecs/opus/opus/LICENSE_PLEASE_READ.txt
+JUCE/modules/juce_audio_formats/codecs/opus/opusfile/COPYING
+JUCE/modules/juce_audio_formats/codecs/vorbis/COPYING
+JUCE/modules/juce_core/zip/zlib/LICENSE
+JUCE/modules/juce_graphics/drawables/lunasvg/LICENSE
+JUCE/modules/juce_graphics/drawables/lunasvg/plutovg/LICENSE
+JUCE/modules/juce_graphics/fonts/harfbuzz/COPYING
+JUCE/modules/juce_graphics/image_formats/libwebp/COPYING
+JUCE/modules/juce_graphics/image_formats/pnglib/LICENSE
+JUCE/modules/juce_graphics/unicode/sheenbidi/LICENSE
+LV2-SDK/lilv/COPYING
+LV2-SDK/lv2/COPYING
+LV2-SDK/serd/COPYING
+LV2-SDK/sord/COPYING
+LV2-SDK/sratom/COPYING
+Tube Channel/LICENSE
+Tube Channel/THIRD_PARTY_LICENSES.md
+VST3-SDK/LICENSE.txt
+VST3-SDK/base/LICENSE.txt
+VST3-SDK/pluginterfaces/LICENSE.txt
+VST3-SDK/public.sdk/LICENSE.txt

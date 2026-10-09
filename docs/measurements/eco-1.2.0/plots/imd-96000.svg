@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="720" height="355" preserveAspectRatio="xMinYMin meet" viewBox="0 0 720 355" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="720" height="355"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-355)" style="clip-path: url(#clip)">
+		<g transform="">
+			<text x="40" y="328" style="font-family: Helvetica-Bold; font-size: 15px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,656) scale(1,-1)">Two-tone IMD at 96 kHz</text>
+			<text x="40" y="307" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,614) scale(1,-1)">Fixture 17. dBc relative to each output fundamental; raw amplitudes retained in holdout.csv.</text>
+			<g transform="">
+				<g transform="">
+					<rect x="113.82352941176471" y="144.23274253817263" width="89.70588235294117" height="131.76725746182737" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(20%,36%,54%); fill-rule: evenodd;"/>
+					<rect x="418.8235294117647" y="143.49667010513645" width="89.70588235294116" height="132.50332989486355" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(20%,36%,54%); fill-rule: evenodd;"/>
+					<rect x="221.47058823529412" y="144.9223033993456" width="89.70588235294119" height="131.0776966006544" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(78%,43%,15%); fill-rule: evenodd;"/>
+					<rect x="526.4705882352941" y="146.62330719425748" width="89.70588235294122" height="129.37669280574252" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(78%,43%,15%); fill-rule: evenodd;"/>
+					<g transform=""/>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 60,276 L 670,276 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 60,276 L 60,271 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 365,276 L 365,271 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 670,276 L 670,271 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,212.5,271)">
+							<text x="-23.116500000000002" y="-9.0" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-18) scale(1,-1)">Lower probe</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,517.5,271)">
+							<text x="-22.616999999999997" y="-9.0" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-18) scale(1,-1)">Upper probe</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 60,66 L 60,276 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 60,66 L 55,66 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 60,108 L 55,108 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 60,150 L 55,150 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 60,192 L 55,192 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 60,234 L 55,234 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 60,276 L 55,276 Z" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,55,66)">
+							<text x="-16.497" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">-100</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,55,108)">
+							<text x="-11.997" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">-80</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,55,150)">
+							<text x="-11.997" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">-60</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,55,192)">
+							<text x="-11.997" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">-40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,55,234)">
+							<text x="-11.997" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">-20</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,55,276)">
+							<text x="-4.5" y="-3.6000000000000005" style="font-family: Times-Roman; font-size: 9px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-7) scale(1,-1)">0</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<g transform="">
+				<rect x="147.47" y="23" width="10.0" height="10" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1; fill: rgb(20%,36%,54%); fill-rule: evenodd;"/>
+				<text x="70" y="24.585" style="font-family: Times-Roman; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,49) scale(1,-1)">Circuit reference</text>
+				<rect x="239.94" y="23" width="10.0" height="10" style="stroke: rgb(0%,0%,0%); stroke-linecap: butt; stroke-width: 1; fill: rgb(78%,43%,15%); fill-rule: evenodd;"/>
+				<text x="162.47" y="24.585" style="font-family: Times-Roman; font-size: 10px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,49) scale(1,-1)">Eco 1x</text>
+			</g>
+		</g>
+	</g>
+</svg>

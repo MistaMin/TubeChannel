@@ -1,4 +1,4 @@
-// Benchmark the processing chain without JUCE at 48 kHz, including deadline misses and automation.
+// Benchmark the processing chain without JUCE, including deadline misses and automation.
 #include "../Source/Plugin/Chain.h"
 
 #include <algorithm>
@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 {
     if (argc < 2)
     {
-        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0] [automate=0:off/1:gain/2:EQ] [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1:quality/0:circuit/1:prototype] [compactSupply=0]");
+        std::puts("usage: chain_bench <netlist dir> [channels=2] [tolerances=1] [psu=1] [blocks=400] [amplitude=0.126] [block=256] [quality=0:Default/1:HQ/2:Derp/3:Eco] [automate=0:off/1:gain/2:EQ] [attack=0.5] [release=0.5] [bursts=0] [detectorOverride=-1:quality/0:circuit/1:prototype] [compactSupply=0] [sampleRate=48000] [noise=1] [warmupBlocks=51]");
         return 2;
     }
     const std::string dir = argv[1];
@@ -28,9 +28,11 @@ int main(int argc, char** argv)
     const double attack = argc > 10 ? std::atof(argv[10]) : 0.5;
     const double release = argc > 11 ? std::atof(argv[11]) : 0.5;
     const bool bursts = argc > 12 && std::atoi(argv[12]) != 0;
-    constexpr int warmup = 51;
-    if (channels < 1 || channels > 2 || blocks <= warmup || block < 1 || quality < 0 || quality > 2 || automate < 0 || automate > 2 || !std::isfinite(amplitude)
-        || !std::isfinite(attack) || !std::isfinite(release) || attack < 0 || attack > 1 || release < 0 || release > 1)
+    const double sampleRate = argc > 15 ? std::atof(argv[15]) : 48000.0;
+    const int warmup = argc > 17 ? std::atoi(argv[17]) : 51;
+    if (channels < 1 || channels > 2 || warmup < 0 || blocks <= warmup || block < 1 || quality < 0 || quality > 3 || automate < 0 || automate > 2 || !std::isfinite(amplitude)
+        || !std::isfinite(attack) || !std::isfinite(release) || attack < 0 || attack > 1 || release < 0 || release > 1
+        || !std::isfinite(sampleRate) || sampleRate < 8000.0 || sampleRate > 384000.0)
     {
         std::puts("invalid benchmark configuration");
         return 2;
@@ -41,6 +43,7 @@ int main(int argc, char** argv)
     nets.eq2 = slurp(dir + "/eq2.net"); nets.eq3 = slurp(dir + "/eq3.net"); nets.eq4 = slurp(dir + "/eq4.net");
     nets.out = slurp(dir + "/out.net"); nets.psu = slurp(dir + "/psu.net");
     tc::ChainConfig cfg;
+    cfg.sampleRate = sampleRate;
     cfg.channels = channels;
     cfg.maxBlock = block;
     cfg.quality = static_cast<tubechannel::dsp::Quality>(quality);
@@ -49,7 +52,8 @@ int main(int argc, char** argv)
     if (const auto* tube = std::getenv("TUBE_LOOKUP"))
         cfg.tubeMode = std::atoi(tube) ? tc::TubeMode::Prototype : tc::TubeMode::Original;
     cfg.lockstep = !std::getenv("NOLOCK");
-    std::printf("paired linear layout: %s\n", cfg.tiledLinear ? "tiled" : "reference columns");
+    std::printf("audio engine: %s\n", quality==3?"Eco reduced":"circuit");
+    if(quality!=3)std::printf("paired linear layout: %s\n", cfg.tiledLinear ? "tiled" : "reference columns");
     const int detectorOverride = argc > 13 ? std::atoi(argv[13]) : -1;
     if (detectorOverride < -1 || detectorOverride > 1) { std::puts("invalid detector override"); return 2; }
     cfg.detectorMode = detectorOverride < 0 ? tc::DetectorMode::FollowQuality
@@ -58,7 +62,7 @@ int main(int argc, char** argv)
     tc::Chain chain;
     const auto t0 = std::chrono::steady_clock::now();
     chain.prepare(cfg, nets);
-    std::printf("tube current: %s\n", chain.config().engine.compactTubes ? "lookup" : "original");
+    if(quality!=3)std::printf("tube current: %s\n", chain.config().engine.compactTubes ? "lookup" : "original");
     std::printf("engine: detector %s, supply %s\n", chain.config().engine.compactDetector ? "prototype" : "circuit",
                 chain.config().engine.compactSupply ? "prototype" : "circuit");
     std::printf("prepare %.2f s (%d ch, factor %dx, automation %s)\n", std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count(), channels, chain.factor(), automate ? "on" : "off");
@@ -70,13 +74,17 @@ int main(int argc, char** argv)
     std::printf("attack %.2f, release %.2f, stimulus %s\n", attack, release, bursts ? "bursts" : "continuous sine");
     tc::ChainGlobals g;
     g.psuModel = argc > 4 ? std::atoi(argv[4]) != 0 : true;
+    g.noise = argc > 16 ? std::atoi(argv[16]) != 0 : true;
+    std::printf("session %.0f Hz, noise %s, PSU simulation %s, tolerances %s, seed %d\n",
+                sampleRate, g.noise ? "on" : "off", g.psuModel ? "on" : "off",
+                cfg.tolerances ? "on" : "off", cfg.seed);
     std::vector<float> L(size_t(block), 0.f), R(size_t(block), 0.f);
     std::vector<double> times;
     times.reserve(size_t(blocks - warmup));
     float* audio[2] = { L.data(), R.data() };
     long ph = 0;
     double worst = 0, total = 0, totalCpu = 0;
-    const double budget = double(block) / 48000.0;
+    const double budget = double(block) / sampleRate;
     int late = 0;
     int nonfinite = 0;
     double peakOutput = 0.0;
@@ -84,7 +92,7 @@ int main(int argc, char** argv)
     {
         for (int i = 0; i < block; ++i, ++ph)
         {
-            const double t = double(ph) / 48000.0;
+            const double t = double(ph) / sampleRate;
             const double cycle = t - std::floor(t);
             const double envelope = bursts ? std::clamp(std::min((cycle - 0.1) / 0.005, (0.4 - cycle) / 0.005), 0.0, 1.0) : 1.0;
             L[size_t(i)] = R[size_t(i)] = float(amplitude * envelope * std::sin(2.0 * 3.14159265 * 220.0 * t));
@@ -123,8 +131,8 @@ int main(int argc, char** argv)
     }
     std::sort(times.begin(), times.end());
     const double perBlock = total / double(times.size());
-    std::printf("block of %d @48k: avg %.2f ms, p99 %.2f ms, worst %.2f ms -> %.0f%% of realtime (%.2f us per oversampled sample per channel)\n",
-                block, perBlock * 1e3, times[size_t(double(times.size() - 1) * 0.99)] * 1e3, worst * 1e3,
+    std::printf("block of %d @%.0f Hz: avg %.2f ms, p99 %.2f ms, worst %.2f ms -> %.0f%% of realtime (%.2f us per oversampled sample per channel)\n",
+                block, sampleRate, perBlock * 1e3, times[size_t(double(times.size() - 1) * 0.99)] * 1e3, worst * 1e3,
                 perBlock / budget * 100.0, perBlock / (double(block) * chain.factor() * channels) * 1e6);
     std::printf("deadline %.3f ms: %d/%zu blocks missed\n", budget * 1e3, late, times.size());
     std::printf("process CPU: avg %.3f ms/block, %.1f%% of realtime (excludes time descheduled)\n",
@@ -136,7 +144,7 @@ int main(int argc, char** argv)
     for (int i = 0; i < 13; ++i) measured += chain.stageTime(i);
     std::puts("Instrumented stage times (timers affect cost; excludes chain oversampling/scaling):");
     for (int i = 0; i < 13; ++i)
-        std::printf("  %-20s %.3f ms/block %5.1f%%\n", names[i], 1000.0 * chain.stageTime(i) / times.size(), 100.0 * chain.stageTime(i) / measured);
+        std::printf("  %-20s %.3f ms/block %5.1f%%\n", names[i], 1000.0 * chain.stageTime(i) / times.size(), measured>0?100.0 * chain.stageTime(i) / measured:0.0);
 #endif
     return nonfinite ? 1 : 0;
 }

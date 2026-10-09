@@ -1,0 +1,7 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/juce
+    Start 16: gui
+1/1 Test #16: gui ..............................   Passed    2.78 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   2.92 sec

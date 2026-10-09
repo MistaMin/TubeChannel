@@ -1,0 +1,18 @@
+[ 50%] Building CXX object CMakeFiles/TubeChannelChainBench.dir/tests/chain_bench.cpp.o
+[100%] Linking CXX executable TubeChannelChainBench
+[100%] Built target TubeChannelChainBench
+[ 50%] Building CXX object CMakeFiles/TubeChannelEcoTest.dir/tests/eco_test.cpp.o
+[100%] Linking CXX executable TubeChannelEcoTest
+[100%] Built target TubeChannelEcoTest
+[ 50%] Building CXX object CMakeFiles/TubeChannelRealtimeTest.dir/tests/realtime_test.cpp.o
+[100%] Linking CXX executable TubeChannelRealtimeTest
+[100%] Built target TubeChannelRealtimeTest
+[ 50%] Building CXX object CMakeFiles/TubeChannelQualityTest.dir/tests/quality_mode_test.cpp.o
+[100%] Linking CXX executable TubeChannelQualityTest
+[100%] Built target TubeChannelQualityTest
+[ 50%] Building CXX object CMakeFiles/TubeChannelReferenceWaveCapture.dir/tests/reference_wave_capture.cpp.o
+[100%] Linking CXX executable TubeChannelReferenceWaveCapture
+[100%] Built target TubeChannelReferenceWaveCapture
+[ 50%] Building CXX object CMakeFiles/TubeChannelEcoCompare.dir/tests/eco_compare.cpp.o
+[100%] Linking CXX executable TubeChannelEcoCompare
+[100%] Built target TubeChannelEcoCompare

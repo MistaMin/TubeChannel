@@ -1,0 +1,2 @@
+reference.wav: 9 s synthetic material, matched -12 dB output trim, peak 0.186443
+eco.wav: 9 s synthetic material, matched -12 dB output trim, peak 0.143576

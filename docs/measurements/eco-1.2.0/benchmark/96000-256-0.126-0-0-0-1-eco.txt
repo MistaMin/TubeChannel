@@ -1,0 +1,9 @@
+audio engine: Eco reduced
+engine: detector prototype, supply prototype
+prepare 0.00 s (2 ch, factor 1x, automation off)
+attack 0.50, release 0.50, stimulus continuous sine
+session 96000 Hz, noise on, PSU simulation off, tolerances on, seed 1
+block of 256 @96000 Hz: avg 0.08 ms, p99 0.08 ms, worst 0.09 ms -> 3% of realtime (0.16 us per oversampled sample per channel)
+deadline 2.667 ms: 0/375 blocks missed
+process CPU: avg 0.081 ms/block, 3.1% of realtime (excludes time descheduled)
+output peak 0.132793, nonfinite samples 0

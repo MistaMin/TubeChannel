@@ -115,7 +115,7 @@ public:
             for (auto* r : { &powerP, &osP, &unitP })
                 drawPlate(g, r->toFloat());
             line(g, float(powerP.getX() + 14), float(powerP.getRight() - 14), float(powerP.getY() + 14), "POWER SUPPLY");
-            line(g, float(osP.getX() + 14), float(osP.getRight() - 14), float(osP.getY() + 14), "QUALITY");
+            line(g, float(osP.getX() + 14), float(osP.getRight() - 14), float(osP.getY() + 14), "MODE / OVERSAMPLING");
             line(g, float(unitP.getX() + 14), float(unitP.getRight() - 14), float(unitP.getY() + 14), "UNIT");
             g.setColour(skin.legend);
             g.setFont(font(11.0f, true));
@@ -385,8 +385,12 @@ private:
         page = &sysCommon;
         power = add(std::make_unique<PowerPanel>(proc, &skin));
         power->setBounds(powerP.getX() + 8, powerP.getY() + 26, powerP.getWidth() - 16, powerP.getHeight() - 32);
-        quality = add(std::make_unique<KeyBank>(&skin, juce::StringArray { "Default", "HQ", "Derp mode" }, 2, std::vector<float> { 1.0f, 1.0f, 1.9f }));
-        quality->setBounds(osP.getX() + 12, osP.getY() + 28, 266, 44);
+        quality = add(std::make_unique<KeyBank>(&skin, juce::StringArray { "Eco", "Circuit", "HQ" }));
+        quality->setBounds(osP.getX() + 12, osP.getY() + 28, 164, 36);
+        quality->setComponentID("engine-mode");
+        oversampling = add(std::make_unique<KeyBank>(&skin, juce::StringArray { "2x", "4x", "Derp" }, 2));
+        oversampling->setBounds(osP.getX() + 180, osP.getY() + 28, 98, 36);
+        oversampling->setComponentID("oversampling");
         toggle(id::linearPhase, "+L LINEAR", "+L MIN PH", osP.getX() + 12 + 50, osP.getY() + 76, 100, false);
         toggle(id::stereoLink, "LINK", "UNLINK", osP.getX() + 145, osP.getY() + 76, 76, false);
         toggle(id::dualMono, "DUAL", "MONO", osP.getX() + 232, osP.getY() + 76, 76, false);
@@ -448,7 +452,13 @@ private:
     void bindAll()
     {
         for (auto& b : bindings) b.rebind(channelB);
-        quality->bind(proc.apvts, id::quality);
+        quality->bindQuality(proc.apvts, id::quality, id::eco, id::oversampling, [this] { return proc.getSampleRate(); });
+        oversampling->bindOversampling(proc.apvts, id::oversampling, [this] {
+            const bool eco = proc.apvts.getRawParameterValue(id::eco)->load() > .5f;
+            const int q = juce::roundToInt(proc.apvts.getRawParameterValue(id::quality)->load());
+            return tubechannel::dsp::stagesFor(eco ? tubechannel::dsp::Quality::Eco : static_cast<tubechannel::dsp::Quality>(q),
+                                             std::max(1.0, proc.getSampleRate()));
+        });
         mains->bind(proc.apvts, id::mains);
     }
 
@@ -467,7 +477,7 @@ private:
     PowerPanel* power = nullptr;
     CompDisplay* comp = nullptr;
     EqDisplay* eqDisp = nullptr;
-    KeyBank *quality = nullptr, *mains = nullptr;
+    KeyBank *quality = nullptr, *oversampling = nullptr, *mains = nullptr;
     juce::String status, status2;
     Rectangle<int> powerP, osP, unitP, vuBounds;
 };
@@ -500,7 +510,8 @@ void TubeChannelEditor::timerCallback()
     const int f = proc.currentFactor();
     const double fs = proc.getSampleRate();
     const bool lin = proc.apvts.getRawParameterValue(id::linearPhase)->load() > 0.5f;
-    juce::String a = juce::String(proc.usesPrototypeCompressor() ? "Prototype comp, " : "Original comp, ") + juce::String(f) + "x, " + juce::String(f * fs / 1000.0, 1) + " kHz";
+    const bool eco = proc.apvts.getRawParameterValue(tc::params::id::eco)->load() > .5f;
+    juce::String a = juce::String(eco ? "Eco, " : proc.usesPrototypeCompressor() ? "Circuit, " : "HQ, ") + juce::String(f) + "x, " + juce::String(f * fs / 1000.0, 1) + " kHz";
     if (proc.isBuilding())
         a = "building the circuit model...";
     content->setStatus(a, (lin ? "linear phase, " : "minimum phase, ") + juce::String(proc.currentLatency()) + " samples latency, CPU " +

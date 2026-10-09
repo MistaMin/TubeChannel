@@ -1,0 +1,11 @@
+audio engine: circuit
+paired linear layout: tiled
+tube current: original
+engine: detector prototype, supply circuit
+prepare 0.20 s (2 ch, factor 1x, automation off)
+attack 1.00, release 1.00, stimulus bursts
+session 96000 Hz, noise on, PSU simulation on, tolerances on, seed 1
+block of 256 @96000 Hz: avg 1.37 ms, p99 1.56 ms, worst 1.63 ms -> 51% of realtime (2.67 us per oversampled sample per channel)
+deadline 2.667 ms: 0/375 blocks missed
+process CPU: avg 1.369 ms/block, 51.4% of realtime (excludes time descheduled)
+output peak 0.929077, nonfinite samples 0

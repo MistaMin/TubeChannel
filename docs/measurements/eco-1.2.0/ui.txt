@@ -1,0 +1,4 @@
+wrote analogue.png
+wrote digital.png
+wrote system-analogue.png
+wrote system-digital.png

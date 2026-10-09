@@ -15,6 +15,7 @@
 
 #include "../Channel/ChannelModel.h"
 #include "../DSP/Oversampler.h"
+#include "../Hybrid/EcoModel.h"
 
 namespace tc
 {
@@ -29,6 +30,7 @@ struct ChainConfig
     int channels = 2;
     tubechannel::dsp::Quality quality = tubechannel::dsp::Quality::Default;
     bool linearPhase = false;
+    int oversamplingStages = -1;          // -1 preserves legacy adaptive factors; 0–3 explicitly select 1–8x
     bool tolerances = true;
     int seed = 1;
     bool tiledLinear = true;             // offline comparison can select the previous inverse layout
@@ -59,20 +61,27 @@ public:
     {
         using namespace tubechannel;
         cfg = c;
-        cfg.engine.compactDetector = c.detectorMode == DetectorMode::Prototype
+        cfg.engine.compactDetector = c.quality == dsp::Quality::Eco || c.detectorMode == DetectorMode::Prototype
             || (c.detectorMode == DetectorMode::FollowQuality && c.quality == dsp::Quality::Default);
         cfg.engine.compactTubes = c.tubeMode == TubeMode::Prototype
             || (c.tubeMode == TubeMode::FollowQuality && c.quality == dsp::Quality::Default);
+        if(c.quality == dsp::Quality::Eco)cfg.engine.compactSupply=true;
         nch = std::max(1, std::min(2, c.channels));
         for (int ch = 0; ch < nch; ++ch)
         {
-            os[ch].prepare(c.sampleRate, c.maxBlock, 1, c.quality, c.linearPhase);
-            osSc[ch].prepare(c.sampleRate, c.maxBlock, 1, c.quality, c.linearPhase);
+            model[ch].reset();eco[ch].reset();
+            os[ch].prepare(c.sampleRate, c.maxBlock, 1, c.quality, c.linearPhase, c.oversamplingStages);
+            osSc[ch].prepare(c.sampleRate, c.maxBlock, 1, c.quality, c.linearPhase, c.oversamplingStages);
+            if(c.quality == dsp::Quality::Eco) {
+                eco[ch]=std::make_unique<hybrid::EcoModel>();
+                eco[ch]->prepare(c.sampleRate * os[ch].factor(),unsigned(c.seed*2+ch+1),c.tolerances);
+                continue;
+            }
             model[ch] = std::make_unique<channel::ChannelModel>();
             model[ch]->setControls({});
             model[ch]->prepare(c.sampleRate * os[ch].factor(), nets, unsigned(c.seed * 2 + ch + 1), c.tolerances, c.psu, cfg.engine);
         }
-        if (nch == 2)
+        if (nch == 2 && c.quality != dsp::Quality::Eco)
             tubechannel::channel::ChannelModel::linkPair(*model[0], *model[1], c.tiledLinear);
         const int cap = c.maxBlock * os[0].factor();
         for (int ch = 0; ch < 2; ++ch)
@@ -96,12 +105,12 @@ public:
     void resetProfile()
     {
         for (int ch = 0; ch < nch; ++ch)
-            for (auto& t : model[ch]->profile) t = 0.0;
+            if(model[ch])for (auto& t : model[ch]->profile) t = 0.0;
     }
     double stageTime(int slot) const
     {
         double t = 0.0;
-        for (int ch = 0; ch < nch; ++ch) t += model[ch]->profile[slot];
+        for (int ch = 0; ch < nch; ++ch) if(model[ch])t += model[ch]->profile[slot];
         return t;
     }
 #endif
@@ -110,7 +119,7 @@ public:
     void collectSolverRecoveries(long* retries, long* rescues) const
     {
         for (int ch = 0; ch < nch; ++ch)
-            for (int k = 0; k < tubechannel::channel::ChannelModel::kStages; ++k)
+            if(model[ch])for (int k = 0; k < tubechannel::channel::ChannelModel::kStages; ++k)
             {
                 const auto& c = model[ch]->blocks[size_t(k)]->c;
                 retries[k] += c.retryCount(); rescues[k] += c.rescueCount();
@@ -134,8 +143,37 @@ public:
         const float outA = float(outScale * (ca.outPlus4 ? 1.0 : 0.2570)), outB = float(outScale * (cb.outPlus4 ? 1.0 : 0.2570));
         const float outGain[2] = { outA, outB };
 
+        if(cfg.quality == tubechannel::dsp::Quality::Eco && factor() == 1) {
+            for(int ch=0;ch<nch;++ch){
+                eco[ch]->configure(ch==0?ca:cb);
+                eco[ch]->globals(g.noise,g.psuModel,g.mainsHz,g.mainsScale);
+                eco[ch]->attach(tel[ch]);
+            }
+            float inputPeak[2]={};
+            for(int i=0;i<n;++i) {
+                double previous[2]={eco[0]->detectorLevel(),nch==2?eco[1]->detectorLevel():0};
+                for(int ch=0;ch<nch;++ch){
+                    inputPeak[ch]=std::max(inputPeak[ch],std::fabs(audio[ch][i]));
+                    const float* side=sc&&nsc>0?sc[std::min(ch,nsc-1)]:nullptr;
+                    audio[ch][i]=float(eco[ch]->process(double(audio[ch][i])*inGain,side?double(side[i])*inGain:0,linked,previous[1-ch])*outGain[ch]);
+                    ms[ch]+=(double(audio[ch][i])*audio[ch][i]-ms[ch])*rmsCoeff;
+                }
+            }
+            for(int ch=0;ch<nch;++ch){
+                eco[ch]->publish(*tel[ch]);tel[ch]->inPeak.store(std::max(tel[ch]->inPeak.load()*.9f,inputPeak[ch]));
+                tel[ch]->outRms.store(float(std::sqrt(ms[ch])));
+            }
+            return;
+        }
+
         for (int ch = 0; ch < nch; ++ch)
         {
+            if(eco[ch]) {
+                eco[ch]->configure(ch == 0 ? ca : cb);
+                eco[ch]->globals(g.noise,g.psuModel,g.mainsHz,g.mainsScale);
+                eco[ch]->attach(tel[ch]);
+                continue;
+            }
             auto& m = *model[ch];
             m.setControls(ch == 0 ? ca : cb);
             m.setNoiseEnabled(g.noise);
@@ -172,7 +210,14 @@ public:
                     std::fill(osSc2[ch].begin(), osSc2[ch].begin() + m * N, 0.0);
             }
             const int total = m * N;
-            if (nch == 1)
+            if(eco[0]) {
+                for(int k=0;k<total;++k) {
+                    const double previous[2]={eco[0]->detectorLevel(),nch==2?eco[1]->detectorLevel():0};
+                    for(int ch=0;ch<nch;++ch)
+                        osOut[ch][size_t(k)]=eco[ch]->process(osIn[ch][size_t(k)],osSc2[ch][size_t(k)],linked,previous[1-ch]);
+                }
+            }
+            else if (nch == 1)
             {
                 auto& A = *model[0];
                 for (int k = 0; k < total; ++k)
@@ -211,7 +256,7 @@ public:
         }
         for (int ch = 0; ch < nch; ++ch)
         {
-            model[ch]->publish(*tel[ch]);
+            if(eco[ch])eco[ch]->publish(*tel[ch]);else model[ch]->publish(*tel[ch]);
             tel[ch]->outRms.store(float(std::sqrt(ms[ch])));
         }
     }
@@ -221,6 +266,7 @@ private:
     int nch = 2;
     tubechannel::dsp::Oversampler os[2], osSc[2];
     std::unique_ptr<tubechannel::channel::ChannelModel> model[2];
+    std::unique_ptr<tubechannel::hybrid::EcoModel> eco[2];
     std::vector<float> scaled[2], scaledSc[2];
     std::vector<double> osIn[2], osSc2[2], osOut[2];
     double ms[2] = { 0.0, 0.0 };

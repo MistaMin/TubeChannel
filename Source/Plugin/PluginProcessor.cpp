@@ -30,7 +30,7 @@ TubeChannelProcessor::TubeChannelProcessor()
 {
     for (auto& v : specRing)
         v.store(0.f);
-    for (const char* id : { tc::params::id::quality, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
+    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
         apvts.addParameterListener(id, this);
     startTimer(250);
 }
@@ -39,7 +39,7 @@ TubeChannelProcessor::~TubeChannelProcessor()
 {
     stopTimer();
     cancelPendingUpdate();
-    for (const char* id : { tc::params::id::quality, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
+    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
         apvts.removeParameterListener(id, this);
 }
 
@@ -64,7 +64,8 @@ TubeChannelProcessor::Key TubeChannelProcessor::requestedKey() const
     k.sampleRate = sampleRate_;
     k.maxBlock = maxBlock_;
     k.channels = std::max(1, std::min(2, getMainBusNumInputChannels()));
-    k.quality = juce::roundToInt(paramsA.quality->load());
+    k.quality = paramsA.eco->load() > .5f ? 3 : juce::roundToInt(paramsA.quality->load());
+    k.oversampling = juce::roundToInt(paramsA.oversampling->load());
     k.linear = paramsA.linearPhase->load() > 0.5f;
     k.tolerances = paramsA.tolerances->load() > 0.5f;
     k.seed = juce::roundToInt(paramsA.seed->load());
@@ -77,8 +78,9 @@ std::unique_ptr<tc::Chain> TubeChannelProcessor::buildChain(const Key& k) const
     cfg.sampleRate = k.sampleRate;
     cfg.maxBlock = k.maxBlock;
     cfg.channels = k.channels;
-    cfg.quality = k.quality <= 0 ? Quality::Default : (k.quality == 1 ? Quality::HQ : Quality::Derp);
+    cfg.quality = static_cast<Quality>(juce::jlimit(0, 3, k.quality));
     cfg.linearPhase = k.linear;
+    cfg.oversamplingStages = k.oversampling - 1;
     cfg.tolerances = k.tolerances;
     cfg.seed = k.seed;
     cfg.engine.compactSupply = TC_EXPERIMENTAL_SUPPLY != 0;
@@ -298,7 +300,7 @@ void TubeChannelProcessor::setCurrentProgram(int index)
             if (pid.endsWith("_b"))
                 continue;
             const bool global = pid == id::inputTrim || pid == id::outputTrim || pid == id::alignment || pid == id::micZ ||
-                                pid == id::instZ || pid == id::quality || pid == id::linearPhase || pid == id::stereoLink ||
+                                pid == id::instZ || pid == id::quality || pid == id::eco || pid == id::oversampling || pid == id::linearPhase || pid == id::stereoLink ||
                                 pid == id::dualMono || pid == id::mains || pid == id::mainsVolts || pid == id::tolerances ||
                                 pid == id::seed || pid == id::noise || pid == id::psuModel;
             if (!global)
@@ -340,7 +342,26 @@ void TubeChannelProcessor::setStateInformation(const void* data, int size)
 {
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(apvts.state.getType()))
-            apvts.replaceState(juce::ValueTree::fromXml(*xml));
+        {
+            auto state = juce::ValueTree::fromXml(*xml);
+            // Released states have no Eco flag. Restore the original engine,
+            // retaining the complete legacy choice/automation range.
+            if (!state.getChildWithProperty("id", tc::params::id::eco).isValid())
+            {
+                juce::ValueTree eco("PARAM");
+                eco.setProperty("id", tc::params::id::eco, nullptr);
+                eco.setProperty("value", 0.0f, nullptr);
+                state.addChild(eco, -1, nullptr);
+            }
+            if (!state.getChildWithProperty("id", tc::params::id::oversampling).isValid())
+            {
+                juce::ValueTree os("PARAM");
+                os.setProperty("id", tc::params::id::oversampling, nullptr);
+                os.setProperty("value", 0.0f, nullptr); // preserve pre-split adaptive oversampling
+                state.addChild(os, -1, nullptr);
+            }
+            apvts.replaceState(state);
+        }
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()

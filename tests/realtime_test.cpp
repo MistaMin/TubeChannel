@@ -50,16 +50,17 @@ int main(int argc, char** argv)
     nets.eq1 = slurp(dir + "/eq1.net"); nets.eq2 = slurp(dir + "/eq2.net"); nets.eq3 = slurp(dir + "/eq3.net");
     nets.eq4 = slurp(dir + "/eq4.net"); nets.out = slurp(dir + "/out.net"); nets.psu = slurp(dir + "/psu.net");
     int failures = 0;
-    for (int scenario = 0; scenario < 15; ++scenario)
+    for (int scenario = 0; scenario < 21; ++scenario)
     {
         tc::ChainConfig cfg;
         const bool qualityMode = scenario >= 12;
         cfg.channels = qualityMode ? 2 : scenario % 2 + 1;
         cfg.maxBlock = 256;
-        cfg.sampleRate = scenario >= 6 && !qualityMode ? 96000.0 : 48000.0;
-        cfg.quality = qualityMode ? static_cast<tubechannel::dsp::Quality>(scenario - 12)
+        cfg.sampleRate = (scenario >= 6 && !qualityMode) || scenario == 16 ? 96000.0 : 48000.0;
+        cfg.quality = qualityMode ? static_cast<tubechannel::dsp::Quality>(std::min(scenario - 12, 3))
             : scenario == 4 ? tubechannel::dsp::Quality::Derp : tubechannel::dsp::Quality::Default;
-        cfg.linearPhase = scenario == 5;
+        cfg.linearPhase = scenario == 5 || scenario == 17 || scenario == 20;
+        if(scenario>=18)cfg.oversamplingStages=scenario-17;
         cfg.detectorMode = qualityMode ? tc::DetectorMode::FollowQuality
             : scenario >= 8 ? tc::DetectorMode::Prototype : tc::DetectorMode::Original;
         cfg.engine.compactSupply = scenario == 10 || scenario == 11;

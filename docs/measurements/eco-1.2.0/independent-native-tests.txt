@@ -1,0 +1,13 @@
+Test project /Volumes/Developer/Developer/TubeChannel/build/hybrid
+    Start  1: oversampler
+1/4 Test  #1: oversampler ......................   Passed    8.99 sec
+    Start  7: realtime
+2/4 Test  #7: realtime .........................   Passed   12.07 sec
+    Start  9: quality_modes
+3/4 Test  #9: quality_modes ....................   Passed    7.70 sec
+    Start 14: eco
+4/4 Test #14: eco ..............................   Passed    0.91 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =  29.68 sec

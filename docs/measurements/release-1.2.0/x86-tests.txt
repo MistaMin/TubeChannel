@@ -1,0 +1,13 @@
+TubeChannel processor test
+  layouts ok
+  quality 0: factor 1 latency 0, output peak 0.094
+  quality 0 +L: factor 1 latency 0, output peak 0.094
+  quality 1: factor 1 latency 0, output peak 0.091
+  quality 1 +L: factor 1 latency 0, output peak 0.091
+  quality 2: factor 2 latency 0, output peak 0.091
+  quality 2 +L: factor 2 latency 15, output peak 0.091
+  quality 3: factor 1 latency 0, output peak 0.093
+  quality 3 +L: factor 1 latency 0, output peak 0.093
+  live switching and state restoration ok (swaps 11)
+ALL PASSED (0 failures)
+PASSED (0 failures)
