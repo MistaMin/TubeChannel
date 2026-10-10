@@ -22,10 +22,12 @@ material listening and real DAW stress testing remain unverified. Circuit/HQ are
 available when the original response is needed.
 
 The universal macOS installer supports Apple silicon and Intel Macs and offers
-VST3, Audio Unit, CLAP, LV2 and Standalone. It includes the updated user guide,
-screenshots, project license and applicable third-party license texts. No AAX binary
-is included. Source is MIT licensed; provided binaries are freeware. Builds use
-JUCE 9.0.3 under the existing commercial JUCE licensing arrangement.
+VST3, Audio Unit, CLAP, LV2 and Standalone. The Windows installer supports 64-bit
+Windows 10 or later and offers VST3, CLAP, LV2 and Standalone. Both installers
+include the updated user guide, screenshots, project license and applicable
+third-party license texts. No AAX binary is included. Source is MIT licensed;
+provided binaries are freeware. Builds use JUCE 9.0.3 under the existing
+commercial JUCE licensing arrangement.
 
 See the [README](https://github.com/MistaMin/TubeChannel#readme),
 [User Guide](https://github.com/MistaMin/TubeChannel/blob/main/docs/USER_MANUAL.md),

@@ -1,6 +1,6 @@
 # Tube Channel
 
-**A circuit-modelled channel strip for macOS and desktop audio workstations.** Tube Channel combines a preamp, compressor, four-band equalizer, output stage, and optional power-supply simulation in one plug-in.
+**A circuit-modelled channel strip for Windows, macOS, and desktop audio workstations.** Tube Channel combines a preamp, compressor, four-band equalizer, output stage, and optional power-supply simulation in one plug-in.
 
 ![Digital interface: input, compressor, equalizer, and output](docs/ui-digital.png)
 
@@ -25,9 +25,17 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 
 ## Download
 
-The signed and notarized macOS universal installer supports Apple silicon and Intel Macs. It installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer. The package includes the user guide and license texts. AAX is not included in the release.
+One installer per operating system. Pick yours below. AAX is not included in the release.
 
-Download the [1.2.0 universal macOS installer](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0.pkg) or browse [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [release notes](docs/RELEASE_1.2.0.md).
+**Windows (10 or later, 64-bit)** — [TubeChannel-1.2.0-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0-win.exe)
+Double-click the file and follow the steps. You can choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
+
+**macOS (Apple silicon and Intel)** — [TubeChannel-1.2.0.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0.pkg)
+Signed and notarized. Installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer.
+
+Both installers include the user guide and license texts. Browse all downloads on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [release notes](docs/RELEASE_1.2.0.md).
+
+> **Windows may show a security prompt.** Because the Windows installer is not yet code-signed, Windows SmartScreen might show a blue "Windows protected your PC" message the first time you run it. The file is safe — click **More info**, then **Run anyway**. (See the note about code signing below.)
 
 ## User guide
 
@@ -80,6 +88,8 @@ These measurements predate the current quality-mode mapping and came from a mach
 
 ## Build from source
 
+**macOS / Linux**
+
 ```sh
 git submodule update --init
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
@@ -87,7 +97,36 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. AAX can be enabled when its SDK is available, but it is not part of the public release package. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`.
+**Windows**
+
+From a command prompt after running the Visual Studio x64 tools (`vcvars64.bat`):
+
+```bat
+git submodule update --init
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+ctest --test-dir build --output-on-failure
+```
+
+Or use the convenience wrapper once the x64 tools are active:
+
+```bat
+build_win.bat configure
+build_win.bat build
+build_win.bat test
+```
+
+To package the installer you also need [Inno Setup](https://jrsoftware.org/isinfo.php). Then run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
+```
+
+The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. AAX can be enabled when its SDK is available, but it is not part of the public release package. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. A Windows installer script (`installer/TubeChannel.iss`) and build script (`installer/build_installer_win.ps1`) are included for the Windows distribution.
+
+## Notes for Windows users
+
+- **SmartScreen warning.** The installer is not code-signed, so Windows may show a "Windows protected your PC" dialog the first time it runs. Click **More info** → **Run anyway**. Code signing requires a Windows code-signing certificate and a `signtool.exe` step after the installer is built; that step is not included here.
 
 ## License
 
