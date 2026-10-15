@@ -1,0 +1,18 @@
+Conducting pre-submission checks for TubeChannel-1.2.1.pkg and initiating connection to the Apple notary service...
+Submission ID received
+  id: fc0cc03a-f405-4326-8269-26f0f21436f5
+Successfully uploaded file
+  id: fc0cc03a-f405-4326-8269-26f0f21436f5
+  path: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.1/TubeChannel-1.2.1.pkg
+Waiting for processing to complete.
+Current status: In Progress...Current status: In Progress....Current status: In Progress.....Current status: In Progress......Current status: Accepted.......Processing complete
+  id: fc0cc03a-f405-4326-8269-26f0f21436f5
+  status: Accepted
+
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.1/TubeChannel-1.2.1.pkg
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.1/TubeChannel-1.2.1.pkg
+The staple and validate action worked!
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.1/TubeChannel-1.2.1.pkg
+The validate action worked!
+dist/release-1.2.1/TubeChannel-1.2.1.pkg: accepted
+source=Notarized Developer ID

@@ -46,7 +46,7 @@ connected display; native popup interaction in a DAW remains a manual validation
 item. Headless clicks are guarded safely instead of dereferencing a missing display.
 Host wrappers must report offline mode correctly; no claim is made about every DAW.
 
-## Local release package
+## Release package
 
 Universal VST3, AU, CLAP, LV2 and Standalone binaries were built for arm64/x86_64,
 version 1.2.1. Developer ID signatures and the installer signature are verified.
@@ -54,7 +54,9 @@ The package includes the guide, four refreshed editor images, two menu illustrat
 release notes, source/dependency manifest and applicable license files. No AAX is
 included. Runtime source SHA256 values match the packaged build manifest.
 
-The installer is **signed locally, not notarized**. No 1.2.1 package was submitted
-to Apple and no public 1.2.1 release has been published. The local-signed checksum
-will be updated after any later notarization/stapling. See `package-check.txt` for
-the payload/signature checks and the recorded test logs for the validation scope.
+Apple accepted submission `fc0cc03a-f405-4326-8269-26f0f21436f5`. The notarization
+ticket is stapled and validated; Gatekeeper accepts the installer as Notarized
+Developer ID. See `notarization.txt` and `installer.sha256` for the final package.
+The earlier `installer-local-signed.sha256` records the package before stapling.
+See `package-check.txt` for payload/signature checks and the recorded test logs
+for the validation scope.

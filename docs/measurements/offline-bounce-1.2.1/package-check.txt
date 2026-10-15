@@ -7,6 +7,7 @@ Tube Channel.lv2 x86_64 arm64 Developer ID signature verified
 Tube Channel.app x86_64 arm64 Developer ID signature verified
 Package "TubeChannel-1.2.1.pkg":
    Status: signed by a developer certificate issued by Apple for distribution
+   Notarization: trusted by the Apple notary service
    Signed with a trusted timestamp on: 2026-10-15 18:13:24 +0000
    Certificate Chain:
     1. Developer ID Installer: Marcos Deida (ZQYU67JUBH)
@@ -27,4 +28,8 @@ Package "TubeChannel-1.2.1.pkg":
            B0 B1 73 0E CB C7 FF 45 05 14 2C 49 F1 29 5E 6E DA 6B CA ED 7E 2C 
            68 C5 BE 91 B5 A1 10 01 F0 24
 
-Offline menu illustrations included. Signed locally; notarization pending approval.
+Processing: /Volumes/Developer/Developer/TubeChannel/dist/release-1.2.1/TubeChannel-1.2.1.pkg
+The validate action worked!
+dist/release-1.2.1/TubeChannel-1.2.1.pkg: accepted
+source=Notarized Developer ID
+Offline menu illustrations included. Notarized, stapled and Gatekeeper accepted.
