@@ -2,6 +2,7 @@
 # Build the Tube Channel installer from a universal Release build.
 #   installer/build_installer.sh                 unsigned package (for a local test)
 #   SIGN=1 installer/build_installer.sh          sign every bundle, build, sign and notarize + staple the package
+#   SIGN=1 NOTARIZE=0 installer/build_installer.sh  sign locally without submitting the package to Apple
 # Run SIGN=1 from your own Terminal: codesign / notarytool need the keychain prompt.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -105,6 +106,9 @@ fi
 if [ -f "docs/RELEASE_$VERSION.md" ]; then
   cp "docs/RELEASE_$VERSION.md" "$RESOURCE_ROOT/Manual/"
 fi
+for screenshot in docs/offline-bounce-digital.png docs/offline-bounce-analogue.png; do
+  if [ -f "$screenshot" ]; then cp "$screenshot" "$RESOURCE_ROOT/Manual/"; fi
+done
 find "$LICENSE_ROOT" -type f | LC_ALL=C sort | sed "s|^$LICENSE_ROOT/||" > "$LICENSE_ROOT/INDEX.txt"
 
 pkgbuild --root "$OUT/stage/licenses" --install-location "/Library/Application Support" \
@@ -141,8 +145,12 @@ if [ "${SIGN:-0}" = "1" ]; then
   FINAL="$OUT/TubeChannel-$VERSION.pkg"
   productsign --sign "$INST_ID" --timestamp "$PKG" "$FINAL"
   pkgutil --check-signature "$FINAL"
-  xcrun notarytool submit "$FINAL" --keychain-profile AC_NOTARY --wait
-  xcrun stapler staple "$FINAL"
-  xcrun stapler validate "$FINAL"
-  echo "signed, notarized and stapled: $FINAL"
+  if [ "${NOTARIZE:-1}" = "1" ]; then
+    xcrun notarytool submit "$FINAL" --keychain-profile AC_NOTARY --wait
+    xcrun stapler staple "$FINAL"
+    xcrun stapler validate "$FINAL"
+    echo "signed, notarized and stapled: $FINAL"
+  else
+    echo "signed locally; notarization not submitted: $FINAL"
+  fi
 fi

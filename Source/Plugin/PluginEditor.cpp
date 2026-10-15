@@ -5,6 +5,29 @@
 namespace id = tc::params::id;
 using namespace tc::ui;
 
+namespace
+{
+class BounceMenuLook : public juce::LookAndFeel_V4
+{
+public:
+    explicit BounceMenuLook(bool digital)
+    {
+        const auto skin = Skin::make(digital);
+        setColour(juce::PopupMenu::backgroundColourId, Colour(digital ? 0xff101e2e : 0xff202123));
+        setColour(juce::PopupMenu::textColourId, skin.legend);
+        setColour(juce::PopupMenu::highlightedBackgroundColourId, Colour(0xff101e2e).overlaidWith(skin.accent.withAlpha(.2f)));
+        setColour(juce::PopupMenu::highlightedTextColourId, skin.accent);
+    }
+    juce::Font getPopupMenuFont() override { return font(11.5f); }
+};
+juce::LookAndFeel& bounceMenuLook(bool digital)
+{
+    // Popup windows may outlive their editor while being dismissed.
+    static BounceMenuLook digitalLook(true), analogueLook(false);
+    return digital ? static_cast<juce::LookAndFeel&>(digitalLook) : analogueLook;
+}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 // Small key row for UI-only state kept in the plugin state tree (VU source).
 class StateKeys : public juce::Component
@@ -54,6 +77,8 @@ public:
         build();
         applySkin();
         bindAll();
+        syncUiState();
+        syncChannelTabs();
     }
 
     void toggleSkin()
@@ -69,6 +94,12 @@ public:
         systemPage = savedSystemPage;
         if ((proc.skin() == 1) != skin.digital) applySkin();
         else if (pageChanged) showPage();
+        const int choice = juce::jlimit(0, 8, juce::roundToInt(proc.apvts.getRawParameterValue(id::offlineBounce)->load()));
+        const bool enabled = proc.apvts.getRawParameterValue(id::offlineBounceEnabled)->load() > .5f;
+        offlineBtn->setTooltip(enabled
+            ? "Offline bounce: " + tc::params::offlineBounceChoices()[choice] + ". Realtime exports use playback settings."
+            : "This saved project uses playback settings for offline bounce. Choose a combination to enable separate offline settings.");
+        offlineBtn->setLit(proc.isOfflineBounceActive());
     }
 
     void drawPlate(Graphics& g, Rectangle<float> r)
@@ -180,6 +211,8 @@ public:
     void syncChannelTabs()
     {
         const bool dual = proc.apvts.getRawParameterValue(id::dualMono)->load() > 0.5f && proc.activeChannels() == 2;
+        presetBtn->setBounds(300, 7, dual ? 100 : 220, 26);
+        presetBtn->setTooltip(proc.getProgramName(proc.getCurrentProgram()));
         tabA.setVisible(dual);
         tabB.setVisible(dual);
         if (!dual && channelB) { channelB = false; bindAll(); }
@@ -255,12 +288,48 @@ private:
         redoBtn = add(std::make_unique<PushButton>(&skin, "REDO"));
         redoBtn->setBounds(696, 7, 52, 26);
         redoBtn->onClick = [this] { proc.undo.redo(); };
+        offlineBtn = add(std::make_unique<PushButton>(&skin, juce::String::fromUTF8("OFFLINE BOUNCE  ▾")));
+        offlineBtn->setComponentID("offline-bounce");
+        offlineBtn->setBounds(768, 7, 170, 26);
+        offlineBtn->onClick = [this]
+        {
+            // Offline/headless hosts may have no connected display at all.
+            if (juce::Desktop::getInstance().getDisplays().getPrimaryDisplay() == nullptr) return;
+            juce::PopupMenu menu;
+            menu.setLookAndFeel(&bounceMenuLook(skin.digital));
+            const auto choices = tc::params::offlineBounceChoices();
+            const int selected = juce::roundToInt(proc.apvts.getRawParameterValue(id::offlineBounce)->load());
+            const bool enabled = proc.apvts.getRawParameterValue(id::offlineBounceEnabled)->load() > .5f;
+            for (int i = 0; i < choices.size(); ++i)
+            {
+                if (i == 3 || i == 6) menu.addSeparator();
+                menu.addItem(i + 1, choices[i], true, enabled && i == selected);
+            }
+            juce::Component::SafePointer<Content> safe(this);
+            menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(offlineBtn)
+                                  .withMinimumWidth(232).withStandardItemHeight(24).withMaximumNumColumns(1),
+                [safe](int result)
+                {
+                    if (!safe || result < 1 || result > 9) return;
+                    safe->proc.undo.beginNewTransaction("Offline Bounce");
+                    auto set = [&](const char* key, float value)
+                    {
+                        auto* parameter = safe->proc.apvts.getParameter(key);
+                        parameter->beginChangeGesture();
+                        parameter->setValueNotifyingHost(parameter->convertTo0to1(value));
+                        parameter->endChangeGesture();
+                    };
+                    set(id::offlineBounce, float(result - 1));
+                    set(id::offlineBounceEnabled, 1.f);
+                    safe->syncUiState();
+                });
+        };
         addAndMakeVisible(tabA);
         addAndMakeVisible(tabB);
         tabA.setComponentID("channel-a");
         tabB.setComponentID("channel-b");
-        tabA.setBounds(770, 7, 52, 26);
-        tabB.setBounds(826, 7, 52, 26);
+        tabA.setBounds(410, 7, 52, 26);
+        tabB.setBounds(466, 7, 52, 26);
         tabA.onClick = [this] { channelB = false; bindAll(); syncChannelTabs(); };
         tabB.onClick = [this] { channelB = true; bindAll(); syncChannelTabs(); };
         tabA.setVisible(false);
@@ -468,7 +537,7 @@ private:
     PushButton* sysBtn = nullptr;
     std::vector<std::unique_ptr<juce::Component>> owned;
     std::vector<Bound> bindings;
-    PushButton *presetBtn = nullptr, *abBtn = nullptr, *copyBtn = nullptr, *undoBtn = nullptr, *redoBtn = nullptr, *skinBtn = nullptr;
+    PushButton *offlineBtn = nullptr, *presetBtn = nullptr, *abBtn = nullptr, *copyBtn = nullptr, *undoBtn = nullptr, *redoBtn = nullptr, *skinBtn = nullptr;
     PushButton tabA { &skin, "CH A" }, tabB { &skin, "CH B" };
     LadderView *warmA = nullptr, *grA = nullptr, *warmD = nullptr, *grD = nullptr;
     VuView *vu = nullptr, *vuD = nullptr;
@@ -510,10 +579,10 @@ void TubeChannelEditor::timerCallback()
     const int f = proc.currentFactor();
     const double fs = proc.getSampleRate();
     const bool lin = proc.apvts.getRawParameterValue(id::linearPhase)->load() > 0.5f;
-    const bool eco = proc.apvts.getRawParameterValue(tc::params::id::eco)->load() > .5f;
+    const bool eco = proc.currentQuality() == int(tubechannel::dsp::Quality::Eco);
     juce::String a = juce::String(eco ? "Eco, " : proc.usesPrototypeCompressor() ? "Circuit, " : "HQ, ") + juce::String(f) + "x, " + juce::String(f * fs / 1000.0, 1) + " kHz";
-    if (proc.isBuilding())
-        a = "building the circuit model...";
+    if (proc.isOfflineBounceActive()) a = "Offline bounce: " + a;
+    if (proc.isBuilding()) a = "preparing audio settings...";
     content->setStatus(a, (lin ? "linear phase, " : "minimum phase, ") + juce::String(proc.currentLatency()) + " samples latency, CPU " +
                               juce::String(juce::roundToInt(proc.cpuLoad() * 100.0f)) + " %");
     content->syncChannelTabs();

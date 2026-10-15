@@ -101,6 +101,47 @@ off. Loading a state from before the independent oversampling control preserves 
 previous adaptive factor; the first engine click freezes that factor, so subsequent
 mode changes keep oversampling unchanged.
 
+### Offline Bounce
+
+The **Offline Bounce** dropdown sits between **Redo** and **System** and is visible
+on both pages and in both skins. It sets the engine and oversampling together:
+
+| Engine | 2x | 4x | Derp (8x) |
+|---|---|---|---|
+| Eco | Eco · 2x | Eco · 4x | Eco · Derp (8x) |
+| Circuit | Circuit · 2x | Circuit · 4x | Circuit · Derp (8x) |
+| HQ | HQ · 2x | HQ · 4x | HQ · Derp (8x) |
+
+New instances default to **HQ · Derp (8x)** for offline bounce, with **Eco / 1x**
+for normal work. The override applies only when the host explicitly reports offline
+rendering. **Realtime exports are realtime**: they use the normal playback settings,
+just like playback and recording. There is no manual force-offline switch.
+
+The dropdown does not alter playback mode/oversampling automation. Both settings
+are saved in the project. Sessions saved before 1.2.1 continue to use their playback
+settings for offline bounce until a dropdown option is chosen. Its tooltip explains
+this compatibility state. The nine choices are exposed to the host as the appended
+Offline Bounce parameter; the accompanying override flag preserves older sessions.
+
+The processing path changes before the first nonempty render block, without the
+live mode-change fade. The working engine is retained separately, and repeated
+bounces restart the offline engine consistently. Hosts that announce rendering or
+restore parameters at the first offline block are supported without relying on the
+UI message loop. Such offline-only preparation may increase export startup time;
+playback callbacks do not build or destroy engines.
+
+Minimum-phase mode reports zero oversampling latency. With **+L Linear** and the
+offline override enabled, a fixed latency budget covers the available factors.
+The shorter path is delayed to match it, keeping host timing unchanged when an
+offline render starts or ends. This can add latency to Eco/1x while Linear is on.
+The global phase setting, gain trims, sidechain and stereo/Dual Mono settings apply
+to both paths. Changing the bounce combination during playback preserves the working
+engine's filter/detector history. The dropdown lights while its offline path is active.
+
+![Nine Offline Bounce combinations, menu illustration](offline-bounce-digital.png)
+
+Menu illustration. Native popup spacing and highlighting follow the platform skin.
+
 ### Unit and power supply
 
 | Control | What it does |

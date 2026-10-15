@@ -265,6 +265,7 @@ target_include_directories(TubeChannelStress PRIVATE Source Source/Plugin "${CMA
 target_compile_definitions(TubeChannelStress PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(TubeChannelStress PRIVATE TubeChannel juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
 add_test(NAME processor_stress COMMAND TubeChannelStress)
+add_test(NAME offline_bounce COMMAND TubeChannelStress offline)
 
 juce_add_console_app(TubeChannelGuiTest PRODUCT_NAME "Tube Channel GUI Test")
 target_sources(TubeChannelGuiTest PRIVATE tests/gui_test.cpp)

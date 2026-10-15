@@ -1,0 +1,5 @@
+  48000 Hz minimum: all 9 profiles, first samples/tails, stable latency 0, playback allocation checks passed
+  48000 Hz linear: all 9 profiles, first samples/tails, stable latency 58, playback allocation checks passed
+  96000 Hz minimum: all 9 profiles, first samples/tails, stable latency 0, playback allocation checks passed
+  96000 Hz linear: all 9 profiles, first samples/tails, stable latency 23, playback allocation checks passed
+offline bounce PASSED (0 failures)

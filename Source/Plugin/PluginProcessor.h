@@ -2,8 +2,11 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
+#include <array>
 #include <atomic>
+#include <cstdint>
 #include <memory>
+#include <vector>
 
 #include "Chain.h"
 #include "Params.h"
@@ -19,6 +22,8 @@ public:
 
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override {}
+    void setNonRealtime(bool) noexcept override;
+    void reset() override;
     bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
     void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
     using juce::AudioProcessor::processBlock;
@@ -47,6 +52,8 @@ public:
     tubechannel::channel::Telemetry telemetry[2];
     int activeChannels() const { return activeChannelCount.load(); }
     int currentFactor() const { return activeFactor.load(); }
+    int currentQuality() const { return activeQuality.load(); }
+    bool isOfflineBounceActive() const { return activeOfflineBounce.load(); }
     bool usesPrototypeCompressor() const { return activePrototypeCompressor.load(); }
     int currentLatency() const { return activeLatency.load(); }
     bool isBuilding() const { return building.load(); }
@@ -86,7 +93,33 @@ private:
                    oversampling == o.oversampling && seed == o.seed && linear == o.linear && tolerances == o.tolerances;
         }
     };
+    struct StateKey
+    {
+        Key playback, bounce;
+        bool bounceEnabled = false;
+        bool operator==(const StateKey& o) const { return playback == o.playback && bounce == o.bounce && bounceEnabled == o.bounceEnabled; }
+    };
+    struct Padding
+    {
+        std::array<std::vector<float>, 2> samples;
+        int position = 0, delay = 0;
+        void prepare(int);
+        void process(float* const*, int channels, int frames);
+    };
+    struct PreparedState
+    {
+        StateKey key;
+        std::unique_ptr<tc::Chain> playback, bounce;
+        Padding playbackPadding, bouncePadding;
+        int latency = 0;
+        tc::Chain& select(bool offline) { return offline && bounce ? *bounce : *playback; }
+        void preserve(PreparedState&, bool preserveBounce = true);
+    };
     Key requestedKey() const;
+    StateKey requestedStateKey() const;
+    std::unique_ptr<PreparedState> buildState(const StateKey&) const;
+    bool adoptIncoming(const StateKey&, bool& playbackChanged);
+    void publishActive(bool offline);
     std::unique_ptr<tc::Chain> buildChain(const Key&) const;
     tc::ChainGlobals readGlobals() const;
 
@@ -96,17 +129,21 @@ private:
     const tc::params::ParameterValues paramsA, paramsB;
 
     // audio thread
-    std::unique_ptr<tc::Chain> chain;
+    std::unique_ptr<PreparedState> chain;
     int fadeInRemaining = 0, fadeInLength = 0;
 
     // hand-over from the message thread
     juce::SpinLock handoverLock;
-    std::unique_ptr<tc::Chain> incoming, retired;
+    std::unique_ptr<PreparedState> incoming, retired;
 
     juce::SpinLock keyLock;
-    Key builtKey;
+    StateKey builtKey;
+    std::atomic<uint64_t> offlineEpoch { 0 };
+    uint64_t renderedEpoch = 0;
+    bool bounceHasRun = false;
 
-    std::atomic<int> activeChannelCount { 2 }, activeFactor { 2 }, activeLatency { 0 }, swaps { 0 };
+    std::atomic<int> activeChannelCount { 2 }, activeFactor { 2 }, activeLatency { 0 }, activeQuality { 3 }, swaps { 0 };
+    std::atomic<bool> activeOfflineBounce { false };
     std::atomic<bool> activePrototypeCompressor { true };
     std::atomic<bool> prepared { false }, building { false };
     std::atomic<float> cpu { 0.f };

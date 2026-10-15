@@ -30,7 +30,7 @@ TubeChannelProcessor::TubeChannelProcessor()
 {
     for (auto& v : specRing)
         v.store(0.f);
-    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
+    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::offlineBounce, tc::params::id::offlineBounceEnabled, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
         apvts.addParameterListener(id, this);
     startTimer(250);
 }
@@ -39,7 +39,7 @@ TubeChannelProcessor::~TubeChannelProcessor()
 {
     stopTimer();
     cancelPendingUpdate();
-    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
+    for (const char* id : { tc::params::id::quality, tc::params::id::eco, tc::params::id::oversampling, tc::params::id::offlineBounce, tc::params::id::offlineBounceEnabled, tc::params::id::linearPhase, tc::params::id::tolerances, tc::params::id::seed })
         apvts.removeParameterListener(id, this);
 }
 
@@ -91,6 +91,116 @@ std::unique_ptr<tc::Chain> TubeChannelProcessor::buildChain(const Key& k) const
     return c;
 }
 
+void TubeChannelProcessor::setNonRealtime(bool offline) noexcept
+{
+    if (offline && !isNonRealtime()) offlineEpoch.fetch_add(1, std::memory_order_relaxed);
+    AudioProcessor::setNonRealtime(offline);
+}
+
+void TubeChannelProcessor::reset()
+{
+    // Hosts may reset an offline processor between renders without toggling its offline flag.
+    offlineEpoch.fetch_add(1, std::memory_order_relaxed);
+}
+
+TubeChannelProcessor::StateKey TubeChannelProcessor::requestedStateKey() const
+{
+    StateKey key;
+    key.playback = requestedKey();
+    key.bounce = key.playback;
+    key.bounceEnabled = paramsA.offlineBounceEnabled->load() > .5f;
+    if (key.bounceEnabled)
+    {
+        const int choice = juce::jlimit(0, 8, juce::roundToInt(paramsA.offlineBounce->load()));
+        constexpr int qualities[] = { 3, 0, 1 }; // Eco, Circuit, HQ
+        key.bounce.quality = qualities[choice / 3];
+        key.bounce.oversampling = choice % 3 + 2;
+    }
+    return key;
+}
+
+void TubeChannelProcessor::Padding::prepare(int size)
+{
+    delay = size;
+    position = 0;
+    for (auto& channel : samples) channel.assign(size_t(delay), 0.f);
+}
+
+void TubeChannelProcessor::Padding::process(float* const* audio, int channels, int frames)
+{
+    if (delay == 0) return;
+    for (int i = 0; i < frames; ++i)
+    {
+        for (int ch = 0; ch < channels; ++ch)
+            std::swap(audio[ch][i], samples[size_t(ch)][size_t(position)]);
+        if (++position == delay) position = 0;
+    }
+}
+
+void TubeChannelProcessor::PreparedState::preserve(PreparedState& previous, bool preserveBounce)
+{
+    // A bounce-only edit must not reset the working engine or its delay history.
+    if (key.playback == previous.key.playback)
+    {
+        playback.swap(previous.playback);
+        if (latency == previous.latency) std::swap(playbackPadding, previous.playbackPadding);
+    }
+    if (preserveBounce && bounce && previous.bounce && key.bounce == previous.key.bounce)
+    {
+        bounce.swap(previous.bounce);
+        if (latency == previous.latency) std::swap(bouncePadding, previous.bouncePadding);
+    }
+}
+
+std::unique_ptr<TubeChannelProcessor::PreparedState> TubeChannelProcessor::buildState(const StateKey& key) const
+{
+    auto state = std::make_unique<PreparedState>();
+    state->key = key;
+    state->playback = buildChain(key.playback);
+    state->latency = state->playback->latency();
+    if (key.bounceEnabled)
+    {
+        state->bounce = buildChain(key.bounce);
+        state->latency = std::max(state->latency, state->bounce->latency());
+        if (key.playback.linear)
+        {
+            // A constant budget across all nine bounce choices avoids PDC changes at render entry.
+            tubechannel::dsp::Oversampler reference;
+            for (int stages = 1; stages <= 3; ++stages)
+            {
+                reference.prepare(key.playback.sampleRate, 1, 1, Quality::HQ, true, stages);
+                state->latency = std::max(state->latency, reference.latencySamples());
+            }
+        }
+    }
+    state->playbackPadding.prepare(state->latency - state->playback->latency());
+    if (state->bounce) state->bouncePadding.prepare(state->latency - state->bounce->latency());
+    return state;
+}
+
+bool TubeChannelProcessor::adoptIncoming(const StateKey& wanted, bool& playbackChanged)
+{
+    const juce::SpinLock::ScopedTryLockType lock(handoverLock);
+    if (!lock.isLocked() || !incoming || retired || !(incoming->key == wanted)) return false;
+    playbackChanged = !(chain->key.playback == incoming->key.playback) || chain->latency != incoming->latency;
+    incoming->preserve(*chain);
+    chain.swap(incoming);
+    retired = std::move(incoming);
+    swaps.fetch_add(1);
+    return true;
+}
+
+void TubeChannelProcessor::publishActive(bool offline)
+{
+    auto& engine = chain->select(offline);
+    activeChannelCount.store(engine.channels());
+    activeFactor.store(engine.factor());
+    activePrototypeCompressor.store(engine.config().engine.compactDetector);
+    activeQuality.store(int(engine.config().quality));
+    activeOfflineBounce.store(offline && chain->key.bounceEnabled);
+    activeLatency.store(chain->latency);
+}
+
 tc::ChainGlobals TubeChannelProcessor::readGlobals() const
 {
     tc::ChainGlobals g;
@@ -112,8 +222,8 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     sampleRate_ = sampleRate;
     maxBlock_ = std::max(samplesPerBlock, 1);
     building.store(true);
-    const Key k = requestedKey();
-    auto fresh = buildChain(k);
+    const StateKey k = requestedStateKey();
+    auto fresh = buildState(k);
     {
         const juce::SpinLock::ScopedLockType l(handoverLock);
         incoming.reset();
@@ -131,11 +241,10 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
         outputClip[ch].store(false, std::memory_order_relaxed);
     }
     fadeInLength = std::max(1, juce::roundToInt(sampleRate_ * 0.02));
-    activeChannelCount.store(chain->channels());
-    activeFactor.store(chain->factor());
-    activePrototypeCompressor.store(chain->config().engine.compactDetector);
-    activeLatency.store(chain->latency());
-    setLatencySamples(chain->latency());
+    bounceHasRun = false;
+    renderedEpoch = offlineEpoch.load(std::memory_order_relaxed);
+    publishActive(isNonRealtime());
+    setLatencySamples(chain->latency);
     prepared.store(true);
     building.store(false);
 }
@@ -144,7 +253,7 @@ void TubeChannelProcessor::handleAsyncUpdate()
 {
     if (!prepared.load())
         return;
-    const Key k = requestedKey();
+    const StateKey k = requestedStateKey();
     {
         const juce::SpinLock::ScopedLockType l(keyLock);
         if (k == builtKey)
@@ -152,9 +261,9 @@ void TubeChannelProcessor::handleAsyncUpdate()
         builtKey = k;
     }
     building.store(true);
-    auto fresh = buildChain(k);            // heavy (the circuits are built and warmed up): message thread only
-    const int latency = fresh->latency();
-    std::unique_ptr<tc::Chain> trash;
+    auto fresh = buildState(k);            // heavy preparation stays off the live callback
+    const int latency = fresh->latency;
+    std::unique_ptr<PreparedState> trash;
     {
         const juce::SpinLock::ScopedLockType l(handoverLock);
         // Free the retirement slot before publishing another chain. Destruction stays on this
@@ -168,7 +277,7 @@ void TubeChannelProcessor::handleAsyncUpdate()
 
 void TubeChannelProcessor::timerCallback()
 {
-    std::unique_ptr<tc::Chain> trash;
+    std::unique_ptr<PreparedState> trash;
     {
         const juce::SpinLock::ScopedLockType l(handoverLock);
         trash = std::move(retired);
@@ -185,7 +294,30 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     if (chain == nullptr || total == 0)
         return;
 
-    const int nch = std::min(chain->channels(), std::min(getMainBusNumInputChannels(), buffer.getNumChannels()));
+    const bool offline = isNonRealtime();
+    const StateKey wanted = requestedStateKey();
+    if (offline)
+    {
+        bool ignored = false;
+        adoptIncoming(wanted, ignored);
+        const auto epoch = offlineEpoch.load(std::memory_order_relaxed);
+        if (!(chain->key == wanted) || (wanted.bounceEnabled && bounceHasRun && epoch != renderedEpoch))
+        {
+            // Some hosts signal offline mode or restore parameters immediately before processing,
+            // without another prepare call or message loop. Synchronous work is allowed ONLY offline.
+            auto fresh = buildState(wanted);
+            fresh->preserve(*chain, false);
+            chain = std::move(fresh);
+            { const juce::SpinLock::ScopedLockType lock(keyLock); builtKey = wanted; }
+            setLatencySamples(chain->latency);
+        }
+        renderedEpoch = epoch;
+        bounceHasRun = wanted.bounceEnabled;
+        fadeInRemaining = 0;
+    }
+    publishActive(offline);
+    auto& engine = chain->select(offline);
+    const int nch = std::min(engine.channels(), std::min(getMainBusNumInputChannels(), buffer.getNumChannels()));
     if (nch > 0)
     {
         // controls
@@ -204,21 +336,13 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
         }
         float* audio[2] = { buffer.getWritePointer(0), nch > 1 ? buffer.getWritePointer(1) : nullptr };
         tubechannel::channel::Telemetry* tel[2] = { &telemetry[0], &telemetry[1] };
-        chain->process(audio, total, scPtrs, nsc, ca, cb, g, tel);
+        engine.process(audio, total, scPtrs, nsc, ca, cb, g, tel);
+        auto& padding = offline && chain->bounce ? chain->bouncePadding : chain->playbackPadding;
+        padding.process(audio, nch, total);
     }
 
-    bool swapped = false;
-    {
-        const juce::SpinLock::ScopedTryLockType l(handoverLock);
-        // Leave the incoming chain pending until the old one has a retirement slot. Both moves
-        // happen under the same lock, so processing can never destroy a chain on return.
-        if (l.isLocked() && incoming != nullptr && retired == nullptr)
-        {
-            std::swap(chain, incoming);
-            retired = std::move(incoming);
-            swapped = true;
-        }
-    }
+    bool playbackChanged = false;
+    const bool swapped = !offline && adoptIncoming(wanted, playbackChanged) && playbackChanged;
     if (swapped)
     {
         for (int ch = 0; ch < nch; ++ch)
@@ -228,11 +352,7 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
                 data[i] *= 1.0f - float(i + 1) / float(total);
         }
         fadeInRemaining = fadeInLength;
-        activeChannelCount.store(chain->channels());
-        activeFactor.store(chain->factor());
-        activePrototypeCompressor.store(chain->config().engine.compactDetector);
-        activeLatency.store(chain->latency());
-        swaps.fetch_add(1);
+        publishActive(false);
     }
     else if (fadeInRemaining > 0)
     {
@@ -300,7 +420,7 @@ void TubeChannelProcessor::setCurrentProgram(int index)
             if (pid.endsWith("_b"))
                 continue;
             const bool global = pid == id::inputTrim || pid == id::outputTrim || pid == id::alignment || pid == id::micZ ||
-                                pid == id::instZ || pid == id::quality || pid == id::eco || pid == id::oversampling || pid == id::linearPhase || pid == id::stereoLink ||
+                                pid == id::instZ || pid == id::quality || pid == id::eco || pid == id::oversampling || pid == id::offlineBounce || pid == id::offlineBounceEnabled || pid == id::linearPhase || pid == id::stereoLink ||
                                 pid == id::dualMono || pid == id::mains || pid == id::mainsVolts || pid == id::tolerances ||
                                 pid == id::seed || pid == id::noise || pid == id::psuModel;
             if (!global)
@@ -359,6 +479,20 @@ void TubeChannelProcessor::setStateInformation(const void* data, int size)
                 os.setProperty("id", tc::params::id::oversampling, nullptr);
                 os.setProperty("value", 0.0f, nullptr); // preserve pre-split adaptive oversampling
                 state.addChild(os, -1, nullptr);
+            }
+            if (!state.getChildWithProperty("id", tc::params::id::offlineBounce).isValid())
+            {
+                juce::ValueTree choice("PARAM");
+                choice.setProperty("id", tc::params::id::offlineBounce, nullptr);
+                choice.setProperty("value", 8.f, nullptr);
+                state.addChild(choice, -1, nullptr);
+                if (!state.getChildWithProperty("id", tc::params::id::offlineBounceEnabled).isValid())
+                {
+                    juce::ValueTree enabled("PARAM");
+                    enabled.setProperty("id", tc::params::id::offlineBounceEnabled, nullptr);
+                    enabled.setProperty("value", 0.f, nullptr);
+                    state.addChild(enabled, -1, nullptr);
+                }
             }
             apvts.replaceState(state);
         }

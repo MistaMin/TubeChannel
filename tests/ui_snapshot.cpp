@@ -13,6 +13,13 @@ static void save(const juce::Image& img, const juce::File& f)
     png.writeImageToStream(img, out);
 }
 
+static juce::Component* findComponent(juce::Component& parent, const juce::String& id)
+{
+    if (parent.getComponentID() == id) return &parent;
+    for (auto* child : parent.getChildren()) if (auto* result = findComponent(*child, id)) return result;
+    return nullptr;
+}
+
 static const char* kNames[] = { "analogue.png", "digital.png", "system-analogue.png", "system-digital.png" };
 
 int main(int argc, char** argv)
@@ -53,6 +60,27 @@ int main(int argc, char** argv)
             save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 2.0f), dir.getChildFile("digital@2x.png"));
             ed->setSize(TubeChannelEditor::kW / 2, TubeChannelEditor::kH / 2);
             save(ed->createComponentSnapshot(ed->getLocalBounds(), true, 1.0f), dir.getChildFile("digital-small.png"));
+        }
+        if (skin >= 2)
+        {
+            if (auto* button = dynamic_cast<juce::Button*>(findComponent(*ed, "offline-bounce")))
+            {
+                const bool hasDisplay = juce::Desktop::getInstance().getDisplays().getPrimaryDisplay() != nullptr;
+                if (hasDisplay)
+                {
+                    ed->addToDesktop(juce::ComponentPeer::windowIsTemporary);
+                    ed->setTopLeftPosition(100, 100);
+                    ed->setVisible(true);
+                    ed->toFront(false);
+                }
+                button->triggerClick();
+                juce::MessageManager::getInstance()->runDispatchLoopUntil(100);
+                if (auto* menu = juce::Component::getCurrentlyModalComponent())
+                    save(menu->createComponentSnapshot(menu->getLocalBounds(), true, 2.0f), dir.getChildFile(skin == 2 ? "offline-bounce-analogue.png" : "offline-bounce-digital.png"));
+                juce::PopupMenu::dismissAllActiveMenus();
+                juce::MessageManager::getInstance()->runDispatchLoopUntil(50);
+                if (hasDisplay) ed->removeFromDesktop();
+            }
         }
         std::printf("wrote %s\n", kNames[skin]);
     }

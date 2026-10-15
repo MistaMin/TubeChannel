@@ -56,6 +56,8 @@ inline constexpr const char* outputTrim = "outputtrim";
 inline constexpr const char* alignment = "alignment";
 inline constexpr const char* micZ = "micz";
 inline constexpr const char* instZ = "instz";
+inline constexpr const char* offlineBounce = "offlinebounce";
+inline constexpr const char* offlineBounceEnabled = "offlinebounceenabled";
 inline constexpr const char* oversampling = "oversampling";
 inline constexpr const char* quality = "quality";
 inline constexpr const char* eco = "ecomode";
@@ -131,6 +133,13 @@ inline double eqGainDb(double k) { return (k - 0.5) * 24.0; }
 inline double lmFreqHz(double k, bool x10) { return (x10 ? 178.0 : 16.0) * std::pow((x10 ? 2350.0 : 214.0) / (x10 ? 178.0 : 16.0), k); }
 inline double hmFreqHz(double k, bool x10) { return (x10 ? 1800.0 : 162.0) * std::pow((x10 ? 23000.0 : 2100.0) / (x10 ? 1800.0 : 162.0), k); }
 
+// Menu order is three engines times three explicit oversampling factors.
+inline juce::StringArray offlineBounceChoices()
+{
+    return { "Eco · 2x", "Eco · 4x", "Eco · Derp (8x)",
+             "Circuit · 2x", "Circuit · 4x", "Circuit · Derp (8x)",
+             "HQ · 2x", "HQ · 4x", "HQ · Derp (8x)" };
+}
 juce::AudioProcessorValueTreeState::ParameterLayout createLayout();
 
 // Parameter addresses stay valid for the APVTS lifetime. Resolve IDs once, off the audio thread.
@@ -144,7 +153,7 @@ struct ParameterValues
     std::atomic<float>* loShift, *high, *hiShift, *hmLevel, *hmFreq;
     std::atomic<float>* hmX10, *hmNarrow, *lmLevel, *lmFreq, *lmX10;
     std::atomic<float>* lmNarrow, *master, *outLevel, *inputTrim, *outputTrim;
-    std::atomic<float>* alignment, *micZ, *instZ, *quality, *eco, *oversampling, *linearPhase;
+    std::atomic<float>* alignment, *micZ, *instZ, *quality, *eco, *oversampling, *offlineBounce, *offlineBounceEnabled, *linearPhase;
     std::atomic<float>* stereoLink, *dualMono, *mains, *mainsVolts, *tolerances;
     std::atomic<float>* seed, *noise, *psuModel;
 };

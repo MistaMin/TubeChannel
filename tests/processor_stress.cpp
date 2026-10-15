@@ -25,6 +25,7 @@ static void setChoice(TubeChannelProcessor& p, const char* id, int index)
 {
     if (juce::String(id) == tc::params::id::quality)
     {
+        p.apvts.getParameter(tc::params::id::offlineBounceEnabled)->setValueNotifyingHost(0.f);
         auto* os = p.apvts.getParameter(tc::params::id::oversampling);
         os->setValueNotifyingHost(os->convertTo0to1(0.f)); // legacy-mode regression fixtures
         p.apvts.getParameter(tc::params::id::eco)->setValueNotifyingHost(index == 3 ? 1.0f : 0.0f);
@@ -35,6 +36,9 @@ static void setChoice(TubeChannelProcessor& p, const char* id, int index)
 }
 static void setBool(TubeChannelProcessor& p, const char* id, bool on) { p.apvts.getParameter(id)->setValueNotifyingHost(on ? 1.0f : 0.0f); }
 static void pump(int ms) { juce::MessageManager::getInstance()->runDispatchLoopUntil(ms); }
+
+// Offline render integration and callback allocation checks.
+#include "offline_bounce_test.h"
 
 // Serial callbacks through the real processor, including its parameter reads,
 // meters and spectrum ring. This is a host-style harness, not live DAW playback.
@@ -90,6 +94,7 @@ int main(int argc, char** argv)
     juce::ScopedJuceInitialiser_GUI init;
     std::setvbuf(stdout, nullptr, _IONBF, 0);
     if (argc == 2 && juce::String(argv[1]) == "benchmark") return benchmark();
+    if (argc == 2 && juce::String(argv[1]) == "offline") return offlineBounceTest();
     std::printf("TubeChannel processor test\n");
     namespace id = tc::params::id;
 
@@ -98,7 +103,7 @@ int main(int argc, char** argv)
     {
         TubeChannelProcessor p;
         auto* quality = p.apvts.getParameter(id::quality);
-        check(p.getParameters()[p.getParameters().size()-2] == p.apvts.getParameter(id::eco), "Eco parameter appended after every released parameter");
+        check(p.getParameters()[p.getParameters().size()-4] == p.apvts.getParameter(id::eco), "Eco parameter appended after every released parameter");
         check(p.apvts.getParameter(id::eco)->getVersionHint() == 2, "Eco gets a new AU ordering version hint");
         check(p.apvts.getRawParameterValue(id::eco)->load() == 1, "new instances default to Eco");
         for (int index = 0; index < 3; ++index) {

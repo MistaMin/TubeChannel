@@ -54,6 +54,11 @@ int main()
         auto* outputTrim = find(*editor, "output-trim");
         check(inputTrim && outputTrim && inputTrim->isVisible() && outputTrim->isVisible(), "digital main page exposes gain trims");
         check(outputTrim && outputTrim->getBottom() <= digital->getY(), "output trim does not overlap meter");
+        auto* bounce = dynamic_cast<juce::Button*>(find(*editor,"offline-bounce"));
+        check(bounce && bounce->isVisible(),"offline dropdown visible on main page");
+        check(bounce && bounce->getX()==768 && bounce->getRight()<950,"offline dropdown fits between Redo and System");
+        check(bounce && bounce->getTooltip().contains("HQ") && bounce->getTooltip().contains("8x"),"offline dropdown describes saved default combination");
+        check(p.apvts.getParameter(tc::params::id::offlineBounce)->getAllValueStrings()==tc::params::offlineBounceChoices(),"offline menu exposes all nine mode/factor combinations");
         p.telemetry[0].vuTap[0].store(0.347f);
         p.telemetry[1].vuTap[0].store(0.0347f);
         p.apvts.state.setProperty("vuSrc", 0, nullptr);
@@ -61,6 +66,7 @@ int main()
         check(digital->getTitle().contains("0.0 VU"), "internal taps retain their VU reference");
         p.apvts.getParameter(tc::params::id::dualMono)->setValueNotifyingHost(1.f);
         pump(160);
+        check(find(*editor,"channel-a")->getRight()<bounce->getX() && find(*editor,"channel-b")->getRight()<bounce->getX(),"Dual Mono tabs do not overlap offline dropdown");
         click(*editor, "channel-b");
         pump(80);
         check(digital->getTitle().contains("-20.0 VU"), "dual-mono meter follows selected channel B");
@@ -81,6 +87,9 @@ int main()
         check(digital->getTitle().contains("-20.0 VU"), "mono meter ignores stale right-channel history");
         click(*editor, "system-page");
         check(!digital->isVisible(), "system page hides digital main meter");
+        check(bounce && bounce->isVisible(),"offline dropdown remains visible on system page");
+        click(*editor,"offline-bounce");
+        juce::PopupMenu::dismissAllActiveMenus();pump(20);
         namespace id=tc::params::id;
         check(find(*editor,"engine-mode")->getRight() < find(*editor,"oversampling")->getX(),"mode and oversampling banks do not overlap");
         check(find(*editor,"oversampling")->getRight() <= 918,"oversampling fits inside its system panel");
@@ -110,6 +119,9 @@ int main()
         p.apvts.replaceState(saved);
         pump(160);
         check(analogue->isVisible(), "open editor follows restored skin state");
+        click(*editor,"offline-bounce");
+        editor.reset();
+        juce::PopupMenu::dismissAllActiveMenus();pump(20); // menu callbacks cannot retain a destroyed editor
     }
     {
         tc::ui::MeterBallistics meter;

@@ -121,6 +121,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addBool(l, id::eco, "Eco mode", true, 2);
     l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { id::oversampling, 2 },
         "Oversampling", juce::StringArray { "Legacy", "Off (1x)", "2x", "4x", "8x (Derp)" }, 1));
+    l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { id::offlineBounce, 3 },
+        "Offline Bounce", offlineBounceChoices(), 8));
+    // Legacy sessions opt in when a dropdown choice is made; new instances use HQ/8x.
+    addBool(l, id::offlineBounceEnabled, "Offline Bounce override", true, 3);
     return l;
 }
 
@@ -167,6 +171,8 @@ ParameterValues::ParameterValues(const juce::AudioProcessorValueTreeState& s, bo
     quality = s.getRawParameterValue(id::quality);
     eco = s.getRawParameterValue(id::eco);
     oversampling = s.getRawParameterValue(id::oversampling);
+    offlineBounce = s.getRawParameterValue(id::offlineBounce);
+    offlineBounceEnabled = s.getRawParameterValue(id::offlineBounceEnabled);
     linearPhase = s.getRawParameterValue(id::linearPhase);
     stereoLink = s.getRawParameterValue(id::stereoLink);
     dualMono = s.getRawParameterValue(id::dualMono);

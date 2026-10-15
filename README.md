@@ -10,7 +10,14 @@ The interface is available in a digital layout and an analogue-style layout. Bot
 |---|---|
 | ![Digital interface](docs/ui-digital.png) | ![Analogue-style interface](docs/ui-analogue.png) |
 
-## Version 1.2.0
+## Version 1.2.1 — implemented, notarization pending
+
+**1.2.1** adds an **Offline Bounce** dropdown between Redo and System. Choose any
+of nine combinations: Eco, Circuit or HQ at 2x, 4x or Derp (8x). New instances use
+Eco/1x for playback and HQ/8x only when the host reports offline rendering.
+Playback, recording and realtime exports keep the normal System-page settings.
+Older saved projects retain their previous bounce behavior until a dropdown choice
+is made. See the [1.2.1 release notes](docs/RELEASE_1.2.1.md).
 
 **1.2.0** adds the reduced **Eco** engine as the default for new instances.
 It uses measured filters and asymmetric nonlinear maps without runtime circuit solves.
@@ -27,7 +34,7 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 
 The signed and notarized macOS universal installer supports Apple silicon and Intel Macs. It installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer. The package includes the user guide and license texts. AAX is not included in the release.
 
-Download the [1.2.0 universal macOS installer](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0.pkg) or browse [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [release notes](docs/RELEASE_1.2.0.md).
+The latest published installer is [1.2.0](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0.pkg); 1.2.1 is built and signed locally, awaiting permission for Apple notarization and publication. Browse [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [release notes](docs/RELEASE_1.2.1.md).
 
 ## User guide
 
