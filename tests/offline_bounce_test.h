@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdlib>
 #include <new>
+#ifdef _MSC_VER
+#include <malloc.h>
+#endif
 
 // Observe the real processor callback, including prepared-state adoption/return from bounce.
 static thread_local bool countRealtimeAllocations = false;
@@ -19,15 +22,23 @@ void operator delete[](void* p, std::size_t) noexcept { ::operator delete(p); }
 void* operator new(std::size_t size, std::align_val_t alignment)
 {
     if (countRealtimeAllocations) ++callbackAllocations;
+#ifdef _MSC_VER
+    if (void* p = _aligned_malloc(std::max(size, size_t(1)), std::max(size_t(alignment), sizeof(void*)))) return p;
+#else
     void* p = nullptr;
     if (posix_memalign(&p, std::max(size_t(alignment), sizeof(void*)), std::max(size, size_t(1))) == 0) return p;
+#endif
     throw std::bad_alloc();
 }
 void* operator new[](std::size_t size, std::align_val_t alignment) { return ::operator new(size, alignment); }
+#ifdef _MSC_VER
+void operator delete(void* p, std::align_val_t) noexcept { if (countRealtimeAllocations && p) ++callbackFrees; _aligned_free(p); }
+#else
 void operator delete(void* p, std::align_val_t) noexcept { ::operator delete(p); }
-void operator delete[](void* p, std::align_val_t) noexcept { ::operator delete(p); }
-void operator delete(void* p, std::size_t, std::align_val_t) noexcept { ::operator delete(p); }
-void operator delete[](void* p, std::size_t, std::align_val_t) noexcept { ::operator delete(p); }
+#endif
+void operator delete[](void* p, std::align_val_t al) noexcept { ::operator delete(p, al); }
+void operator delete(void* p, std::size_t, std::align_val_t al) noexcept { ::operator delete(p, al); }
+void operator delete[](void* p, std::size_t, std::align_val_t al) noexcept { ::operator delete(p, al); }
 
 static int offlineBounceTest()
 {
