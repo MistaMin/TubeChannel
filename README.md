@@ -32,15 +32,18 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 
 ## Download
 
-One installer per operating system. Pick yours below. AAX is not included in the release.
+Pick your operating system below. AAX is not included in the release.
 
-**Windows 1.2.0 (10 or later, 64-bit)** — [TubeChannel-1.2.0-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.0/TubeChannel-1.2.0-win.exe)
+**Windows 1.2.1 (10 or later, 64-bit)** — [TubeChannel-1.2.1-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-win.exe)
 Double-click the file and follow the steps. You can choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
 
-**macOS 1.2.1 (Apple silicon and Intel)** — [TubeChannel-1.2.1.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.pkg)
+**macOS 1.2.1 (Apple silicon and Intel)** — [TubeChannel-1.2.1.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.pkg) · [TubeChannel-1.2.1.dmg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.dmg)
 Signed and notarized. Installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer.
 
-Both installers include the user guide and license texts. Browse all downloads on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [1.2.1 release notes](docs/RELEASE_1.2.1.md). Windows remains at 1.2.0; the Offline Bounce update is available in the macOS installer and current source.
+**Linux 1.2.1 (x86_64)** — [TubeChannel-1.2.1-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.tar.gz) · [SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.sha256)
+Includes **VST3**, **CLAP**, **LV2**, and the **standalone app**. Extract the archive and copy the contents of `VST3/`, `CLAP/`, and `LV2/` into `~/.vst3`, `~/.clap`, and `~/.lv2`.
+
+All packages include license texts. Browse all downloads on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [1.2.1 release notes](docs/RELEASE_1.2.1.md).
 
 > **Windows may show a security prompt.** Because the Windows installer is not yet code-signed, Windows SmartScreen might show a blue "Windows protected your PC" message the first time you run it. The file is safe — click **More info**, then **Run anyway**. (See the note about code signing below.)
 
