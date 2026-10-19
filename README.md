@@ -34,13 +34,13 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 
 Pick your operating system below. AAX is not included in the release.
 
-**Windows 1.2.1 (10 or later, 64-bit)** — [TubeChannel-1.2.1-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-win.exe)
-Double-click the file and follow the steps. You can choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
+**Windows 1.2.1 (10 or later, x64 & ARM64)** — [TubeChannel-1.2.1-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-win.exe) (x64 installer) · [TubeChannel-1.2.1-windows-arm64.zip](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-windows-arm64.zip) ([ARM64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-windows-arm64.sha256))
+Double-click the installer (or extract the ARM64 zip) and choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
 
 **macOS 1.2.1 (Apple silicon and Intel)** — [TubeChannel-1.2.1.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.pkg) · [TubeChannel-1.2.1.dmg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.dmg)
 Signed and notarized. Installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer.
 
-**Linux 1.2.1 (x86_64)** — [TubeChannel-1.2.1-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.tar.gz) · [SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.sha256)
+**Linux 1.2.1 (x86_64 & aarch64)** — [TubeChannel-1.2.1-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.tar.gz) ([x86_64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.sha256)) · [TubeChannel-1.2.1-linux-aarch64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-aarch64.tar.gz) ([aarch64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-aarch64.sha256))
 Includes **VST3**, **CLAP**, **LV2**, and the **standalone app**. Extract the archive and copy the contents of `VST3/`, `CLAP/`, and `LV2/` into `~/.vst3`, `~/.clap`, and `~/.lv2`.
 
 All packages include license texts. Browse all downloads on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [1.2.1 release notes](docs/RELEASE_1.2.1.md).
