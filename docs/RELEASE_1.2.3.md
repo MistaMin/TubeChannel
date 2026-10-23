@@ -1,8 +1,9 @@
 # Tube Channel 1.2.3
 
-This patch release adds a dedicated standalone app icon, fixes the Linux GUI test
-setup, and refreshes the cross-platform release packages. The audio engine and
-sound are unchanged from 1.2.2.
+This patch release adds a dedicated standalone app icon and refreshes the
+cross-platform release packages. In headless Linux testing, the GUI regression
+test skips opening native popup windows because Xvfb does not support that
+interaction reliably. The audio engine and sound are unchanged from 1.2.2.
 
 ## Formats and platforms
 
@@ -26,6 +27,6 @@ applicable dependency license texts. See [THIRD_PARTY_LICENSES.md](../THIRD_PART
 ## Validation
 
 Windows x64 and Linux x86_64 release workflows build supported formats and run the
-platform test suite. The Linux GUI test now creates a native desktop peer before
-opening popup menus, avoiding the X11 `BadAtom` failure in headless CI. The
-universal macOS build is validated locally. This release makes no DSP changes.
+platform test suite. The Linux GUI test checks menu choices, layout, and state
+without opening native popups in the headless Xvfb runner. The universal macOS
+build is validated locally. This release makes no DSP changes.
