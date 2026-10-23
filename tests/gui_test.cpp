@@ -45,7 +45,7 @@ int main()
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
 #if JUCE_LINUX
         // Popups in the headless Linux test need a real X11 parent window.
-        editor->addToDesktop();
+        editor->addToDesktop(0);
         editor->setVisible(true);
         pump(100);
 #endif
