@@ -1,0 +1,142 @@
+name: Release builds
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows-x64:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+      - name: Install Inno Setup and Ninja
+        shell: pwsh
+        run: choco install innosetup ninja --yes --no-progress
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Build all Windows formats
+        run: cmake --build build --parallel 2
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+      - name: Package Windows installer
+        shell: pwsh
+        run: |
+          powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
+          $version = (Get-Content VERSION -Raw).Trim()
+          Get-FileHash "dist\TubeChannel-$version-win.exe" -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash.ToLower())  TubeChannel-$version-win.exe" } |
+            Set-Content "dist\TubeChannel-$version-win.exe.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64-release
+          path: |
+            dist/TubeChannel-*-win.exe
+            dist/TubeChannel-*-win.exe.sha256
+          if-no-files-found: error
+
+  linux-x86_64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build pkg-config xvfb \
+            libasound2-dev libjack-jackd2-dev libfreetype6-dev libfontconfig1-dev \
+            libx11-dev libxcomposite-dev libxcursor-dev libxext-dev libxinerama-dev \
+            libxrandr-dev libxrender-dev libwebkit2gtk-4.0-dev libglu1-mesa-dev
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: Build all Linux formats
+        run: cmake --build build --parallel 2
+      - name: Run tests
+        run: xvfb-run -a ctest --test-dir build --output-on-failure
+      - name: Package Linux x86_64 formats and license texts
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          art="build/TubeChannel_artefacts/Release"
+          root="dist/TubeChannel-$version-linux-x86_64"
+          mkdir -p "$root" "$root/Licenses/Tube Channel" "$root/Licenses/GoodLookinUI" \
+            "$root/Licenses/JUCE" "$root/Licenses/CLAP"
+          for format in VST3 CLAP LV2 Standalone; do cp -R "$art/$format" "$root/"; done
+          cp LICENSE THIRD_PARTY_LICENSES.md "$root/"
+          cp LICENSE THIRD_PARTY_LICENSES.md "$root/Licenses/Tube Channel/"
+          cp third_party/GoodLookinUI/LICENSE "$root/Licenses/GoodLookinUI/"
+          cp docs/USER_MANUAL.md docs/RELEASE_"$version".md docs/ui-digital.png \
+            docs/ui-analogue.png docs/ui-system-digital.png docs/ui-system-analogue.png \
+            docs/offline-bounce-digital.png docs/offline-bounce-analogue.png \
+            docs/signal-path.svg "$root/"
+          cat > "$root/INSTALL.txt" <<EOF
+          Tube Channel $version — Linux x86_64
+
+          Copy the VST3 bundle to ~/.vst3, the CLAP plugin to ~/.clap, and the LV2 bundle
+          to ~/.lv2. Create those folders if needed. Run the standalone app from Standalone/.
+          The User Manual and license files are included in this archive.
+          EOF
+          cat > "$root/LICENSE_BINARY.txt" <<EOF
+          Tube Channel $version plugin binaries are distributed as freeware.
+          Tube Channel source code is MIT licensed. See LICENSE.
+          Applicable third-party license texts are included under Licenses/.
+          EOF
+          juce="build/_deps/juce-src"
+          clap="build/_deps/clap-juce-extensions-src"
+          cp "$juce/LICENSE.md" "$root/Licenses/JUCE/"
+          cp "$clap/LICENSE.md" "$root/Licenses/CLAP/clap-juce-extensions-LICENSE.md"
+          cp "$clap/clap-libs/clap/LICENSE" "$root/Licenses/CLAP/clap-LICENSE"
+          cp "$clap/clap-libs/clap-helpers/LICENSE" "$root/Licenses/CLAP/clap-helpers-LICENSE"
+          while IFS= read -r -d '' license; do
+            rel="${license#"$juce/modules/"}"
+            mkdir -p "$root/Licenses/JUCE/modules/$(dirname "$rel")"
+            cp "$license" "$root/Licenses/JUCE/modules/$rel"
+          done < <(find "$juce/modules" -type f \( -iname 'LICENSE*' -o -iname 'COPYING*' -o -iname 'NOTICE*' \) -print0)
+          find "$root/Licenses" -type f -print | sed "s|^$root/Licenses/||" | LC_ALL=C sort \
+            > "$root/Licenses/INDEX.txt"
+          archive="dist/TubeChannel-$version-linux-x86_64.tar.gz"
+          tar -C dist -czf "$archive" "TubeChannel-$version-linux-x86_64"
+          (cd dist && sha256sum "$(basename "$archive")" > "$(basename "$archive").sha256")
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-x86_64-release
+          path: |
+            dist/TubeChannel-*-linux-x86_64.tar.gz
+            dist/TubeChannel-*-linux-x86_64.tar.gz.sha256
+          if-no-files-found: error
+
+  draft-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [windows-x64, linux-x86_64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Create draft release with Windows and Linux builds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          version="${tag#v}"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$tag" release-assets/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$tag" release-assets/* \
+              --repo "$GITHUB_REPOSITORY" --draft --title "Tube Channel $version" \
+              --notes-file "docs/RELEASE_$version.md"
+          fi

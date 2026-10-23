@@ -10,7 +10,11 @@ The interface is available in a digital layout and an analogue-style layout. Bot
 |---|---|
 | ![Digital interface](docs/ui-digital.png) | ![Analogue-style interface](docs/ui-analogue.png) |
 
-## Version 1.2.1
+## Version 1.2.2
+
+**1.2.2** adds a signed macOS AAX build and automated Windows x64 and
+Linux x86_64 release builds. macOS packages are universal for Apple silicon and
+Intel. The release changes packaging and documentation; it does not change the DSP.
 
 **1.2.1** adds an **Offline Bounce** dropdown between Redo and System. Choose any
 of nine combinations: Eco, Circuit or HQ at 2x, 4x or Derp (8x). New instances use
@@ -32,24 +36,31 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 
 ## Download
 
-Pick your operating system below. AAX is not included in the release.
+Pick the download for your operating system. The macOS installer includes VST3,
+Audio Unit, CLAP, LV2, standalone, and AAX. Windows and Linux builds
+include VST3, CLAP, LV2, and standalone.
 
-**Windows 1.2.1 (10 or later, x64 & ARM64)** — [TubeChannel-1.2.1-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-win.exe) (x64 installer) · [TubeChannel-1.2.1-windows-arm64.zip](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-windows-arm64.zip) ([ARM64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-windows-arm64.sha256))
-Double-click the installer (or extract the ARM64 zip) and choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
+**Windows 1.2.2 (Windows 10 or later, x64)** — [TubeChannel-1.2.2-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.2/TubeChannel-1.2.2-win.exe)
+Double-click the installer and choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
 
-**macOS 1.2.1 (Apple silicon and Intel)** — [TubeChannel-1.2.1.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.pkg) · [TubeChannel-1.2.1.dmg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1.dmg)
-Signed and notarized. Installs VST3, Audio Unit, CLAP, LV2, and the standalone app. Choose formats in the installer.
+**macOS 1.2.2 (Apple silicon and Intel)** — [TubeChannel-1.2.2.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.2/TubeChannel-1.2.2.pkg) · [TubeChannel-1.2.2.dmg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.2/TubeChannel-1.2.2.dmg)
+Signed and notarized. The installer lets you choose VST3, Audio Unit, CLAP, LV2,
+AAX, and the standalone app.
 
-**Linux 1.2.1 (x86_64 & aarch64)** — [TubeChannel-1.2.1-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.tar.gz) ([x86_64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-x86_64.sha256)) · [TubeChannel-1.2.1-linux-aarch64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-aarch64.tar.gz) ([aarch64 SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.1/TubeChannel-1.2.1-linux-aarch64.sha256))
+**Linux 1.2.2 (x86_64)** — [TubeChannel-1.2.2-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.2/TubeChannel-1.2.2-linux-x86_64.tar.gz) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.2/TubeChannel-1.2.2-linux-x86_64.sha256))
 Includes **VST3**, **CLAP**, **LV2**, and the **standalone app**. Extract the archive and copy the contents of `VST3/`, `CLAP/`, and `LV2/` into `~/.vst3`, `~/.clap`, and `~/.lv2`.
 
-All packages include license texts. Browse all downloads on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the [1.2.1 release notes](docs/RELEASE_1.2.1.md).
+All packages include the user guide and applicable license texts. Browse all downloads
+on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the
+[1.2.2 release notes](docs/RELEASE_1.2.2.md).
 
 > **Windows may show a security prompt.** Because the Windows installer is not yet code-signed, Windows SmartScreen might show a blue "Windows protected your PC" message the first time you run it. The file is safe — click **More info**, then **Run anyway**. (See the note about code signing below.)
 
 ## User guide
 
 See the [Tube Channel User Guide](docs/USER_MANUAL.md) for the complete control reference, signal-flow diagrams, quality-mode details, and setup notes.
+
+For engineering teams, the [HQ-to-Eco engineering guide](docs/HQ_TO_ECO_ENGINEERING_GUIDE.md) documents the model-reduction process, measurement pipeline, validation, compatibility work and reusable project handoff.
 
 ## Modes and oversampling
 

@@ -12,10 +12,12 @@ third-party overview here; upstream license texts are copied from the dependency
 | VST3 SDK (bundled with JUCE) | VST3 plugin format | See the included SDK license texts. |
 | LV2 SDK (bundled with JUCE) | LV2 plugin format | See the included SDK license texts. |
 | Audio Unit SDK (bundled with JUCE) | Audio Unit plugin format | See the included SDK license text. |
+| AAX SDK | AAX plug-in format when the licensed SDK is available | Avid AAX SDK License Agreement; the applicable SDK license text accompanies AAX packages. |
+| PACE Eden | AAX binary signing | PACE signing tools are used under the developer's PACE account; the tools are not included in Tube Channel packages. |
 
 Eco calibration tables are generated offline from the author's circuit models. NumPy is used by the development fitting tool and is not bundled in the plugin or installer.
 
-The AAX SDK is not part of this repository. No AAX binary is part of the public release.
+The AAX SDK is not part of this repository. AAX builds are optional and require a separately licensed SDK and PACE signing access.
 
 The circuit netlists in `Netlists/` are the author's own models. Semiconductor and tube parameters are generic
 published device data.

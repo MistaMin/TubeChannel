@@ -38,5 +38,10 @@ manifest = {
     "source_sha256": {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
     "licenses": "Included at /Library/Application Support/Tube Channel/Licenses",
 }
+if (build / "TubeChannel_artefacts/Release/AAX/Tube Channel.aaxplugin").exists():
+    manifest["formats"].append("AAX")
+    sdk_name = Path(cache.get("TUBECHANNEL_AAX_SDK", "")).name
+    manifest["dependencies"]["AAX SDK"] = sdk_name.split("aax-sdk-", 1)[-1].replace("-", ".")
+    manifest["licenses"] += "; AAX SDK license included in the installer"
 (build / "release-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 print("Wrote", build / "release-manifest.json")

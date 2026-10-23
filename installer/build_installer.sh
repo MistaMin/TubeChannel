@@ -7,9 +7,9 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 VERSION=$(cat VERSION)
-ART=build/universal/TubeChannel_artefacts/Release
 OUT=${OUT:-dist}
-BUILD=build/universal
+BUILD=${BUILD:-build/universal}
+ART="$BUILD/TubeChannel_artefacts/Release"
 APP_ID="Developer ID Application: Marcos Deida (ZQYU67JUBH)"
 INST_ID="Developer ID Installer: Marcos Deida (ZQYU67JUBH)"
 mkdir -p "$OUT"
@@ -28,7 +28,7 @@ CLAP_EXT_SRC=$(cache_value FETCHCONTENT_SOURCE_DIR_CLAP-JUCE-EXTENSIONS)
 RESOURCE_ROOT="$OUT/stage/licenses/Tube Channel"
 LICENSE_ROOT="$RESOURCE_ROOT/Licenses"
 mkdir -p "$LICENSE_ROOT/Tube Channel" "$LICENSE_ROOT/GoodLookinUI" "$LICENSE_ROOT/JUCE" \
-         "$LICENSE_ROOT/CLAP" "$LICENSE_ROOT/VST3-SDK" "$LICENSE_ROOT/LV2-SDK" "$LICENSE_ROOT/AudioUnit-SDK"
+         "$LICENSE_ROOT/CLAP" "$LICENSE_ROOT/VST3-SDK" "$LICENSE_ROOT/LV2-SDK" "$LICENSE_ROOT/AudioUnit-SDK" "$LICENSE_ROOT/AAX-SDK"
 mkdir -p "$RESOURCE_ROOT/Manual"
 cp docs/USER_MANUAL.md docs/ui-analogue.png docs/ui-digital.png docs/ui-system-analogue.png \
    docs/ui-system-digital.png docs/signal-path.svg "$RESOURCE_ROOT/Manual/"
@@ -36,11 +36,22 @@ cp LICENSE "$RESOURCE_ROOT/LICENSE"
 cp THIRD_PARTY_LICENSES.md "$RESOURCE_ROOT/THIRD_PARTY_LICENSES.md"
 cp LICENSE "$LICENSE_ROOT/Tube Channel/LICENSE"
 cp THIRD_PARTY_LICENSES.md "$LICENSE_ROOT/Tube Channel/THIRD_PARTY_LICENSES.md"
+cat > "$RESOURCE_ROOT/LICENSE_BINARY.txt" <<EOF
+TUBE CHANNEL $VERSION - BINARY LICENSE NOTICE
+
+Tube Channel plugin binaries are distributed as freeware. You may install and use
+them without charge. The binaries are built under the author's commercial JUCE
+Developer license. Tube Channel source code is MIT licensed; see LICENSE.
+Applicable third-party license texts are under Licenses/; see THIRD_PARTY_LICENSES.md.
+EOF
 cp third_party/GoodLookinUI/LICENSE "$LICENSE_ROOT/GoodLookinUI/LICENSE"
 cp "$JUCE_SRC/LICENSE.md" "$LICENSE_ROOT/JUCE/LICENSE.md"
 cp "$CLAP_EXT_SRC/LICENSE.md" "$LICENSE_ROOT/CLAP/clap-juce-extensions-LICENSE.md"
 cp "$CLAP_EXT_SRC/clap-libs/clap/LICENSE" "$LICENSE_ROOT/CLAP/clap-LICENSE"
 cp "$CLAP_EXT_SRC/clap-libs/clap-helpers/LICENSE" "$LICENSE_ROOT/CLAP/clap-helpers-LICENSE"
+if [ -f "${TC_AAX_SDK:-../aax-sdk-2-8-1}/LICENSE.txt" ]; then
+  cp "${TC_AAX_SDK:-../aax-sdk-2-8-1}/LICENSE.txt" "$LICENSE_ROOT/AAX-SDK/LICENSE.txt"
+fi
 
 # Include notices for code used by the shipped macOS formats: codecs, graphics helpers, and
 # the VST3, LV2, and Audio Unit SDKs. Windows/Android backends and disabled browser/scripting
@@ -74,10 +85,18 @@ declare -a BUNDLES=(
   "AU/Tube Channel.component|/Library/Audio/Plug-Ins/Components|au"
   "CLAP/Tube Channel.clap|/Library/Audio/Plug-Ins/CLAP|clap"
   "LV2/Tube Channel.lv2|/Library/Audio/Plug-Ins/LV2|lv2"
+  "AAX/Tube Channel.aaxplugin|/Library/Application Support/Avid/Audio/Plug-Ins|aax"
   "Standalone/Tube Channel.app|/Applications|app"
 )
 for entry in "${BUNDLES[@]}"; do
   IFS='|' read -r rel dest id <<<"$entry"
+  if [ ! -e "$ART/$rel" ]; then
+    if [ "$id" = "aax" ]; then
+      echo "Missing required AAX build artifact: $ART/$rel. Configure the licensed AAX SDK before packaging." >&2
+      exit 1
+    fi
+    continue
+  fi
   name=$(basename "$rel")
   mkdir -p "$OUT/stage/$id"
   cp -R "$ART/$rel" "$OUT/stage/$id/$name"
@@ -93,6 +112,15 @@ for entry in "${BUNDLES[@]}"; do
     else
       codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$OUT/stage/$id/$name"
       codesign --verify --deep --strict --verbose=2 "$OUT/stage/$id/$name"
+    fi
+    if [ "$id" = "aax" ]; then
+      PACE_WRAPTOOL=${TC_WRAPTOOL:-/Applications/PACEAntiPiracy/Eden/Fusion/Current/bin/wraptool}
+      : "${TC_PACE_ACCOUNT:?Set TC_PACE_ACCOUNT to the PACE developer account}"
+      : "${TC_AAX_WCGUID:?Set TC_AAX_WCGUID to the AAX Wrap Configuration GUID from PACE Central}"
+      "$PACE_WRAPTOOL" sign --verbose --account "$TC_PACE_ACCOUNT" \
+        --wcguid "$TC_AAX_WCGUID" --signid "$APP_ID" \
+        --in "$OUT/stage/$id/$name" --out "$OUT/stage/$id/$name"
+      "$PACE_WRAPTOOL" verify --verbose --in "$OUT/stage/$id/$name"
     fi
   fi
   pkgbuild --root "$OUT/stage/$id" --install-location "$dest" --identifier "com.opengrid.tubechannel.$id" \
@@ -121,18 +149,20 @@ cat > "$OUT/distribution.xml" <<XML
   <title>Tube Channel $VERSION</title>
   <options customize="always" require-scripts="false" hostArchitectures="arm64,x86_64"/>
   <choices-outline>
-    <line choice="vst3"/><line choice="au"/><line choice="clap"/><line choice="lv2"/><line choice="app"/><line choice="licenses"/>
+    <line choice="vst3"/><line choice="au"/><line choice="clap"/><line choice="lv2"/><line choice="aax"/><line choice="app"/><line choice="licenses"/>
   </choices-outline>
   <choice id="vst3" title="VST3"><pkg-ref id="com.opengrid.tubechannel.vst3"/></choice>
   <choice id="au" title="Audio Unit"><pkg-ref id="com.opengrid.tubechannel.au"/></choice>
   <choice id="clap" title="CLAP"><pkg-ref id="com.opengrid.tubechannel.clap"/></choice>
   <choice id="lv2" title="LV2"><pkg-ref id="com.opengrid.tubechannel.lv2"/></choice>
+  <choice id="aax" title="AAX"><pkg-ref id="com.opengrid.tubechannel.aax"/></choice>
   <choice id="app" title="Standalone application"><pkg-ref id="com.opengrid.tubechannel.app"/></choice>
   <choice id="licenses" title="User guide and license texts" selected="true" visible="false"><pkg-ref id="com.opengrid.tubechannel.licenses"/></choice>
   <pkg-ref id="com.opengrid.tubechannel.vst3">TubeChannel-vst3.pkg</pkg-ref>
   <pkg-ref id="com.opengrid.tubechannel.au">TubeChannel-au.pkg</pkg-ref>
   <pkg-ref id="com.opengrid.tubechannel.clap">TubeChannel-clap.pkg</pkg-ref>
   <pkg-ref id="com.opengrid.tubechannel.lv2">TubeChannel-lv2.pkg</pkg-ref>
+  <pkg-ref id="com.opengrid.tubechannel.aax">TubeChannel-aax.pkg</pkg-ref>
   <pkg-ref id="com.opengrid.tubechannel.app">TubeChannel-app.pkg</pkg-ref>
   <pkg-ref id="com.opengrid.tubechannel.licenses">TubeChannel-licenses.pkg</pkg-ref>
 </installer-gui-script>

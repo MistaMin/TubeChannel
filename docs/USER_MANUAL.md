@@ -138,6 +138,10 @@ The global phase setting, gain trims, sidechain and stereo/Dual Mono settings ap
 to both paths. Changing the bounce combination during playback preserves the working
 engine's filter/detector history. The dropdown lights while its offline path is active.
 
+The Eco/Circuit/HQ buttons continue to show the saved **playback** selection during
+a bounce. The status footer reports the active offline model, but fast renders or
+hosts using a separate render instance may not redraw the editor.
+
 ![Nine Offline Bounce combinations, menu illustration](offline-bounce-digital.png)
 
 Menu illustration. Native popup spacing and highlighting follow the platform skin.
