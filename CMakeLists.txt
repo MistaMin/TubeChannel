@@ -184,6 +184,8 @@ juce_add_plugin(TubeChannel
     PLUGIN_CODE              TbCh
     FORMATS                  ${TUBECHANNEL_FORMATS}
     PRODUCT_NAME             "Tube Channel"
+    ICON_BIG                 "${CMAKE_CURRENT_SOURCE_DIR}/assets/tube-channel-app-icon.png"
+    ICON_SMALL               "${CMAKE_CURRENT_SOURCE_DIR}/assets/tube-channel-app-icon.png"
     COPY_PLUGIN_AFTER_BUILD  FALSE
     ${TUBECHANNEL_EXTRA_ARGS}
 )

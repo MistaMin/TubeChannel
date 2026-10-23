@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="100" x2="900" y2="930" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#252a2e"/>
+      <stop offset="0.5" stop-color="#111518"/>
+      <stop offset="1" stop-color="#080b0d"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientTransform="matrix(0 490 -490 0 512 480)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff9b43" stop-opacity=".25"/>
+      <stop offset=".48" stop-color="#ff702e" stop-opacity=".09"/>
+      <stop offset="1" stop-color="#ff702e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="336" y1="238" x2="692" y2="701" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd08a" stop-opacity=".23"/>
+      <stop offset=".22" stop-color="#f28a38" stop-opacity=".1"/>
+      <stop offset=".72" stop-color="#f28538" stop-opacity=".045"/>
+      <stop offset="1" stop-color="#ffb15c" stop-opacity=".18"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="345" y1="260" x2="682" y2="686" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe2aa"/>
+      <stop offset=".34" stop-color="#ffad54"/>
+      <stop offset=".72" stop-color="#f17a32"/>
+      <stop offset="1" stop-color="#ffd18b"/>
+    </linearGradient>
+    <linearGradient id="filament" x1="457" y1="382" x2="567" y2="575" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff0c4"/>
+      <stop offset=".45" stop-color="#ffad52"/>
+      <stop offset="1" stop-color="#f36e2d"/>
+    </linearGradient>
+    <filter id="glow" x="275" y="270" width="474" height="500" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+    <filter id="soft" x="180" y="180" width="664" height="664" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="46"/>
+    </filter>
+    <clipPath id="clip"><rect x="32" y="32" width="960" height="960" rx="222"/></clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    <rect width="1024" height="1024" fill="url(#halo)"/>
+    <circle cx="512" cy="494" r="299" fill="#ff8a3d" fill-opacity=".11" filter="url(#soft)"/>
+    <rect x="33" y="33" width="958" height="958" rx="221" fill="none" stroke="#ffffff" stroke-opacity=".09" stroke-width="2"/>
+    <path d="M140 600h162l52-38 38 76 54-108 46 91 47-63h120l38-27h144" fill="none" stroke="#ff9b4d" stroke-opacity=".24" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M140 600h162l52-38 38 76 54-108 46 91 47-63h120l38-27h144" fill="none" stroke="#ffc27a" stroke-opacity=".33" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M394 684h236v61H394z" fill="#1b1e20" stroke="#db8d4c" stroke-width="5"/>
+    <path d="M407 704h210" stroke="#f5a65c" stroke-opacity=".42" stroke-width="3"/>
+    <path d="M426 745v78m86-78v93m86-93v78" stroke="#d99a5f" stroke-width="15" stroke-linecap="round"/>
+    <path d="M365 267c0-84 66-151 147-151s147 67 147 151v302c0 44-17 82-47 111l-36 35H448l-36-35c-30-29-47-67-47-111V267Z" fill="#ff9950" fill-opacity=".48" filter="url(#glow)"/>
+    <path d="M365 267c0-84 66-151 147-151s147 67 147 151v302c0 44-17 82-47 111l-36 35H448l-36-35c-30-29-47-67-47-111V267Z" fill="url(#glass)" stroke="url(#gold)" stroke-width="12"/>
+    <path d="M400 265c0-63 50-114 112-114 34 0 65 15 86 40" fill="none" stroke="#fff0d2" stroke-opacity=".64" stroke-width="9" stroke-linecap="round"/>
+    <path d="M394 321c17-25 39-41 65-49" fill="none" stroke="#fff2d4" stroke-opacity=".3" stroke-width="7" stroke-linecap="round"/>
+    <path d="M449 400c22 25 22 49 0 74s-22 49 0 74 22 49 0 74" fill="none" stroke="url(#filament)" stroke-width="17" stroke-linecap="round"/>
+    <path d="M575 400c-22 25-22 49 0 74s22 49 0 74-22 49 0 74" fill="none" stroke="url(#filament)" stroke-width="17" stroke-linecap="round"/>
+    <path d="M449 400v-28m126 28v-28M449 622v32m126-32v32" stroke="#ffe0a3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M433 703h158" stroke="#fff0ca" stroke-opacity=".6" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="512" cy="344" r="11" fill="#fff2cf" fill-opacity=".92"/>
+    <circle cx="512" cy="344" r="29" fill="#ffad54" fill-opacity=".26" filter="url(#glow)"/>
+    <path d="M294 844h436" stroke="#f5ad67" stroke-opacity=".2" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

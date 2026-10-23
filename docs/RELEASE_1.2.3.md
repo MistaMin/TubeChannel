@@ -1,7 +1,8 @@
 # Tube Channel 1.2.3
 
-This patch release fixes the Linux GUI test setup and refreshes the cross-platform
-release packages. The audio engine and sound are unchanged from 1.2.2.
+This patch release adds a dedicated standalone app icon, fixes the Linux GUI test
+setup, and refreshes the cross-platform release packages. The audio engine and
+sound are unchanged from 1.2.2.
 
 ## Formats and platforms
 

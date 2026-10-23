@@ -12,9 +12,9 @@ The interface is available in a digital layout and an analogue-style layout. Bot
 
 ## Version 1.2.3
 
-**1.2.3** fixes the Linux GUI test setup so menu tests run with a native X11
-window, and completes the Linux x86_64 release validation. The audio processing
-is unchanged from 1.2.2.
+**1.2.3** adds a dedicated icon for the standalone app and fixes the Linux GUI
+test setup so menu tests run with a native X11 window. The audio processing is
+unchanged from 1.2.2.
 
 **1.2.1** adds an **Offline Bounce** dropdown between Redo and System. Choose any
 of nine combinations: Eco, Circuit or HQ at 2x, 4x or Derp (8x). New instances use
