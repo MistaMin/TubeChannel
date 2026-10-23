@@ -43,6 +43,12 @@ int main()
     {
         TubeChannelProcessor p;
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
+#if JUCE_LINUX
+        // Popups in the headless Linux test need a real X11 parent window.
+        editor->addToDesktop();
+        editor->setVisible(true);
+        pump(100);
+#endif
         auto* analogue = find(*editor, "analogue-meter");
         auto* digital = find(*editor, "digital-meter");
         check(analogue && digital, "both skins have meters");
