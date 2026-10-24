@@ -39,6 +39,7 @@ foreach ($d in @("$LicenseRoot\Tube Channel", "$LicenseRoot\GoodLookinUI", "$Lic
 }
 
 Copy-Item "docs\USER_MANUAL.md", "docs\ui-analogue.png", "docs\ui-digital.png", "docs\ui-system-analogue.png", "docs\ui-system-digital.png", "docs\signal-path.svg" -Destination "$ResourceRoot\Manual\"
+Copy-Item "output\pdf\TubeChannel-User-Manual.pdf" -Destination "$ResourceRoot\Manual\"
 foreach ($image in @("docs\offline-bounce-analogue.png", "docs\offline-bounce-digital.png")) {
     if (Test-Path $image) { Copy-Item $image "$ResourceRoot\Manual\" }
 }

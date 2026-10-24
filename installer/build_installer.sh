@@ -32,6 +32,7 @@ mkdir -p "$LICENSE_ROOT/Tube Channel" "$LICENSE_ROOT/GoodLookinUI" "$LICENSE_ROO
 mkdir -p "$RESOURCE_ROOT/Manual"
 cp docs/USER_MANUAL.md docs/ui-analogue.png docs/ui-digital.png docs/ui-system-analogue.png \
    docs/ui-system-digital.png docs/signal-path.svg "$RESOURCE_ROOT/Manual/"
+cp output/pdf/TubeChannel-User-Manual.pdf "$RESOURCE_ROOT/Manual/"
 cp LICENSE "$RESOURCE_ROOT/LICENSE"
 cp THIRD_PARTY_LICENSES.md "$RESOURCE_ROOT/THIRD_PARTY_LICENSES.md"
 cp LICENSE "$LICENSE_ROOT/Tube Channel/LICENSE"

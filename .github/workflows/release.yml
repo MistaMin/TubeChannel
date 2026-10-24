@@ -79,6 +79,7 @@ jobs:
             docs/ui-analogue.png docs/ui-system-digital.png docs/ui-system-analogue.png \
             docs/offline-bounce-digital.png docs/offline-bounce-analogue.png \
             docs/signal-path.svg "$root/"
+          cp output/pdf/TubeChannel-User-Manual.pdf "$root/"
           cat > "$root/INSTALL.txt" <<EOF
           Tube Channel $version — Linux x86_64
 

@@ -34,7 +34,7 @@ cp "$PKG" "$STAGE/"
 
 # 2. Documentation
 mkdir -p "$STAGE/Documentation"
-for doc in docs/USER_MANUAL.md docs/RELEASE_$VERSION.md; do
+for doc in docs/USER_MANUAL.md docs/RELEASE_$VERSION.md output/pdf/TubeChannel-User-Manual.pdf; do
   if [ -f "$doc" ]; then
     cp "$doc" "$STAGE/Documentation/"
   fi
