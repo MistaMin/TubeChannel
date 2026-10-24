@@ -4,6 +4,11 @@ Tube Channel's own source code is MIT licensed (see LICENSE). The macOS installe
 texts under `/Library/Application Support/Tube Channel/Licenses`. The repository keeps the project license and
 third-party overview here; upstream license texts are copied from the dependency revisions used for the build.
 
+The macOS 1.2.3 release package includes Tube Channel's AAX binary. Like the other official Tube Channel plugin
+binaries, AAX is distributed as freeware; the source code remains MIT licensed. Building AAX from source requires
+the separately licensed SDK and PACE signing access. The applicable AAX SDK license text is included with the macOS
+installer when supplied with the SDK.
+
 | Component | Used for | License |
 |---|---|---|
 | JUCE 9.0.3 | plugin framework, user interface, audio plugin formats | AGPL-3.0 or a commercial JUCE license. The released binaries are built under a JUCE Developer license. Anyone building from source needs a JUCE license that covers their use and distribution. |

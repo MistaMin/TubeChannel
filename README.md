@@ -143,7 +143,7 @@ To package the installer you also need [Inno Setup](https://jrsoftware.org/isinf
 powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
 ```
 
-The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. AAX can be enabled when its SDK is available, but it is not part of the public release package. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. A Windows installer script (`installer/TubeChannel.iss`) and build script (`installer/build_installer_win.ps1`) are included for the Windows distribution.
+The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. The macOS 1.2.3 release package includes AAX. Building AAX from source requires a separately licensed AAX SDK and PACE signing access. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. A Windows installer script (`installer/TubeChannel.iss`) and build script (`installer/build_installer_win.ps1`) are included for the Windows distribution.
 
 ## Notes for Windows users
 
@@ -151,4 +151,4 @@ The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on 
 
 ## License
 
-Tube Channel source code is MIT licensed; see [LICENSE](LICENSE). The provided plugin binaries are freeware. The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements. Building from source requires a JUCE license that covers your use and distribution.
+Tube Channel source code is MIT licensed; see [LICENSE](LICENSE). All official plugin binaries, including the macOS AAX binary, are freeware. The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements. Building from source requires a JUCE license that covers your use and distribution.

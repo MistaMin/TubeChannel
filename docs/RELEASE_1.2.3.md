@@ -19,8 +19,9 @@ Authenticode certificate; Linux archives include SHA-256 checksums.
 
 ## Licensing
 
-Tube Channel source code is MIT licensed. Official plugin binaries are freeware
-and are built under the author's commercial JUCE Developer license. Each package
+Tube Channel source code is MIT licensed. All official plugin binaries, including
+the macOS AAX binary, are freeware and are built under the author's commercial JUCE
+Developer license. Each package
 includes the project license, user manual, third-party license overview, and
 applicable dependency license texts. See [THIRD_PARTY_LICENSES.md](../THIRD_PARTY_LICENSES.md).
 

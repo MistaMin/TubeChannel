@@ -179,4 +179,4 @@ The main audio moves through the channel in this order. The detector listens to 
 - The plugin's first/default state has PSU SIM off. Turning it on uses more CPU.
 - In a saved project, the host-restored parameter value takes precedence over the new-instance default.
 - If you hear crackling or breakup, first check the host's audio buffer and real-time CPU load, then try Eco mode and turn off PSU SIM.
-- Source code is MIT licensed. The installer includes the applicable third-party license texts. See [LICENSE](../LICENSE) and [THIRD_PARTY_LICENSES.md](../THIRD_PARTY_LICENSES.md).
+- Source code is MIT licensed. All official plugin binaries, including AAX in the macOS installer, are freeware. The installer includes the applicable third-party license texts. See [LICENSE](../LICENSE) and [THIRD_PARTY_LICENSES.md](../THIRD_PARTY_LICENSES.md).

@@ -39,8 +39,9 @@ cp THIRD_PARTY_LICENSES.md "$LICENSE_ROOT/Tube Channel/THIRD_PARTY_LICENSES.md"
 cat > "$RESOURCE_ROOT/LICENSE_BINARY.txt" <<EOF
 TUBE CHANNEL $VERSION - BINARY LICENSE NOTICE
 
-Tube Channel plugin binaries are distributed as freeware. You may install and use
-them without charge. The binaries are built under the author's commercial JUCE
+Tube Channel plugin binaries, including AAX when included in the macOS package, are
+distributed as freeware. You may install and use them without charge. The binaries
+are built under the author's commercial JUCE
 Developer license. Tube Channel source code is MIT licensed; see LICENSE.
 Applicable third-party license texts are under Licenses/; see THIRD_PARTY_LICENSES.md.
 EOF
