@@ -1,8 +1,9 @@
 #!/bin/bash
-# Build the Tube Channel installer from a universal Release build.
-#   installer/build_installer.sh                 unsigned package (for a local test)
-#   SIGN=1 installer/build_installer.sh          sign every bundle, build, sign and notarize + staple the package
-#   SIGN=1 NOTARIZE=0 installer/build_installer.sh  sign locally without submitting the package to Apple
+# Build the Tube Channel macOS bundle archive for the OpenGrid Plugin Manager from a universal Release
+# build. No PKG, DMG or standalone app is made.
+#   installer/build_installer.sh                    unsigned archive (for a local test)
+#   SIGN=1 installer/build_installer.sh             sign every bundle, build the archive, notarize it
+#   SIGN=1 NOTARIZE=0 installer/build_installer.sh  sign locally without submitting to Apple
 # Run SIGN=1 from your own Terminal: codesign / notarytool need the keychain prompt.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -11,11 +12,8 @@ OUT=${OUT:-dist}
 BUILD=${BUILD:-build/universal}
 ART="$BUILD/TubeChannel_artefacts/Release"
 APP_ID="Developer ID Application: Marcos Deida (ZQYU67JUBH)"
-INST_ID="Developer ID Installer: Marcos Deida (ZQYU67JUBH)"
 mkdir -p "$OUT"
-rm -rf "$OUT/stage" "$OUT/pkgs"
-rm -f "$OUT/TubeChannel-$VERSION-unsigned.pkg" "$OUT/distribution.xml"
-mkdir -p "$OUT/stage" "$OUT/pkgs"
+rm -rf "$OUT/resources"
 
 cache_value() {
   sed -n "s/^$1:[^=]*=//p" "$BUILD/CMakeCache.txt" | head -n 1
@@ -25,7 +23,7 @@ CLAP_EXT_SRC=$(cache_value FETCHCONTENT_SOURCE_DIR_CLAP-JUCE-EXTENSIONS)
 [ -n "$JUCE_SRC" ] || JUCE_SRC="$BUILD/_deps/juce-src"
 [ -n "$CLAP_EXT_SRC" ] || CLAP_EXT_SRC="$BUILD/_deps/clap-juce-extensions-src"
 
-RESOURCE_ROOT="$OUT/stage/licenses/Tube Channel"
+RESOURCE_ROOT="$OUT/resources"
 LICENSE_ROOT="$RESOURCE_ROOT/Licenses"
 mkdir -p "$LICENSE_ROOT/Tube Channel" "$LICENSE_ROOT/GoodLookinUI" "$LICENSE_ROOT/JUCE" \
          "$LICENSE_ROOT/CLAP" "$LICENSE_ROOT/VST3-SDK" "$LICENSE_ROOT/LV2-SDK" "$LICENSE_ROOT/AudioUnit-SDK" "$LICENSE_ROOT/AAX-SDK"
@@ -81,53 +79,6 @@ done < <(find \
   "$JUCE_SRC/modules/juce_audio_plugin_client/AU/AudioUnitSDK" \
   -type f \( -iname 'LICENSE*' -o -iname 'COPYING*' -o -iname 'NOTICE*' \) -print0)
 
-declare -a BUNDLES=(
-  "VST3/Tube Channel.vst3|/Library/Audio/Plug-Ins/VST3|vst3"
-  "AU/Tube Channel.component|/Library/Audio/Plug-Ins/Components|au"
-  "CLAP/Tube Channel.clap|/Library/Audio/Plug-Ins/CLAP|clap"
-  "LV2/Tube Channel.lv2|/Library/Audio/Plug-Ins/LV2|lv2"
-  "AAX/Tube Channel.aaxplugin|/Library/Application Support/Avid/Audio/Plug-Ins|aax"
-  "Standalone/Tube Channel.app|/Applications|app"
-)
-for entry in "${BUNDLES[@]}"; do
-  IFS='|' read -r rel dest id <<<"$entry"
-  if [ ! -e "$ART/$rel" ]; then
-    if [ "$id" = "aax" ]; then
-      echo "Missing required AAX build artifact: $ART/$rel. Configure the licensed AAX SDK before packaging." >&2
-      exit 1
-    fi
-    continue
-  fi
-  name=$(basename "$rel")
-  mkdir -p "$OUT/stage/$id"
-  cp -R "$ART/$rel" "$OUT/stage/$id/$name"
-  find "$OUT/stage/$id" -name '._*' -delete
-  xattr -cr "$OUT/stage/$id/$name"
-  if [ "${SIGN:-0}" = "1" ]; then
-    if [ "$id" = "lv2" ]; then
-      # an LV2 bundle is a plain folder: sign the binaries inside it
-      find "$OUT/stage/$id/$name" -type f \( -name '*.dylib' -o -name '*.so' \) | while read -r f; do
-        codesign --force --timestamp --options runtime --sign "$APP_ID" "$f"
-        codesign --verify --strict --verbose=2 "$f"
-      done
-    else
-      codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$OUT/stage/$id/$name"
-      codesign --verify --deep --strict --verbose=2 "$OUT/stage/$id/$name"
-    fi
-    if [ "$id" = "aax" ]; then
-      PACE_WRAPTOOL=${TC_WRAPTOOL:-/Applications/PACEAntiPiracy/Eden/Fusion/Current/bin/wraptool}
-      : "${TC_PACE_ACCOUNT:?Set TC_PACE_ACCOUNT to the PACE developer account}"
-      : "${TC_AAX_WCGUID:?Set TC_AAX_WCGUID to the AAX Wrap Configuration GUID from PACE Central}"
-      "$PACE_WRAPTOOL" sign --verbose --account "$TC_PACE_ACCOUNT" \
-        --wcguid "$TC_AAX_WCGUID" --signid "$APP_ID" \
-        --in "$OUT/stage/$id/$name" --out "$OUT/stage/$id/$name"
-      "$PACE_WRAPTOOL" verify --verbose --in "$OUT/stage/$id/$name"
-    fi
-  fi
-  pkgbuild --root "$OUT/stage/$id" --install-location "$dest" --identifier "com.opengrid.tubechannel.$id" \
-           --version "$VERSION" "$OUT/pkgs/TubeChannel-$id.pkg" >/dev/null
-done
-
 # Include an exact build/dependency and license inventory with the installed documentation.
 if [ -f "$BUILD/release-manifest.json" ]; then
   cp "$BUILD/release-manifest.json" "$RESOURCE_ROOT/Manual/release-manifest.json"
@@ -140,48 +91,36 @@ for screenshot in docs/offline-bounce-digital.png docs/offline-bounce-analogue.p
 done
 find "$LICENSE_ROOT" -type f | LC_ALL=C sort | sed "s|^$LICENSE_ROOT/||" > "$LICENSE_ROOT/INDEX.txt"
 
-pkgbuild --root "$OUT/stage/licenses" --install-location "/Library/Application Support" \
-         --identifier "com.opengrid.tubechannel.licenses" --version "$VERSION" \
-         "$OUT/pkgs/TubeChannel-licenses.pkg" >/dev/null
-
-cat > "$OUT/distribution.xml" <<XML
-<?xml version="1.0" encoding="utf-8"?>
-<installer-gui-script minSpecVersion="1">
-  <title>Tube Channel $VERSION</title>
-  <options customize="always" require-scripts="false" hostArchitectures="arm64,x86_64"/>
-  <choices-outline>
-    <line choice="vst3"/><line choice="au"/><line choice="clap"/><line choice="lv2"/><line choice="aax"/><line choice="app"/><line choice="licenses"/>
-  </choices-outline>
-  <choice id="vst3" title="VST3"><pkg-ref id="com.opengrid.tubechannel.vst3"/></choice>
-  <choice id="au" title="Audio Unit"><pkg-ref id="com.opengrid.tubechannel.au"/></choice>
-  <choice id="clap" title="CLAP"><pkg-ref id="com.opengrid.tubechannel.clap"/></choice>
-  <choice id="lv2" title="LV2"><pkg-ref id="com.opengrid.tubechannel.lv2"/></choice>
-  <choice id="aax" title="AAX"><pkg-ref id="com.opengrid.tubechannel.aax"/></choice>
-  <choice id="app" title="Standalone application"><pkg-ref id="com.opengrid.tubechannel.app"/></choice>
-  <choice id="licenses" title="User guide and license texts" selected="true" visible="false"><pkg-ref id="com.opengrid.tubechannel.licenses"/></choice>
-  <pkg-ref id="com.opengrid.tubechannel.vst3">TubeChannel-vst3.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.au">TubeChannel-au.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.clap">TubeChannel-clap.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.lv2">TubeChannel-lv2.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.aax">TubeChannel-aax.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.app">TubeChannel-app.pkg</pkg-ref>
-  <pkg-ref id="com.opengrid.tubechannel.licenses">TubeChannel-licenses.pkg</pkg-ref>
-</installer-gui-script>
-XML
-PKG="$OUT/TubeChannel-$VERSION-unsigned.pkg"
-productbuild --distribution "$OUT/distribution.xml" --package-path "$OUT/pkgs" "$PKG" >/dev/null
-echo "built $PKG"
-
 if [ "${SIGN:-0}" = "1" ]; then
-  FINAL="$OUT/TubeChannel-$VERSION.pkg"
-  productsign --sign "$INST_ID" --timestamp "$PKG" "$FINAL"
-  pkgutil --check-signature "$FINAL"
-  if [ "${NOTARIZE:-1}" = "1" ]; then
-    xcrun notarytool submit "$FINAL" --keychain-profile AC_NOTARY --wait
-    xcrun stapler staple "$FINAL"
-    xcrun stapler validate "$FINAL"
-    echo "signed, notarized and stapled: $FINAL"
-  else
-    echo "signed locally; notarization not submitted: $FINAL"
+  for rel in "VST3/Tube Channel.vst3" "AU/Tube Channel.component" "CLAP/Tube Channel.clap"; do
+    b="$ART/$rel"
+    find "$b/Contents" -type f -name '*.dylib' -print0 | while IFS= read -r -d '' f; do
+      codesign --force --timestamp --options runtime --sign "$APP_ID" "$f"
+    done
+    codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$b"
+    codesign --verify --deep --strict --verbose=2 "$b"
+  done
+  find "$ART/LV2/Tube Channel.lv2" -type f \( -name '*.dylib' -o -name '*.so' \) -print0 | while IFS= read -r -d '' f; do
+    codesign --force --timestamp --options runtime --sign "$APP_ID" "$f"
+    codesign --verify --strict --verbose=2 "$f"
+  done
+  if [ -d "$ART/AAX/Tube Channel.aaxplugin" ]; then
+    PACE_WRAPTOOL=${TC_WRAPTOOL:-/Applications/PACEAntiPiracy/Eden/Fusion/Current/bin/wraptool}
+    : "${TC_PACE_ACCOUNT:?Set TC_PACE_ACCOUNT to the PACE developer account}"
+    : "${TC_AAX_WCGUID:?Set TC_AAX_WCGUID to the AAX Wrap Configuration GUID from PACE Central}"
+    codesign --force --deep --timestamp --options runtime --sign "$APP_ID" "$ART/AAX/Tube Channel.aaxplugin"
+    "$PACE_WRAPTOOL" sign --verbose --account "$TC_PACE_ACCOUNT" \
+      --wcguid "$TC_AAX_WCGUID" --signid "$APP_ID" \
+      --in "$ART/AAX/Tube Channel.aaxplugin" --out "$ART/AAX/Tube Channel.aaxplugin"
+    "$PACE_WRAPTOOL" verify --verbose --in "$ART/AAX/Tube Channel.aaxplugin"
   fi
 fi
+
+MIN_OS=11.0 RESOURCES_DIR="$RESOURCE_ROOT" tools/make_bundle_zip.sh "Tube Channel" "$VERSION" "$ART" "$OUT"
+ZIP="$OUT/Tube-Channel-$VERSION-macos-bundles.zip"
+if [ "${SIGN:-0}" = "1" ] && [ "${NOTARIZE:-1}" = "1" ]; then
+  xcrun notarytool submit "$ZIP" --keychain-profile AC_NOTARY --wait
+  echo "notarized: $ZIP"
+fi
+(cd "$OUT" && shasum -a 256 "$(basename "$ZIP")" > "Tube-Channel-$VERSION-macos.sha256")
+cat "$OUT/Tube-Channel-$VERSION-macos.sha256"

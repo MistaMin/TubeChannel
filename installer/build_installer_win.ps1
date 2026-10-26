@@ -1,6 +1,7 @@
-# Build the Tube Channel Windows installer from a Release build.
+# Build the Tube Channel Windows bundle archive from a Release build, for the OpenGrid Plugin Manager.
 #   powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
-# Stages the user guide and third-party license texts, then runs Inno Setup.
+# Stages the user guide and third-party license texts, then zips the modules under Common Files and
+# the resources under OpenGrid (tools\make_bundle_zip.ps1). No Inno Setup installer is made.
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path $PSScriptRoot -Parent)
 
@@ -12,8 +13,7 @@ $Stage = "$Out\stage"
 foreach ($required in @(
     "$Art\VST3\Tube Channel.vst3",
     "$Art\CLAP\Tube Channel.clap",
-    "$Art\LV2\Tube Channel.lv2",
-    "$Art\Standalone\Tube Channel.exe")) {
+    "$Art\LV2\Tube Channel.lv2")) {
     if (-not (Test-Path $required)) {
         throw "Missing build artifact: $required (run the Release build first)"
     }
@@ -30,7 +30,7 @@ $ClapExtSrc = CacheValue "FETCHCONTENT_SOURCE_DIR_CLAP-JUCE-EXTENSIONS"
 if (-not $ClapExtSrc) { $ClapExtSrc = "build\_deps\clap-juce-extensions-src" }
 
 if (Test-Path $Stage) { Remove-Item -Recurse -Force $Stage }
-$ResourceRoot = "$Stage\licenses\Tube Channel"
+$ResourceRoot = $Stage
 $LicenseRoot = "$ResourceRoot\Licenses"
 foreach ($d in @("$LicenseRoot\Tube Channel", "$LicenseRoot\GoodLookinUI", "$LicenseRoot\JUCE",
                  "$LicenseRoot\CLAP", "$LicenseRoot\VST3-SDK", "$LicenseRoot\LV2-SDK",
@@ -88,7 +88,7 @@ Get-ChildItem -Recurse -File $LicenseRoot |
 @"
 TUBE CHANNEL $Version - BINARY LICENSE NOTICE
 
-The Tube Channel binaries (VST3, CLAP, LV2 and standalone application) are
+The Tube Channel binaries (VST3, CLAP and LV2) are
 distributed as freeware. You may install and use them without charge.
 Copyright (c) Marcos Deida / OpenGrid. All rights reserved.
 
@@ -99,10 +99,9 @@ JUCE is used under a commercial JUCE Developer license held by the author.
 $(Get-Content LICENSE -Raw)
 "@ | Set-Content "$ResourceRoot\LICENSE_BINARY.txt"
 
-$Iscc = @("$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
-          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
-          "C:\Program Files\Inno Setup 6\ISCC.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
-if (-not $Iscc) { throw "Inno Setup 6 not found (install JRSoftware.InnoSetup via winget)" }
-& $Iscc "/DMyAppVersion=$Version" "installer\TubeChannel.iss"
-if ($LASTEXITCODE -ne 0) { throw "ISCC failed with exit code $LASTEXITCODE" }
-Write-Host "built $Out\TubeChannel-$Version-win.exe"
+& "tools\make_bundle_zip.ps1" -Plugin "Tube Channel" -Version $Version -Artefacts $Art -Out $Out -ResourcesDir $Stage -MinOs "10.0"
+if ($LASTEXITCODE -ne 0) { throw "make_bundle_zip failed with exit code $LASTEXITCODE" }
+Remove-Item -Recurse -Force $Stage
+$Zip = "$Out\Tube-Channel-$Version-windows-x64-bundles.zip"
+(Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower() + "  " + (Split-Path $Zip -Leaf) | Set-Content "$Zip.sha256"
+Write-Host "built $Zip"
