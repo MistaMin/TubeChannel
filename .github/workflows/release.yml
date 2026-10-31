@@ -18,29 +18,25 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
-      - name: Install Inno Setup and Ninja
+      - name: Install Ninja
         shell: pwsh
-        run: choco install innosetup ninja --yes --no-progress
+        run: choco install ninja --yes --no-progress
       - name: Configure
         run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
       - name: Build all Windows formats
         run: cmake --build build --parallel 2
       - name: Run tests
         run: ctest --test-dir build --output-on-failure
-      - name: Package Windows installer
+      - name: Package Windows bundle archive
         shell: pwsh
-        run: |
-          powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
-          $version = (Get-Content VERSION -Raw).Trim()
-          Get-FileHash "dist\TubeChannel-$version-win.exe" -Algorithm SHA256 |
-            ForEach-Object { "$($_.Hash.ToLower())  TubeChannel-$version-win.exe" } |
-            Set-Content "dist\TubeChannel-$version-win.exe.sha256"
+        run: powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
       - uses: actions/upload-artifact@v4
         with:
           name: windows-x64-release
           path: |
-            dist/TubeChannel-*-win.exe
-            dist/TubeChannel-*-win.exe.sha256
+            dist/TubeChannel-*-windows-x64-bundles.zip
+            dist/TubeChannel-*-windows-x64-bundles.zip.sha256
+            dist/TubeChannel-*-windows-x64-bundles.zip.installs.json
           if-no-files-found: error
 
   linux-x86_64:
