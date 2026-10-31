@@ -1,0 +1,35 @@
+# Tube Channel QA exceptions — every line carries a reason.
+#
+# visual:Offline Bounce (AU, REAPER 7.80 pixel sweep)
+#   The Offline Bounce parameter's only GUI display is the selection inside its popup menu
+#   ("OFFLINE BOUNCE ▾" button, componentID "offline-bounce", PluginEditor.cpp:291-326) and
+#   its tooltip. The closed button's label and lit state do not depend on the choice value
+#   during realtime GUI use (the button only lights while an offline path is active -
+#   USER_MANUAL.md, "Offline Bounce"). A host-side change of the choice therefore alters no
+#   pixel (measured 0.000%), so the pixel sweep reports NOT SHOWN although the control is
+#   bound, documented and rendered; the parameter is wired (audio sweep -10.9 dB) and static
+#   coverage binds it (52/52). Same false-positive class as the Water Channel band-Q controls.
+visual:Offline Bounce
+#
+# Context lines: tested in the state where the parameter is audible, instead of being excused.
+#
+# Quality @ Eco mode=0.0, Offline Bounce override=0.0
+#   Quality selects the engine model (Circuit/HQ/HQ-legacy), but with the defaults the engine
+#   is chosen by Eco mode (on) and, in offline renders like the harness's, by the Offline
+#   Bounce override (on). Only with both off does the Quality choice reach the engine
+#   (measured 5.4 dB Circuit vs HQ). USER_MANUAL.md: "New instances default to HQ·Derp (8x)
+#   for offline bounce, with Eco / 1x for normal work."
+Quality @ Eco mode=0.0, Offline Bounce override=0.0
+#
+# Detect auto B @ Dual mono=1.0
+# External sidechain B @ Dual mono=1.0
+#   With the default Stereo link (on) the B channel is driven by the A controls
+#   (Chain.h: cb = ctrlA unless dual mono), so B-channel parameters are silent by design
+#   until Dual mono is on. Measured in dual mono: -11.4 dB and 1.0 dB.
+Detect auto B @ Dual mono=1.0
+External sidechain B @ Dual mono=1.0
+#
+# Phantom 48V B @ Dual mono=1.0
+#   Same dual-mono gating as the other B-channel parameters (Chain.h: cb = ctrlA while the
+#   default Stereo link is on). Measured -83.3 dB (AU) / -82.8 dB (VST3) in dual mono.
+Phantom 48V B @ Dual mono=1.0
