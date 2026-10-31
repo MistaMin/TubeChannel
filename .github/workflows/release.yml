@@ -34,9 +34,9 @@ jobs:
         with:
           name: windows-x64-release
           path: |
-            dist/TubeChannel-*-windows-x64-bundles.zip
-            dist/TubeChannel-*-windows-x64-bundles.zip.sha256
-            dist/TubeChannel-*-windows-x64-bundles.zip.installs.json
+            dist/Tube-Channel-*-windows-x64-bundles.zip
+            dist/Tube-Channel-*-windows-x64-bundles.zip.sha256
+            dist/Tube-Channel-*-windows-x64-bundles.zip.installs.json
           if-no-files-found: error
 
   linux-x86_64:
