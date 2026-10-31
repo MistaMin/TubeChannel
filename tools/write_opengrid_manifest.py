@@ -32,7 +32,7 @@ def archive_entry(zip_path: Path) -> dict:
     sidecar = Path(str(zip_path) + ".installs.json")
     if not sidecar.exists():
         sys.exit(f"{zip_path.name}: no installs sidecar ({sidecar.name}); build it with make_bundle_zip")
-    meta = json.loads(sidecar.read_text(encoding="utf-8"))
+    meta = json.loads(sidecar.read_text(encoding="utf-8-sig"))
     data = zip_path.read_bytes()
     if not meta.get("installs"):
         sys.exit(f"{zip_path.name}: the sidecar lists no installs")
