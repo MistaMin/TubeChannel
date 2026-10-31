@@ -89,10 +89,13 @@ static int benchmark()
     return failures ? 1 : 0;
 }
 
+#include "eq_oversampling_test.h"
+
 int main(int argc, char** argv)
 {
     juce::ScopedJuceInitialiser_GUI init;
     std::setvbuf(stdout, nullptr, _IONBF, 0);
+    if (argc == 2 && juce::String(argv[1]) == "eq-oversampling") return eqOversamplingTest();
     if (argc == 2 && juce::String(argv[1]) == "benchmark") return benchmark();
     if (argc == 2 && juce::String(argv[1]) == "offline") return offlineBounceTest();
     std::printf("TubeChannel processor test\n");
