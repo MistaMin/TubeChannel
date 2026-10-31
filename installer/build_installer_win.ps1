@@ -100,7 +100,7 @@ $(Get-Content LICENSE -Raw)
 "@ | Set-Content "$ResourceRoot\LICENSE_BINARY.txt"
 
 & "tools\make_bundle_zip.ps1" -Plugin "Tube Channel" -Version $Version -Artefacts $Art -Out $Out -ResourcesDir $Stage -MinOs "10.0"
-if ($LASTEXITCODE -ne 0) { throw "make_bundle_zip failed with exit code $LASTEXITCODE" }
+if ($LASTEXITCODE) { throw "make_bundle_zip failed with exit code $LASTEXITCODE" }
 Remove-Item -Recurse -Force $Stage
 $Zip = "$Out\Tube-Channel-$Version-windows-x64-bundles.zip"
 (Get-FileHash $Zip -Algorithm SHA256).Hash.ToLower() + "  " + (Split-Path $Zip -Leaf) | Set-Content "$Zip.sha256"
