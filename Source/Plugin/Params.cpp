@@ -62,7 +62,7 @@ void addChannel(juce::AudioProcessorValueTreeState::ParameterLayout& l, bool b)
     addBool(l, I(id::gain20), "Gain +20 dB" + sx, false);
     addFloat(l, I(id::impedance), "Impedance" + sx, 0.f, 1.f, 0.4f, [](float v, int) {
         const double ohm = impedanceOhms(v);
-        return ohm >= 1000.0 ? fmt(ohm / 1000.0, 1, "kohm") : fmt(ohm, 0, "ohm");
+        return juce::roundToInt(ohm) >= 1000 ? fmt(ohm / 1000.0, 1, "kohm") : fmt(ohm, 0, "ohm");
     }, [](const juce::String& t) {
         const juce::String s = t.trim();
         const double ohm = s.endsWithIgnoreCase("kohm") ? parseNumber(s.upToLastOccurrenceOf("kohm", false, false)) * 1000.0 : parseNumber(s);
@@ -126,7 +126,7 @@ void addChannel(juce::AudioProcessorValueTreeState::ParameterLayout& l, bool b)
              [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
     addFloat(l, I(id::hmFreq), "Hi-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) {
         const double hz = hmFreqHz(v, false);
-        return hz >= 1000.0 ? fmt(hz / 1000.0, 2, "kHz") : fmt(hz, 0, "Hz");
+        return juce::roundToInt(hz) >= 1000 ? fmt(hz / 1000.0, 2, "kHz") : fmt(hz, 0, "Hz");
     }, [](const juce::String& t) {
         const juce::String s = t.trim();
         const double hz = s.endsWithIgnoreCase("kHz") ? parseNumber(s.upToLastOccurrenceOf("kHz", false, false)) * 1000.0 : parseNumber(s);
@@ -156,7 +156,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
              [](const juce::String& t) { return juce::jlimit(50.0f, 600.0f, float(parseNumber(t))); });
     addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) {
         const double k = v / 1000.0;
-        return fmt(k, k < 100.0 ? 1 : 0, "kohm");
+        return juce::roundToInt(k) >= 100 ? fmt(k, 0, "kohm") : fmt(k, 1, "kohm");
     }, [](const juce::String& t) {
         const juce::String s = t.trim();
         const double k = s.endsWithIgnoreCase("kohm") ? parseNumber(s.upToLastOccurrenceOf("kohm", false, false)) : parseNumber(s);
