@@ -33,3 +33,15 @@ External sidechain B @ Dual mono=1.0
 #   Same dual-mono gating as the other B-channel parameters (Chain.h: cb = ctrlA while the
 #   default Stereo link is on). Measured -83.3 dB (AU) / -82.8 dB (VST3) in dual mono.
 Phantom 48V B @ Dual mono=1.0
+
+# Compressor on B / Brickwall limiter B: bound and rendered on the channel-B view
+# (PluginEditor.cpp:426 and :429, perChannel bindings at :374/:356). The sweep operates the
+# default channel-A view, so the B-page controls cannot react; the audio sweep passes them
+# (CONDITIONAL under the dual-mono gating above). Same class as the Offline Bounce exception.
+visual:Compressor on B
+visual:Brickwall limiter B
+
+# Bypass is REAPER's own FX-chain parameter (added to every FX's host parameter list), not a
+# plugin parameter: Tube Channel has no Bypass parameter and no control for it by design. Its
+# audio sweep passes because REAPER applies it.
+visual:Bypass
