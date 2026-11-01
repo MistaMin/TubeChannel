@@ -20,6 +20,10 @@ MAX_HIGHLIGHTS = 5
 VERSION = re.compile(r"^\d+(\.\d+){0,3}(-[0-9A-Za-z.]+)?$")
 
 
+def _parse_os(v: str):
+    parts = re.split(r"[.-]", v)
+    return tuple(int(p) if p.isdigit() else 0 for p in parts[:2])
+
 def read_highlights(path: Path) -> list[str]:
     lines = [l.strip() for l in path.read_text(encoding="utf-8").splitlines()]
     items = [l for l in lines if l and not l.startswith("#")]
@@ -40,6 +44,8 @@ def archive_entry(zip_path: Path) -> dict:
         "os": meta["os"],
         "arch": [meta["arch"]],
         "min_os": meta["min_os"],
+        # modern: macOS 11+ or Windows 10+; legacy: older systems (plugin-qa build-class rule)
+        "build_class": "legacy" if meta["os"] == "macos" and _parse_os(meta["min_os"]) < (11, 0) else "modern",
         "name": zip_path.name,
         "size": len(data),
         "sha256": hashlib.sha256(data).hexdigest(),
