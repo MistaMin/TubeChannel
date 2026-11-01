@@ -247,7 +247,10 @@ void TubeChannelProcessor::applyPendingPrepare()
     bounceHasRun = false;
     renderedEpoch = offlineEpoch.load(std::memory_order_relaxed);
     publishActive(isNonRealtime());
-    setLatencySamples(chain->latency);
+    // Runs on the audio thread when deferred (re-activation): host calls are only made when the
+    // latency actually changed, so a plain re-activation with unchanged settings is silent here.
+    if (chain->latency != announcedLatency.exchange(chain->latency))
+        setLatencySamples(chain->latency);
     prepared.store(true);
     building.store(false);
 }
