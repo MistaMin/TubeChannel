@@ -33,3 +33,28 @@ Fixes made this pass (all committed as 4d22fe1, pushed to main):
 - PluginProcessor.cpp: pre/post restore re-announce + updateHostDisplay(programChanged).
 
 Not run this pass (SKIPPED): Pro Tools AAX acceptance (no admin AAX install), Studio One interactive.
+
+## 2026-11-01 (late): OpenGrid9 host suite + activation race fix
+
+OpenGrid9 (the Ardour-based host) was added as a host target on request. Its headless
+Lua backend (`qa/og9qa_worker.lua` + `qa/og9qa_run.py` in the OpenGrid repo) runs
+load / parameter-enumeration / full min-max sweep / state save-reopen checks per format
+(VST3, AU, LV2; this OpenGrid9 build has no CLAP host).
+
+Findings fixed (all four plugins):
+- **prepareToPlay rebuild race**: OpenGrid9 activates plugins from its disk thread while the
+  audio callback can still run. Rebuilding DSP state from prepareToPlay (circuit solvers,
+  engine banks, chain swap) freed memory the callback was still using (use-after-free,
+  double-free, segfaults during activation). prepareToPlay now defers all allocation into
+  the audio callback via a pending flag; the first activation still prepares synchronously
+  so the latency contract after prepareToPlay is unchanged.
+- **Audio-thread host calls**: the deferred prepare must not call setLatencySamples from the
+  audio thread (strict CLAP validator); latency is announced only when it actually changes.
+- **Scan cache staleness**: OpenGrid9 caches failed plugin scans; a manual re-scan
+  (ardour-vst3-scanner / ardour-au-scanner) confirmed all bundles scan clean.
+
+Verification after fixes: pluginval SUCCESS, clap-validator 0 failures (HybridEQ: the two
+documented 45 s fuzz-budget timeouts only), OpenGrid9 matrix 12/12 PASS (HybridEQ 46/45
+params, OpenPreamp 25/24, Tube Channel 86/85, Blue Channel 63/62, LV2 loads all), local
+suites green (HybridEQ 812/0, OpenPreamp 555/0 + 203/0, Tube Channel ctest 18/18, Blue
+Channel ctest + Rosetta model test).
