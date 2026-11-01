@@ -133,12 +133,55 @@ inline double eqGainDb(double k) { return (k - 0.5) * 24.0; }
 inline double lmFreqHz(double k, bool x10) { return (x10 ? 178.0 : 16.0) * std::pow((x10 ? 2350.0 : 214.0) / (x10 ? 178.0 : 16.0), k); }
 inline double hmFreqHz(double k, bool x10) { return (x10 ? 1800.0 : 162.0) * std::pow((x10 ? 23000.0 : 2100.0) / (x10 ? 1800.0 : 162.0), k); }
 
+// ---- parsing ---------------------------------------------------------------------------------------
+// Inverses of the display mappings above, so a displayed value always parses back to the same knob
+// position (clap-validator "param-conversions": value -> text -> value -> text must be consistent).
+inline double clamp01(double v) { return v < 0.0 ? 0.0 : (v > 1.0 ? 1.0 : v); }
+inline double gainDbInv(double db) { return clamp01(db / 40.6); }
+inline double impedanceOhmsInv(double ohm) { return clamp01(std::log10(1.0 + 99.0 * (ohm - 150.0) / 3250.0) / 2.0); }
+inline double lowCutHzInv(double hz) { return clamp01(std::log(hz / 11.2) / std::log(250.0 / 11.2)); }
+inline double thresholdDbmInv(double dbm) { return clamp01((dbm + 20.0) / 40.0); }
+inline double attackSecondsInv(double s)
+{
+    double lo = 0.0, hi = 1.0;
+    for (int i = 0; i < 40; ++i) { const double mid = 0.5 * (lo + hi); (attackSeconds(mid) < s ? lo : hi) = mid; }
+    return 0.5 * (lo + hi);
+}
+inline double releaseSecondsInv(double s)
+{
+    double lo = 0.0, hi = 1.0;
+    for (int i = 0; i < 40; ++i) { const double mid = 0.5 * (lo + hi); (releaseSeconds(mid) < s ? lo : hi) = mid; }
+    return 0.5 * (lo + hi);
+}
+inline double eqGainDbInv(double db) { return clamp01(db / 24.0 + 0.5); }
+inline double lmFreqHzInv(double hz) { return clamp01(std::log(hz / 16.0) / std::log(214.0 / 16.0)); }
+inline double hmFreqHzInv(double hz) { return clamp01(std::log(hz / 162.0) / std::log(2100.0 / 162.0)); }
+// Preamp output and master show mute below their step, and dB above; the dB refers to the linear knob value.
+inline double levelDbToKnob(double db, double ref) { return clamp01(ref * std::pow(10.0, db / 20.0)); }
+// Comp output dB is relative to the 0.88 position: 20 log10(a(v)/a(0.88)) with a(k) = (10^(2k)-1)/99.
+inline double compOutDbToKnob(double db)
+{
+    const double aRef = (std::pow(10.0, 2.0 * 0.88) - 1.0) / 99.0;
+    const double a = aRef * std::pow(10.0, db / 20.0);
+    return clamp01(std::log10(1.0 + 99.0 * a) / 2.0);
+}
+// Leading number of a display string ("1.00 kHz", "-11.5 dB", "2.0:1", "mute" -> 0).
+inline double parseNumber(const juce::String& text)
+{
+    const juce::String t = text.trim();
+    if (t.isEmpty() || t.startsWithIgnoreCase("mute") || t.startsWithIgnoreCase("off")) return 0.0;
+    return t.getDoubleValue();
+}
+
 // Menu order is three engines times three explicit oversampling factors.
 inline juce::StringArray offlineBounceChoices()
 {
-    return { "Eco · 2x", "Eco · 4x", "Eco · Derp (8x)",
-             "Circuit · 2x", "Circuit · 4x", "Circuit · Derp (8x)",
-             "HQ · 2x", "HQ · 4x", "HQ · Derp (8x)" };
+    // The middle dot is a non-ASCII character: decode the literals as UTF-8 explicitly, because
+    // juce::String (const char*) reads them as 8-bit and would store "Â·" (clap-validator's
+    // param-conversions then fails to match the choice text).
+    return { juce::String::fromUTF8("Eco · 2x"), juce::String::fromUTF8("Eco · 4x"), juce::String::fromUTF8("Eco · Derp (8x)"),
+             juce::String::fromUTF8("Circuit · 2x"), juce::String::fromUTF8("Circuit · 4x"), juce::String::fromUTF8("Circuit · Derp (8x)"),
+             juce::String::fromUTF8("HQ · 2x"), juce::String::fromUTF8("HQ · 4x"), juce::String::fromUTF8("HQ · Derp (8x)") };
 }
 juce::AudioProcessorValueTreeState::ParameterLayout createLayout();
 

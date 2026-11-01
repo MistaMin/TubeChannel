@@ -21,17 +21,28 @@ juce::String fmt(double v, int dp, const char* unit)
 }
 
 void addFloat(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name,
-              float lo, float hi, float def, std::function<juce::String(float, int)> text = nullptr)
+              float lo, float hi, float def, std::function<juce::String(float, int)> text = nullptr,
+              std::function<float(const juce::String&)> parse = nullptr)
 {
     Attr a;
     if (text)
         a = a.withStringFromValueFunction(text);
+    if (parse)
+        a = a.withValueFromStringFunction(parse);
     layout.add(std::make_unique<AudioParameterFloat>(ParameterID { idStr, kVersion }, name, NormalisableRange<float>(lo, hi), def, a));
 }
 
 void addBool(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name, bool def, int versionHint = kVersion)
 {
-    layout.add(std::make_unique<AudioParameterBool>(ParameterID { idStr, versionHint }, name, def));
+    // Hosts may send fractional normalised values even to switches. Report the effective boolean
+    // value so a state round trip has the same host-visible value (see Blue Channel's
+    // SwitchParameter; clap-validator state-reproducibility and pluginval state restoration).
+    struct SwitchParameter final : juce::AudioParameterBool
+    {
+        using juce::AudioParameterBool::AudioParameterBool;
+        float getValue() const override { return get() ? 1.0f : 0.0f; }
+    };
+    layout.add(std::make_unique<SwitchParameter>(ParameterID { idStr, versionHint }, name, def));
 }
 
 void addChoice(juce::AudioProcessorValueTreeState::ParameterLayout& layout, const juce::String& idStr, const juce::String& name,
@@ -46,51 +57,74 @@ void addChannel(juce::AudioProcessorValueTreeState::ParameterLayout& l, bool b)
     auto I = [&](const char* base) { return idFor(base, b); };
 
     addBool(l, I(id::instrument), "Instrument input" + sx, false);
-    addFloat(l, I(id::gain), "Gain" + sx, 0.f, 1.f, 0.0f, [](float v, int) { return fmt(gainDb(v), 1, "dB"); });
+    addFloat(l, I(id::gain), "Gain" + sx, 0.f, 1.f, 0.0f, [](float v, int) { return fmt(gainDb(v), 1, "dB"); },
+             [](const juce::String& t) { return float(gainDbInv(parseNumber(t))); });
     addBool(l, I(id::gain20), "Gain +20 dB" + sx, false);
-    addFloat(l, I(id::impedance), "Impedance" + sx, 0.f, 1.f, 0.4f, [](float v, int) { return fmt(impedanceOhms(v), 0, "ohm"); });
+    addFloat(l, I(id::impedance), "Impedance" + sx, 0.f, 1.f, 0.4f, [](float v, int) { return fmt(impedanceOhms(v), 0, "ohm"); },
+             [](const juce::String& t) { return float(impedanceOhmsInv(parseNumber(t))); });
     addBool(l, I(id::phantom), "Phantom 48V" + sx, false);
     addBool(l, I(id::invert), "Invert" + sx, false);
-    addFloat(l, I(id::lowcut), "Low cut" + sx, 0.f, 1.f, 0.f, [](float v, int) { return fmt(lowCutHz(v), 0, "Hz"); });
+    addFloat(l, I(id::lowcut), "Low cut" + sx, 0.f, 1.f, 0.f, [](float v, int) { return fmt(lowCutHz(v), 0, "Hz"); },
+             [](const juce::String& t) { return float(lowCutHzInv(parseNumber(t))); });
     addBool(l, I(id::plateHigh), "Plate voltage high" + sx, true);
-    addFloat(l, I(id::preOut), "Preamp output" + sx, 0.f, 1.f, 1.0f, [](float v, int) { return v < 0.005f ? juce::String("mute") : fmt(20.0 * std::log10(v), 1, "dB"); });
+    addFloat(l, I(id::preOut), "Preamp output" + sx, 0.f, 1.f, 1.0f, [](float v, int) { return v < 0.005f ? juce::String("mute") : fmt(20.0 * std::log10(v), 1, "dB"); },
+             [](const juce::String& t) { return t.trim().startsWithIgnoreCase("mute") ? 0.0f : float(levelDbToKnob(parseNumber(t), 1.0)); });
 
     addBool(l, I(id::comp), "Compressor on" + sx, true);
-    addFloat(l, I(id::threshold), "Threshold" + sx, 0.f, 1.f, 0.25f, [](float v, int) { return fmt(thresholdDbm(v), 1, "dBm"); });
+    addFloat(l, I(id::threshold), "Threshold" + sx, 0.f, 1.f, 0.25f, [](float v, int) { return fmt(thresholdDbm(v), 1, "dBm"); },
+             [](const juce::String& t) { return float(thresholdDbmInv(parseNumber(t))); });
     addFloat(l, I(id::ratio), "Ratio" + sx, 0.f, 1.f, 0.3f, [](float v, int) {
         return fmt(ratioValue(v), 1, ":1").replace(" :1", ":1");
-    });
+    }, [](const juce::String& t) { return float(ratioKnobFor(parseNumber(t))); });
     addFloat(l, I(id::attack), "Attack" + sx, 0.f, 1.f, 0.5f, [](float v, int) {
         const double s = attackSeconds(v);
         return s < 1e-3 ? fmt(s * 1e6, 0, "us") : fmt(s * 1e3, s < 0.01 ? 1 : 0, "ms");
+    }, [](const juce::String& t) {
+        const juce::String s = t.trim();
+        const double sec = s.endsWithIgnoreCase("us") ? parseNumber(s.upToLastOccurrenceOf("us", false, false)) * 1e-6
+                         : s.endsWithIgnoreCase("ms") ? parseNumber(s.upToLastOccurrenceOf("ms", false, false)) * 1e-3
+                         : s.endsWithIgnoreCase("s") ? parseNumber(s.upToLastOccurrenceOf("s", false, false))
+                                                     : parseNumber(s) * 1e-3;
+        return float(attackSecondsInv(sec));
     });
     addFloat(l, I(id::release), "Release" + sx, 0.f, 1.f, 0.5f, [](float v, int) {
         const double s = releaseSeconds(v);
         return s < 1.0 ? fmt(s * 1e3, 0, "ms") : fmt(s, 2, "s");
+    }, [](const juce::String& t) {
+        const juce::String s = t.trim();
+        const double sec = s.endsWithIgnoreCase("ms") ? parseNumber(s.upToLastOccurrenceOf("ms", false, false)) * 1e-3 : parseNumber(s);
+        return float(releaseSecondsInv(sec));
     });
     addBool(l, I(id::autoDetect), "Detect auto" + sx, false);
     addFloat(l, I(id::compOut), "Comp output" + sx, 0.f, 1.f, 0.88f, [](float v, int) {
         auto a = [](double k) { return (std::pow(10.0, 2.0 * k) - 1.0) / 99.0; };
         return v < 0.01f ? juce::String("mute") : fmt(20.0 * std::log10(a(v) / a(0.88)), 1, "dB");
-    });
+    }, [](const juce::String& t) { return t.trim().startsWithIgnoreCase("mute") ? 0.0f : float(compOutDbToKnob(parseNumber(t))); });
     addBool(l, I(id::extSc), "External sidechain" + sx, false);
     addBool(l, I(id::ratioLimit), "Brickwall limiter" + sx, false);
 
     addBool(l, I(id::eq), "EQ on" + sx, true);
-    addFloat(l, I(id::low), "Low" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); });
+    addFloat(l, I(id::low), "Low" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); },
+             [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
     addBool(l, I(id::loShift), "Low shift 40 Hz" + sx, true);
-    addFloat(l, I(id::high), "High" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); });
+    addFloat(l, I(id::high), "High" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); },
+             [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
     addBool(l, I(id::hiShift), "High shift 6 kHz" + sx, false);
-    addFloat(l, I(id::lmLevel), "Lo-Mid level" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); });
-    addFloat(l, I(id::lmFreq), "Lo-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(lmFreqHz(v, false), 0, "Hz"); });
+    addFloat(l, I(id::lmLevel), "Lo-Mid level" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); },
+             [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
+    addFloat(l, I(id::lmFreq), "Lo-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(lmFreqHz(v, false), 0, "Hz"); },
+             [](const juce::String& t) { return float(lmFreqHzInv(parseNumber(t))); });
     addBool(l, I(id::lmX10), "Lo-Mid x10" + sx, false);
     addBool(l, I(id::lmNarrow), "Lo-Mid narrow" + sx, true);
-    addFloat(l, I(id::hmLevel), "Hi-Mid level" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); });
-    addFloat(l, I(id::hmFreq), "Hi-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(hmFreqHz(v, false), 0, "Hz"); });
+    addFloat(l, I(id::hmLevel), "Hi-Mid level" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); },
+             [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
+    addFloat(l, I(id::hmFreq), "Hi-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(hmFreqHz(v, false), 0, "Hz"); },
+             [](const juce::String& t) { return float(hmFreqHzInv(parseNumber(t))); });
     addBool(l, I(id::hmX10), "Hi-Mid x10" + sx, false);
     addBool(l, I(id::hmNarrow), "Hi-Mid narrow" + sx, true);
 
-    addFloat(l, I(id::master), "Master" + sx, 0.f, 1.f, 0.8f, [](float v, int) { return v < 0.005f ? juce::String("mute") : fmt(20.0 * std::log10(v / 0.8), 1, "dB"); });
+    addFloat(l, I(id::master), "Master" + sx, 0.f, 1.f, 0.8f, [](float v, int) { return v < 0.005f ? juce::String("mute") : fmt(20.0 * std::log10(v / 0.8), 1, "dB"); },
+             [](const juce::String& t) { return t.trim().startsWithIgnoreCase("mute") ? 0.0f : float(levelDbToKnob(parseNumber(t), 0.8)); });
     addBool(l, I(id::outLevel), "Output +4 dBu" + sx, true);
 }
 } // namespace
@@ -100,17 +134,23 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     juce::AudioProcessorValueTreeState::ParameterLayout l;
     addChannel(l, false);
 
-    addFloat(l, id::inputTrim, "Input trim", -24.f, 24.f, 0.f, [](float v, int) { return fmt(v, 1, "dB"); });
-    addFloat(l, id::outputTrim, "Output trim", -24.f, 24.f, 0.f, [](float v, int) { return fmt(v, 1, "dB"); });
+    // valueFromString functions return the DENORMALISED value: getValueForText applies convertTo0to1.
+    addFloat(l, id::inputTrim, "Input trim", -24.f, 24.f, 0.f, [](float v, int) { return fmt(v, 1, "dB"); },
+             [](const juce::String& t) { return juce::jlimit(-24.0f, 24.0f, float(parseNumber(t))); });
+    addFloat(l, id::outputTrim, "Output trim", -24.f, 24.f, 0.f, [](float v, int) { return fmt(v, 1, "dB"); },
+             [](const juce::String& t) { return juce::jlimit(-24.0f, 24.0f, float(parseNumber(t))); });
     addChoice(l, id::alignment, "0 VU level", { "-14 dBFS", "-16 dBFS", "-18 dBFS", "-20 dBFS", "-22 dBFS" }, 2);
-    addFloat(l, id::micZ, "Mic source impedance", 50.f, 600.f, 150.f, [](float v, int) { return fmt(v, 0, "ohm"); });
-    addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) { return fmt(v / 1000.0, 1, "kohm"); });
+    addFloat(l, id::micZ, "Mic source impedance", 50.f, 600.f, 150.f, [](float v, int) { return fmt(v, 0, "ohm"); },
+             [](const juce::String& t) { return juce::jlimit(50.0f, 600.0f, float(parseNumber(t))); });
+    addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) { return fmt(v / 1000.0, 1, "kohm"); },
+             [](const juce::String& t) { return juce::jlimit(1000.0f, 100000.0f, float(parseNumber(t)) * 1000.0f); });
     addChoice(l, id::quality, "Quality", { "Circuit", "HQ", "HQ (legacy Derp)" }, 0);
     addBool(l, id::linearPhase, "Linear phase (+L)", false);
     addBool(l, id::stereoLink, "Stereo link", true);
     addBool(l, id::dualMono, "Dual mono", false);
     addChoice(l, id::mains, "Mains frequency", { "60 Hz", "50 Hz" }, 0);
-    addFloat(l, id::mainsVolts, "Mains voltage", 0.85f, 1.1f, 1.0f, [](float v, int) { return fmt(v * 100.0, 0, "%"); });
+    addFloat(l, id::mainsVolts, "Mains voltage", 0.85f, 1.1f, 1.0f, [](float v, int) { return fmt(v * 100.0, 0, "%"); },
+             [](const juce::String& t) { return juce::jlimit(0.85f, 1.1f, float(parseNumber(t)) / 100.0f); });
     addBool(l, id::tolerances, "Component tolerances", true);
     addFloat(l, id::seed, "Unit seed", 0.f, 99.f, 1.f, [](float v, int) { return juce::String(juce::roundToInt(v)); });
     addBool(l, id::noise, "Circuit noise", true);
@@ -121,8 +161,22 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addBool(l, id::eco, "Eco mode", true, 2);
     l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { id::oversampling, 2 },
         "Oversampling", juce::StringArray { "Legacy", "Off (1x)", "2x", "4x", "8x (Derp)" }, 1));
+    // The CLAP wrapper passes UTF-8 text through juce::String (const char*), which reads the bytes as
+    // 8-bit, so the "·" in the choice names arrives as "Â·". Normalise 8-bit characters back through
+    // UTF-8 before matching, so host-typed choice text still round trips.
+    auto bounceIndexFromText = [choices = offlineBounceChoices()](const juce::String& text) {
+        juce::MemoryOutputStream bytes;
+        for (auto c : text)
+        {
+            const auto u = (juce::juce_wchar) c;
+            if (u > 0xff) return -1;
+            bytes.writeByte((char) u);
+        }
+        return choices.indexOf(juce::String::fromUTF8((const char*) bytes.getData(), (int) bytes.getDataSize()));
+    };
     l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { id::offlineBounce, 3 },
-        "Offline Bounce", offlineBounceChoices(), 8));
+        "Offline Bounce", offlineBounceChoices(), 8,
+        juce::AudioParameterChoiceAttributes().withValueFromStringFunction(bounceIndexFromText)));
     // Legacy sessions opt in when a dropdown choice is made; new instances use HQ/8x.
     addBool(l, id::offlineBounceEnabled, "Offline Bounce override", true, 3);
     return l;
