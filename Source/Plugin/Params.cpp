@@ -60,8 +60,14 @@ void addChannel(juce::AudioProcessorValueTreeState::ParameterLayout& l, bool b)
     addFloat(l, I(id::gain), "Gain" + sx, 0.f, 1.f, 0.0f, [](float v, int) { return fmt(gainDb(v), 1, "dB"); },
              [](const juce::String& t) { return float(gainDbInv(parseNumber(t))); });
     addBool(l, I(id::gain20), "Gain +20 dB" + sx, false);
-    addFloat(l, I(id::impedance), "Impedance" + sx, 0.f, 1.f, 0.4f, [](float v, int) { return fmt(impedanceOhms(v), 0, "ohm"); },
-             [](const juce::String& t) { return float(impedanceOhmsInv(parseNumber(t))); });
+    addFloat(l, I(id::impedance), "Impedance" + sx, 0.f, 1.f, 0.4f, [](float v, int) {
+        const double ohm = impedanceOhms(v);
+        return ohm >= 1000.0 ? fmt(ohm / 1000.0, 1, "kohm") : fmt(ohm, 0, "ohm");
+    }, [](const juce::String& t) {
+        const juce::String s = t.trim();
+        const double ohm = s.endsWithIgnoreCase("kohm") ? parseNumber(s.upToLastOccurrenceOf("kohm", false, false)) * 1000.0 : parseNumber(s);
+        return float(impedanceOhmsInv(ohm));
+    });
     addBool(l, I(id::phantom), "Phantom 48V" + sx, false);
     addBool(l, I(id::invert), "Invert" + sx, false);
     addFloat(l, I(id::lowcut), "Low cut" + sx, 0.f, 1.f, 0.f, [](float v, int) { return fmt(lowCutHz(v), 0, "Hz"); },
@@ -118,8 +124,14 @@ void addChannel(juce::AudioProcessorValueTreeState::ParameterLayout& l, bool b)
     addBool(l, I(id::lmNarrow), "Lo-Mid narrow" + sx, true);
     addFloat(l, I(id::hmLevel), "Hi-Mid level" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(eqGainDb(v), 1, "dB"); },
              [](const juce::String& t) { return float(eqGainDbInv(parseNumber(t))); });
-    addFloat(l, I(id::hmFreq), "Hi-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) { return fmt(hmFreqHz(v, false), 0, "Hz"); },
-             [](const juce::String& t) { return float(hmFreqHzInv(parseNumber(t))); });
+    addFloat(l, I(id::hmFreq), "Hi-Mid freq" + sx, 0.f, 1.f, 0.5f, [](float v, int) {
+        const double hz = hmFreqHz(v, false);
+        return hz >= 1000.0 ? fmt(hz / 1000.0, 2, "kHz") : fmt(hz, 0, "Hz");
+    }, [](const juce::String& t) {
+        const juce::String s = t.trim();
+        const double hz = s.endsWithIgnoreCase("kHz") ? parseNumber(s.upToLastOccurrenceOf("kHz", false, false)) * 1000.0 : parseNumber(s);
+        return float(hmFreqHzInv(hz));
+    });
     addBool(l, I(id::hmX10), "Hi-Mid x10" + sx, false);
     addBool(l, I(id::hmNarrow), "Hi-Mid narrow" + sx, true);
 
@@ -142,8 +154,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout()
     addChoice(l, id::alignment, "0 VU level", { "-14 dBFS", "-16 dBFS", "-18 dBFS", "-20 dBFS", "-22 dBFS" }, 2);
     addFloat(l, id::micZ, "Mic source impedance", 50.f, 600.f, 150.f, [](float v, int) { return fmt(v, 0, "ohm"); },
              [](const juce::String& t) { return juce::jlimit(50.0f, 600.0f, float(parseNumber(t))); });
-    addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) { return fmt(v / 1000.0, 1, "kohm"); },
-             [](const juce::String& t) { return juce::jlimit(1000.0f, 100000.0f, float(parseNumber(t)) * 1000.0f); });
+    addFloat(l, id::instZ, "Instrument source impedance", 1000.f, 100000.f, 10000.f, [](float v, int) {
+        const double k = v / 1000.0;
+        return fmt(k, k < 100.0 ? 1 : 0, "kohm");
+    }, [](const juce::String& t) {
+        const juce::String s = t.trim();
+        const double k = s.endsWithIgnoreCase("kohm") ? parseNumber(s.upToLastOccurrenceOf("kohm", false, false)) : parseNumber(s);
+        return juce::jlimit(1000.0f, 100000.0f, float(k) * 1000.0f);
+    });
     addChoice(l, id::quality, "Quality", { "Circuit", "HQ", "HQ (legacy Derp)" }, 0);
     addBool(l, id::linearPhase, "Linear phase (+L)", false);
     addBool(l, id::stereoLink, "Stereo link", true);
