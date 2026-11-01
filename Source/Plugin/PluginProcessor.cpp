@@ -217,8 +217,11 @@ tc::ChainGlobals TubeChannelProcessor::readGlobals() const
     return g;
 }
 
-void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+void TubeChannelProcessor::applyPendingPrepare()
 {
+    const double sampleRate = pendingSampleRate;
+    const int samplesPerBlock = pendingBlockSize;
+
     sampleRate_ = sampleRate;
     maxBlock_ = std::max(samplesPerBlock, 1);
     building.store(true);
@@ -247,6 +250,16 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
     setLatencySamples(chain->latency);
     prepared.store(true);
     building.store(false);
+}
+
+void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
+    pendingSampleRate = sampleRate;
+    pendingBlockSize = std::max(samplesPerBlock, 1);
+    if (prepared.exchange(true))
+        preparePending.store(true, std::memory_order_release); // defer: the callback may be running
+    else
+        applyPendingPrepare(); // first activation: no callback is running yet
 }
 
 void TubeChannelProcessor::handleAsyncUpdate()
@@ -287,6 +300,8 @@ void TubeChannelProcessor::timerCallback()
 void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
 {
     juce::ScopedNoDenormals noDenormals;
+    if (preparePending.exchange(false, std::memory_order_acquire))
+        applyPendingPrepare();
     const auto t0 = juce::Time::getHighResolutionTicks();
     const int total = buffer.getNumSamples();
     for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)

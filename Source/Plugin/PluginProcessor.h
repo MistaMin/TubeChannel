@@ -57,6 +57,11 @@ public:
     bool usesPrototypeCompressor() const { return activePrototypeCompressor.load(); }
     int currentLatency() const { return activeLatency.load(); }
     bool isBuilding() const { return building.load(); }
+
+    // Runs the whole prepare on the audio thread: OpenGrid9's host activates the plugin from its
+    // disk thread while the callback may still be running, and swapping the chain then frees DSP
+    // state that is in use. prepareToPlay defers to this via a flag checked in processBlock.
+    void applyPendingPrepare();
     float cpuLoad() const { return cpu.load(); }
     int swapCount() const { return swaps.load(); }
 
@@ -125,6 +130,9 @@ private:
 
     double sampleRate_ = 48000.0;
     int maxBlock_ = 512;
+    std::atomic<bool> preparePending { false };
+    double pendingSampleRate = 48000.0;
+    int pendingBlockSize = 512;
 
     const tc::params::ParameterValues paramsA, paramsB;
 
