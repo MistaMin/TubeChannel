@@ -83,7 +83,7 @@ public:
     void copyToOther();
 
 private:
-    void parameterChanged(const juce::String&, float) override { triggerAsyncUpdate(); }
+    void parameterChanged(const juce::String&, float) override;
     void handleAsyncUpdate() override;
     void timerCallback() override;
 
@@ -154,7 +154,7 @@ private:
     std::atomic<int> activeChannelCount { 2 }, activeFactor { 2 }, activeLatency { 0 }, activeQuality { 3 }, swaps { 0 };
     std::atomic<bool> activeOfflineBounce { false };
     std::atomic<bool> activePrototypeCompressor { true };
-    std::atomic<bool> prepared { false }, building { false };
+    std::atomic<bool> prepared { false }, building { false }, restoringState { false };
     std::atomic<float> cpu { 0.f };
     std::atomic<float> outputMeterPeak[2] {};
     std::atomic<bool> outputClip[2] {};
