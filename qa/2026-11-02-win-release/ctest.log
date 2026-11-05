@@ -1,0 +1,39 @@
+Test project C:/Users/marco/Developer/TubeChannel/build
+      Start  1: oversampler
+ 1/17 Test  #1: oversampler ......................   Passed   16.46 sec
+      Start  2: sparse_lu
+ 2/17 Test  #2: sparse_lu ........................   Passed    0.27 sec
+      Start  3: circuit
+ 3/17 Test  #3: circuit ..........................   Passed    0.03 sec
+      Start  4: sidechain
+ 4/17 Test  #4: sidechain ........................   Passed   11.33 sec
+      Start  5: limiter
+ 5/17 Test  #5: limiter ..........................   Passed    2.37 sec
+      Start  6: lockstep
+ 6/17 Test  #6: lockstep .........................   Passed   21.15 sec
+      Start  7: realtime
+ 7/17 Test  #7: realtime .........................   Passed   20.84 sec
+      Start  8: detector_guard
+ 8/17 Test  #8: detector_guard ...................   Passed   58.77 sec
+      Start  9: quality_modes
+ 9/17 Test  #9: quality_modes ....................   Passed   16.65 sec
+      Start 10: linear_layout
+10/17 Test #10: linear_layout ....................   Passed   23.50 sec
+      Start 11: triode_lookup
+11/17 Test #11: triode_lookup ....................   Passed    0.09 sec
+      Start 12: hybrid_modules
+12/17 Test #12: hybrid_modules ...................   Passed    0.05 sec
+      Start 13: hybrid_linear
+13/17 Test #13: hybrid_linear ....................   Passed    1.34 sec
+      Start 14: eco
+14/17 Test #14: eco ..............................   Passed    1.55 sec
+      Start 15: processor_stress
+15/17 Test #15: processor_stress .................   Passed   22.33 sec
+      Start 16: offline_bounce
+16/17 Test #16: offline_bounce ...................   Passed   39.00 sec
+      Start 17: gui
+17/17 Test #17: gui ..............................   Passed    5.25 sec
+
+100% tests passed, 0 tests failed out of 17
+
+Total Test time (real) = 241.03 sec

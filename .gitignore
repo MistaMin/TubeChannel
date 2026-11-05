@@ -4,3 +4,18 @@ build/
 .idea/
 .vscode/
 dist/
+
+# QA run transients and bulky media (docs stay: report.md/json, ledger.md, exceptions.txt, logs)
+qa/**/cmd.txt
+qa/**/resp.txt
+qa/**/ready.txt
+qa/**/seq.txt
+qa/**/reaper.pid
+qa/**/hider.pid
+qa/**/suite.pid
+qa/**/startup_backup.txt
+qa/**/*.wav
+qa/**/*.png
+qa/**/*.ppm
+qa/**/*.rpp
+qa/**/*.reapeaks
