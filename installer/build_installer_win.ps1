@@ -90,7 +90,7 @@ TUBE CHANNEL $Version - BINARY LICENSE NOTICE
 
 The Tube Channel binaries (VST3, CLAP and LV2) are
 distributed as freeware. You may install and use them without charge.
-Copyright (c) Marcos Deida / OpenGrid. All rights reserved.
+Copyright (c) Marcos Quirino Deida. All rights reserved.
 
 The Tube Channel source code is MIT licensed; see LICENSE in this package.
 The applicable third-party license texts are under Licenses\ (see INDEX.txt).
