@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">Tube Channel signal flow</title>
+  <desc id="desc">Audio flows from input through preamp, tube stage, compressor, equalizer and output. A detector controls compressor gain. An optional power supply model feeds supply rails back to the circuit stages.</desc>
+  <defs>
+    <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#132236"/><stop offset="1" stop-color="#09111c"/></linearGradient>
+    <linearGradient id="box" x2="0" y2="1"><stop stop-color="#1d3b54"/><stop offset="1" stop-color="#12283a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#50c8ed"/></marker>
+    <marker id="feedback" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#f1a94f"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,Segoe UI,sans-serif;fill:#eaf4ff}
+      .small{font-size:15px;fill:#b7cadc}.label{font-size:19px;font-weight:650}.tag{font-size:13px;font-weight:700;letter-spacing:1.5px;fill:#70d5f1}
+    </style>
+  </defs>
+  <rect width="1200" height="470" rx="18" fill="url(#bg)"/>
+  <text x="40" y="46" class="tag">AUDIO PATH</text>
+  <g stroke="#50c8ed" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M150 142H184"/><path d="M328 142H362"/><path d="M506 142H540"/><path d="M684 142H718"/><path d="M862 142H896"/><path d="M1040 142H1074"/>
+  </g>
+  <g>
+    <rect x="30" y="91" width="120" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="90" y="132" text-anchor="middle" class="label">Input</text><text x="90" y="159" text-anchor="middle" class="small">Mic / Inst</text>
+    <rect x="184" y="91" width="144" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="256" y="132" text-anchor="middle" class="label">Preamp</text><text x="256" y="159" text-anchor="middle" class="small">gain · cut · load</text>
+    <rect x="362" y="91" width="144" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="434" y="132" text-anchor="middle" class="label">Tube stage</text><text x="434" y="159" text-anchor="middle" class="small">drive · warmth</text>
+    <rect x="540" y="91" width="144" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="612" y="132" text-anchor="middle" class="label">Compressor</text><text x="612" y="159" text-anchor="middle" class="small">audio path</text>
+    <rect x="718" y="91" width="144" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="790" y="132" text-anchor="middle" class="label">Equalizer</text><text x="790" y="159" text-anchor="middle" class="small">four bands</text>
+    <rect x="896" y="91" width="144" height="102" rx="12" fill="url(#box)" stroke="#3d6983"/>
+    <text x="968" y="132" text-anchor="middle" class="label">Output</text><text x="968" y="159" text-anchor="middle" class="small">level · meter</text>
+    <rect x="1074" y="91" width="96" height="102" rx="12" fill="#143b49" stroke="#42a9bd"/>
+    <text x="1122" y="132" text-anchor="middle" class="label">Host</text><text x="1122" y="159" text-anchor="middle" class="small">out</text>
+  </g>
+  <text x="40" y="246" class="tag">CONTROL PATH</text>
+  <rect x="366" y="265" width="300" height="76" rx="12" fill="#352b22" stroke="#ab7d43"/>
+  <text x="516" y="296" text-anchor="middle" class="label">Compressor detector</text>
+  <text x="516" y="321" text-anchor="middle" class="small">Default prototype · HQ / Derp modeled curve</text>
+  <path d="M612 193V260" stroke="#f1a94f" stroke-width="3" fill="none" marker-end="url(#feedback)"/>
+  <path d="M666 303H706V216H684" stroke="#f1a94f" stroke-width="3" fill="none" marker-end="url(#feedback)"/>
+  <text x="723" y="291" class="small">controls compressor gain</text>
+  <text x="40" y="382" class="tag">OPTIONAL SUPPLY FEEDBACK</text>
+  <rect x="366" y="399" width="300" height="50" rx="12" fill="#352b22" stroke="#ab7d43"/>
+  <text x="516" y="431" text-anchor="middle" class="label">Power supply simulation</text>
+  <path d="M516 399V363H434V204" stroke="#f1a94f" stroke-width="2.5" fill="none" stroke-dasharray="8 7" marker-end="url(#feedback)"/>
+  <path d="M516 363H790V204" stroke="#f1a94f" stroke-width="2.5" fill="none" stroke-dasharray="8 7" marker-end="url(#feedback)"/>
+  <text x="697" y="433" class="small">Off by default; fixed rails use less CPU.</text>
+</svg>

@@ -265,6 +265,20 @@ void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
         applyPendingPrepare(); // first activation: no callback is running yet
 }
 
+void TubeChannelProcessor::parameterChanged(const juce::String& parameterID, float)
+{
+    // Eco and Quality are one engine selector split across two parameters: the UI's key bank
+    // always sets both, but a host only knows the released Quality choice. Eco defaults to on
+    // for new instances, so without this an explicit host-side Quality change would never reach
+    // the engine (requestedKey maps Eco to its own quality and the rebuild key stays unchanged).
+    // An explicit Quality change leaves Eco; an explicit Eco change still selects Eco. State
+    // restoration replays both parameters (alphabetically: Eco first) and is guarded instead.
+    if (!restoringState.load(std::memory_order_relaxed) && parameterID == tc::params::id::quality && paramsA.eco->load() > .5f)
+        if (auto* ecoParam = apvts.getParameter(tc::params::id::eco))
+            ecoParam->setValueNotifyingHost(ecoParam->convertTo0to1(0.f));
+    triggerAsyncUpdate();
+}
+
 void TubeChannelProcessor::handleAsyncUpdate()
 {
     if (!prepared.load())
@@ -460,7 +474,9 @@ void TubeChannelProcessor::toggleAB()
     if (!otherState.isValid())
         otherState = apvts.copyState();
     auto current = apvts.copyState();
+    restoringState.store(true, std::memory_order_relaxed);
     apvts.replaceState(otherState);
+    restoringState.store(false, std::memory_order_relaxed);
     otherState = current;
     abIsB = !abIsB;
 }
@@ -515,10 +531,14 @@ void TubeChannelProcessor::setStateInformation(const void* data, int size)
             // Re-announce the current values first: hosts may set parameters without notifying,
             // which leaves the value-tree adapters' caches stale and would make replaceState skip
             // restoring a parameter whose stale cache happens to equal the target value.
+            // The restore replays Eco before Quality (alphabetical); keep the explicit-Quality-
+            // change rule (parameterChanged) from clearing the restored Eco flag.
+            restoringState.store(true, std::memory_order_relaxed);
             for (auto* p : getParameters())
                 if (auto* r = dynamic_cast<juce::RangedAudioParameter*>(p))
                     r->setValueNotifyingHost(r->getValue());
             apvts.replaceState(state);
+            restoringState.store(false, std::memory_order_relaxed);
             // Loading a state changes parameter values, so tell the host to re-read them (as a preset
             // load does; the CLAP wrapper sends paramsRescan(VALUES) on programChanged, which the
             // state-reproducibility tests require).

@@ -144,6 +144,27 @@ int main(int argc, char** argv)
         }
     }
 
+    // A host that only knows the released Quality parameter must switch engines even though new
+    // instances default to Eco: an explicit host-side Quality change leaves Eco. Regression test
+    // for the 1.2.x host defect (bit-identical renders across Quality modes in REAPER).
+    {
+        TubeChannelProcessor p;
+        p.setRateAndBufferSizeDetails(48000.0, 256);
+        p.prepareToPlay(48000.0, 256);
+        check(p.currentQuality() == 3, "fresh instance runs Eco");
+        auto* q = p.apvts.getParameter(id::quality);
+        q->setValueNotifyingHost(q->convertTo0to1(1.f)); // host-style: Quality only, Eco untouched
+        check(p.apvts.getRawParameterValue(id::eco)->load() == 0, "host-side Quality change leaves Eco");
+        juce::AudioBuffer<float> buf(2, 256);
+        juce::MidiBuffer midi;
+        const int before = p.swapCount();
+        const auto deadline = juce::Time::getMillisecondCounterHiRes() + 5000.;
+        do { pump(10); buf.clear(); p.processBlock(buf, midi); }
+        while (p.swapCount() == before && juce::Time::getMillisecondCounterHiRes() < deadline);
+        check(p.currentQuality() == 1, "host-side Quality change reaches the engine", p.currentQuality());
+        check(!p.usesPrototypeCompressor(), "host-side HQ selects the original detector");
+    }
+
     // Every explicit oversampling setting applies independently of the engine and session rate.
     for(double rate : {48000.,96000.}) for(int mode : {3,0,1}) for(int stages=0;stages<=3;++stages) {
         TubeChannelProcessor p;
