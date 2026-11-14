@@ -1,0 +1,1029 @@
+{
+ "fx": "VST3: Tube Channel",
+ "checks": [
+  {
+   "check": "loads",
+   "status": "PASS",
+   "detail": "VST3: Tube Channel (OpenGrid), 88 parameters"
+  },
+  {
+   "check": "finite output",
+   "status": "PASS",
+   "detail": "peak -9.0 dBFS"
+  },
+  {
+   "check": "not silent",
+   "status": "PASS",
+   "detail": "rms -20.1 dBFS"
+  },
+  {
+   "check": "deterministic render",
+   "status": "PASS",
+   "detail": "repeat differs by -240.0 dB"
+  },
+  {
+   "check": "editor opens",
+   "status": "PASS",
+   "detail": "1215x347, 0.0% animates by itself"
+  },
+  {
+   "check": "every parameter changes the sound",
+   "status": "FAIL",
+   "detail": "Detect auto B, External sidechain B"
+  },
+  {
+   "check": "every parameter is shown in the GUI",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "state survives save and reopen",
+   "status": "PASS",
+   "detail": ""
+  },
+  {
+   "check": "editor reopens",
+   "status": "PASS",
+   "detail": "5 close/open cycles"
+  }
+ ],
+ "params": [
+  {
+   "index": 0,
+   "name": "Instrument input",
+   "ident": "0:1395483623",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -13.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 1,
+   "name": "Gain",
+   "ident": "1:3165055",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": 1.2,
+   "audio": "ok",
+   "visualChange": 0.464,
+   "visual": "ok"
+  },
+  {
+   "index": 2,
+   "name": "Gain +20 dB",
+   "ident": "2:894135805",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -2.8,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 3,
+   "name": "Impedance",
+   "ident": "3:1639183674",
+   "default": 0.400000006,
+   "context": "",
+   "audioDiffDb": -22.9,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 4,
+   "name": "Phantom 48V",
+   "ident": "4:1539086093",
+   "default": 0,
+   "context": "random state 4",
+   "audioDiffDb": 5.3,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 5,
+   "name": "Invert",
+   "ident": "5:963780566",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -2.5,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 6,
+   "name": "Low cut",
+   "ident": "6:1050619502",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -13.2,
+   "audio": "ok",
+   "visualChange": 0.432,
+   "visual": "ok"
+  },
+  {
+   "index": 7,
+   "name": "Plate voltage high",
+   "ident": "7:132005304",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -44.8,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 8,
+   "name": "Preamp output",
+   "ident": "8:1167381963",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -9.0,
+   "audio": "ok",
+   "visualChange": 0.432,
+   "visual": "ok"
+  },
+  {
+   "index": 9,
+   "name": "Compressor on",
+   "ident": "9:3059471",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -16.5,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 10,
+   "name": "Threshold",
+   "ident": "10:602006635",
+   "default": 0.25,
+   "context": "",
+   "audioDiffDb": -13.1,
+   "audio": "ok",
+   "visualChange": 0.433,
+   "visual": "ok"
+  },
+  {
+   "index": 11,
+   "name": "Ratio",
+   "ident": "11:108285963",
+   "default": 0.3000000119,
+   "context": "",
+   "audioDiffDb": -14.9,
+   "audio": "ok",
+   "visualChange": 0.43,
+   "visual": "ok"
+  },
+  {
+   "index": 12,
+   "name": "Attack",
+   "ident": "12:740224584",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -23.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 13,
+   "name": "Release",
+   "ident": "13:1090594823",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -29.2,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 14,
+   "name": "Detect auto",
+   "ident": "14:90227986",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -32.8,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 15,
+   "name": "Comp output",
+   "ident": "15:950497759",
+   "default": 0.8799999952,
+   "context": "",
+   "audioDiffDb": -7.6,
+   "audio": "ok",
+   "visualChange": 0.432,
+   "visual": "ok"
+  },
+  {
+   "index": 16,
+   "name": "External sidechain",
+   "ident": "16:96965681",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -13.1,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 17,
+   "name": "Brickwall limiter",
+   "ident": "17:2124827280",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -10.2,
+   "audio": "ok",
+   "visualChange": 0.648,
+   "visual": "ok"
+  },
+  {
+   "index": 18,
+   "name": "EQ on",
+   "ident": "18:3244",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -21.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 19,
+   "name": "Low",
+   "ident": "19:107348",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -1.8,
+   "audio": "ok",
+   "visualChange": 0.435,
+   "visual": "ok"
+  },
+  {
+   "index": 20,
+   "name": "Low shift 40 Hz",
+   "ident": "20:353392863",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -59.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 21,
+   "name": "High",
+   "ident": "21:3202466",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -7.5,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 22,
+   "name": "High shift 6 kHz",
+   "ident": "22:926570529",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -61.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 23,
+   "name": "Lo-Mid level",
+   "ident": "23:289592995",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -0.6,
+   "audio": "ok",
+   "visualChange": 0.435,
+   "visual": "ok"
+  },
+  {
+   "index": 24,
+   "name": "Lo-Mid freq",
+   "ident": "24:1048279929",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -73.2,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 25,
+   "name": "Lo-Mid x10",
+   "ident": "25:103104374",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -61.9,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 26,
+   "name": "Lo-Mid narrow",
+   "ident": "26:440906012",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -94.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 27,
+   "name": "Hi-Mid level",
+   "ident": "27:1034545567",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": 0.2,
+   "audio": "ok",
+   "visualChange": 0.435,
+   "visual": "ok"
+  },
+  {
+   "index": 28,
+   "name": "Hi-Mid freq",
+   "ident": "28:933763325",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -55.5,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 29,
+   "name": "Hi-Mid x10",
+   "ident": "29:99410290",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -45.8,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 30,
+   "name": "Hi-Mid narrow",
+   "ident": "30:2059599264",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -76.4,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 31,
+   "name": "Master",
+   "ident": "31:1066216034",
+   "default": 0.8000000119,
+   "context": "",
+   "audioDiffDb": -9.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 32,
+   "name": "Output +4 dBu",
+   "ident": "32:66014454",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -11.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 33,
+   "name": "Input trim",
+   "ident": "33:1707923180",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": 0.3,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 34,
+   "name": "Output trim",
+   "ident": "34:874587299",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -0.6,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 35,
+   "name": "0 VU level",
+   "ident": "35:1767875043",
+   "default": 0.5,
+   "context": "",
+   "audioDiffDb": -18.7,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 36,
+   "name": "Mic source impedance",
+   "ident": "36:3351315",
+   "default": 0.1818181872,
+   "context": "",
+   "audioDiffDb": -18.7,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 37,
+   "name": "Instrument source impedance",
+   "ident": "37:100360948",
+   "default": 0.09090909362,
+   "context": "random state 2",
+   "audioDiffDb": -19.2,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 38,
+   "name": "Quality",
+   "ident": "38:651215103",
+   "default": 0,
+   "context": "random state 4",
+   "audioDiffDb": 5.1,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 39,
+   "name": "Linear phase (+L)",
+   "ident": "39:133769590",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": 0.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 40,
+   "name": "Stereo link",
+   "ident": "40:688229362",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -26.4,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 41,
+   "name": "Dual mono",
+   "ident": "41:1826215263",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -26.4,
+   "audio": "ok",
+   "visualChange": 0.794,
+   "visual": "ok"
+  },
+  {
+   "index": 42,
+   "name": "Mains frequency",
+   "ident": "42:103657946",
+   "default": 0,
+   "context": "random state 4",
+   "audioDiffDb": 5.9,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 43,
+   "name": "Mains voltage",
+   "ident": "43:1382831352",
+   "default": 0.5999999046,
+   "context": "random state 4",
+   "audioDiffDb": 5.8,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 44,
+   "name": "Component tolerances",
+   "ident": "44:1960481286",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -65.1,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 45,
+   "name": "Unit seed",
+   "ident": "45:3526257",
+   "default": 0.01010101009,
+   "context": "",
+   "audioDiffDb": -68.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 46,
+   "name": "Circuit noise",
+   "ident": "46:104998682",
+   "default": 1,
+   "context": "random state 2",
+   "audioDiffDb": -89.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 47,
+   "name": "Power supply model",
+   "ident": "47:63650711",
+   "default": 0,
+   "context": "random state 4",
+   "audioDiffDb": 5.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 48,
+   "name": "Instrument input B",
+   "ident": "48:1029968394",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -13.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 49,
+   "name": "Gain B",
+   "ident": "49:894137250",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -3.4,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 50,
+   "name": "Gain +20 dB B",
+   "ident": "50:271052448",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -12.1,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 51,
+   "name": "Impedance B",
+   "ident": "51:1149999773",
+   "default": 0.400000006,
+   "context": "random state 1",
+   "audioDiffDb": -12.6,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 52,
+   "name": "Phantom 48V B",
+   "ident": "52:1592988592",
+   "default": 0,
+   "context": "random state 4",
+   "audioDiffDb": 5.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 53,
+   "name": "Invert B",
+   "ident": "53:627674681",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": 5.2,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 54,
+   "name": "Low cut B",
+   "ident": "54:328029905",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -15.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 55,
+   "name": "Plate voltage high B",
+   "ident": "55:155564955",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -29.9,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 56,
+   "name": "Preamp output B",
+   "ident": "56:867605230",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -14.3,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 57,
+   "name": "Compressor on B",
+   "ident": "57:792671026",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -11.6,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 58,
+   "name": "Threshold B",
+   "ident": "58:855277966",
+   "default": 0.25,
+   "context": "random state 1",
+   "audioDiffDb": -1.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 59,
+   "name": "Ratio B",
+   "ident": "59:983598382",
+   "default": 0.3000000119,
+   "context": "random state 4",
+   "audioDiffDb": 5.6,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 60,
+   "name": "Attack B",
+   "ident": "60:538740779",
+   "default": 0.5,
+   "context": "random state 4",
+   "audioDiffDb": 5.1,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 61,
+   "name": "Release B",
+   "ident": "61:89607722",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -39.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 62,
+   "name": "Detect auto B",
+   "ident": "62:809751669",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -240.0,
+   "audio": "DEAD",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 63,
+   "name": "Comp output B",
+   "ident": "63:747799042",
+   "default": 0.8799999952,
+   "context": "random state 1",
+   "audioDiffDb": -12.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 64,
+   "name": "External sidechain B",
+   "ident": "64:842225620",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -240.0,
+   "audio": "DEAD",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 65,
+   "name": "Brickwall limiter B",
+   "ident": "65:1849553523",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -3.6,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 66,
+   "name": "EQ on B",
+   "ident": "66:3120527",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -10.1,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 67,
+   "name": "Low B",
+   "ident": "67:103164471",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -62.3,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 68,
+   "name": "Low shift 40 Hz B",
+   "ident": "68:308128002",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -85.8,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 69,
+   "name": "High B",
+   "ident": "69:930089221",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -46.9,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 70,
+   "name": "High shift 6 kHz B",
+   "ident": "70:1376051140",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -63.2,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 71,
+   "name": "Lo-Mid level B",
+   "ident": "71:1273480646",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -62.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 72,
+   "name": "Lo-Mid freq B",
+   "ident": "72:227183900",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -70.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 73,
+   "name": "Lo-Mid x10 B",
+   "ident": "73:299058649",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -77.1,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 74,
+   "name": "Lo-Mid narrow B",
+   "ident": "74:656401919",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -90.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 75,
+   "name": "Hi-Mid level B",
+   "ident": "75:2060847554",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -68.4,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 76,
+   "name": "Hi-Mid freq B",
+   "ident": "76:1845877152",
+   "default": 0.5,
+   "context": "random state 1",
+   "audioDiffDb": -87.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 77,
+   "name": "Hi-Mid x10 B",
+   "ident": "77:1044011221",
+   "default": 0,
+   "context": "random state 1",
+   "audioDiffDb": -82.0,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 78,
+   "name": "Hi-Mid narrow B",
+   "ident": "78:1442455939",
+   "default": 1,
+   "context": "random state 2",
+   "audioDiffDb": -15.4,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 79,
+   "name": "Master B",
+   "ident": "79:283911621",
+   "default": 0.8000000119,
+   "context": "random state 1",
+   "audioDiffDb": -0.2,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 80,
+   "name": "Output +4 dBu B",
+   "ident": "80:1162867545",
+   "default": 1,
+   "context": "random state 1",
+   "audioDiffDb": -3.5,
+   "audio": "CONDITIONAL",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 81,
+   "name": "Eco mode",
+   "ident": "81:236228788",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -18.5,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 82,
+   "name": "Oversampling",
+   "ident": "82:1420097723",
+   "default": 0.25,
+   "context": "",
+   "audioDiffDb": -6.9,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 83,
+   "name": "Bypass",
+   "ident": "83:1652125811",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -8.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 84,
+   "name": "Program",
+   "ident": "84:1886548852",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -15.0,
+   "audio": "ok",
+   "visualChange": 0.704,
+   "visual": "ok"
+  },
+  {
+   "index": 85,
+   "name": "Bypass",
+   "ident": "85:bypass",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -8.0,
+   "audio": "ok",
+   "visualChange": 0.8,
+   "visual": "ok"
+  },
+  {
+   "index": 86,
+   "name": "Wet",
+   "ident": "86:wet",
+   "default": 1,
+   "context": "",
+   "audioDiffDb": -8.0,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  },
+  {
+   "index": 87,
+   "name": "Delta",
+   "ident": "87:delta",
+   "default": 0,
+   "context": "",
+   "audioDiffDb": -3.2,
+   "audio": "ok",
+   "visualChange": 0.399,
+   "visual": "ok"
+  }
+ ],
+ "info": {
+  "latency": "0",
+  "name": "VST3: Tube Channel (OpenGrid)",
+  "numParams": 88,
+  "fx": 0
+ },
+ "failed": [
+  "every parameter changes the sound"
+ ]
+}

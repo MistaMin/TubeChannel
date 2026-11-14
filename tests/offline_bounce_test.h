@@ -136,7 +136,8 @@ static int offlineBounceTest()
             TubeChannelProcessor manual;
             set(manual,id::offlineBounceEnabled,0);set(manual,id::linearPhase,float(linear));
             const int modes[]={3,0,1};const int mode=modes[choice/3];
-            set(manual,id::eco,mode==3?1.f:0.f);set(manual,id::quality,float(mode==3?0:mode));
+            // Quality first, then Eco: an explicit Quality change leaves Eco by design.
+            set(manual,id::quality,float(mode==3?0:mode));set(manual,id::eco,mode==3?1.f:0.f);
             set(manual,id::oversampling,float(choice%3+2));manual.setNonRealtime(true);prepare(manual,rate);
             std::vector<float> reference[2];int start=0;
             for(int frames : {1,17,64,129,8,64,129,64})

@@ -1,0 +1,17 @@
+[0/2] Re-checking globbed directories...
+[1/4] Building VST3 manifest helper for TubeChannel
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/marco/Developer/TubeChannel/build/vst3_helpers/TubeChannel
+ninja: no work to do.
+[2/4] Building CXX object CMakeFiles\TubeChannelStress.dir\tests\processor_stress.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\tests\processor_stress.cpp(49): warning C4459: declaration of 'failures' hides global declaration
+C:\Users\marco\Developer\TubeChannel\tests\processor_stress.cpp(14): note: see declaration of 'failures'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[3/4] Linking CXX executable TubeChannelStress_artefacts\Release\TubeChannelStress.exe

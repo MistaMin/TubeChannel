@@ -1,0 +1,136 @@
+PASS     loads VST3: Tube Channel (OpenGrid), 90 parameters
+PASS     finite output peak -7.5 dBFS
+PASS     not silent rms -21.0 dBFS
+PASS     deterministic render repeat differs by -240.0 dB
+PASS     editor opens 1215x347, 0.0% animates by itself
+  Instrument input                 audio=ok       visual=ok
+  Gain                             audio=ok       visual=ok
+  Gain +20 dB                      audio=ok       visual=ok
+  Impedance                        audio=ok       visual=ok
+  Phantom 48V                      audio=ok       visual=ok
+  Invert                           audio=ok       visual=ok
+  Low cut                          audio=ok       visual=ok
+  Plate voltage high               audio=ok       visual=ok
+  Preamp output                    audio=ok       visual=ok
+  Compressor on                    audio=ok       visual=ok
+  Threshold                        audio=ok       visual=ok
+  Ratio                            audio=ok       visual=ok
+  Attack                           audio=ok       visual=ok
+  Release                          audio=ok       visual=ok
+  Detect auto                      audio=ok       visual=ok
+  Comp output                      audio=ok       visual=ok
+  External sidechain               audio=ok       visual=ok
+  Brickwall limiter                audio=ok       visual=ok
+  EQ on                            audio=ok       visual=ok
+  Low                              audio=ok       visual=ok
+  Low shift 40 Hz                  audio=ok       visual=ok
+  High                             audio=ok       visual=ok
+  High shift 6 kHz                 audio=ok       visual=ok
+  Lo-Mid level                     audio=ok       visual=ok
+  Lo-Mid freq                      audio=ok       visual=ok
+  Lo-Mid x10                       audio=ok       visual=ok
+  Lo-Mid narrow                    audio=ok       visual=ok
+  Hi-Mid level                     audio=ok       visual=ok
+  Hi-Mid freq                      audio=ok       visual=ok
+  Hi-Mid x10                       audio=ok       visual=ok
+  Hi-Mid narrow                    audio=ok       visual=ok
+  Master                           audio=ok       visual=ok
+  Output +4 dBu                    audio=ok       visual=ok
+  Input trim                       audio=ok       visual=ok
+  Output trim                      audio=ok       visual=ok
+  0 VU level                       audio=ok       visual=ok
+  Mic source impedance             audio=ok       visual=ok
+  Instrument source impedance      audio=DEAD     visual=ok
+  Quality                          audio=DEAD     visual=ok
+  Linear phase (+L)                audio=ok       visual=ok
+  Stereo link                      audio=ok       visual=ok
+  Dual mono                        audio=ok       visual=ok
+  Mains frequency                  audio=ok       visual=ok
+  Mains voltage                    audio=ok       visual=ok
+  Component tolerances             audio=DEAD     visual=ok
+  Unit seed                        audio=ok       visual=ok
+  Circuit noise                    audio=DEAD     visual=ok
+  Power supply model               audio=ok       visual=ok
+  Instrument input B               audio=DEAD     visual=ok
+  Gain B                           audio=DEAD     visual=ok
+  Gain +20 dB B                    audio=DEAD     visual=ok
+  Impedance B                      audio=DEAD     visual=ok
+  Phantom 48V B                    audio=DEAD     visual=ok
+  Invert B                         audio=DEAD     visual=ok
+  Low cut B                        audio=DEAD     visual=ok
+  Plate voltage high B             audio=DEAD     visual=ok
+  Preamp output B                  audio=DEAD     visual=ok
+  Compressor on B                  audio=DEAD     visual=ok
+  Threshold B                      audio=DEAD     visual=ok
+  Ratio B                          audio=DEAD     visual=ok
+  Attack B                         audio=DEAD     visual=ok
+  Release B                        audio=DEAD     visual=ok
+  Detect auto B                    audio=DEAD     visual=ok
+  Comp output B                    audio=DEAD     visual=ok
+  External sidechain B             audio=DEAD     visual=ok
+  Brickwall limiter B              audio=DEAD     visual=ok
+  EQ on B                          audio=DEAD     visual=ok
+  Low B                            audio=DEAD     visual=ok
+  Low shift 40 Hz B                audio=DEAD     visual=ok
+  High B                           audio=DEAD     visual=ok
+  High shift 6 kHz B               audio=DEAD     visual=ok
+  Lo-Mid level B                   audio=DEAD     visual=ok
+  Lo-Mid freq B                    audio=DEAD     visual=ok
+  Lo-Mid x10 B                     audio=DEAD     visual=ok
+  Lo-Mid narrow B                  audio=DEAD     visual=ok
+  Hi-Mid level B                   audio=DEAD     visual=ok
+  Hi-Mid freq B                    audio=DEAD     visual=ok
+  Hi-Mid x10 B                     audio=DEAD     visual=ok
+  Hi-Mid narrow B                  audio=DEAD     visual=ok
+  Master B                         audio=DEAD     visual=ok
+  Output +4 dBu B                  audio=DEAD     visual=ok
+  Eco mode                         audio=DEAD     visual=ok
+  Oversampling                     audio=DEAD     visual=ok
+  Offline Bounce                   audio=ok       visual=ok
+  Offline Bounce override          audio=ok       visual=ok
+  Bypass                           audio=ok       visual=ok
+  Program                          audio=ok       visual=ok
+  Bypass                           audio=ok       visual=ok
+  Wet                              audio=ok       visual=ok
+  Delta                            audio=ok       visual=ok
+  Component tolerances             audio=CONDITIONAL (acts in random state 1)
+  Instrument input B               audio=CONDITIONAL (acts in random state 1)
+  Gain B                           audio=CONDITIONAL (acts in random state 1)
+  Gain +20 dB B                    audio=CONDITIONAL (acts in random state 1)
+  Impedance B                      audio=CONDITIONAL (acts in random state 1)
+  Invert B                         audio=CONDITIONAL (acts in random state 1)
+  Low cut B                        audio=CONDITIONAL (acts in random state 1)
+  Plate voltage high B             audio=CONDITIONAL (acts in random state 1)
+  Preamp output B                  audio=CONDITIONAL (acts in random state 1)
+  Compressor on B                  audio=CONDITIONAL (acts in random state 1)
+  Threshold B                      audio=CONDITIONAL (acts in random state 1)
+  Release B                        audio=CONDITIONAL (acts in random state 1)
+  Comp output B                    audio=CONDITIONAL (acts in random state 1)
+  Brickwall limiter B              audio=CONDITIONAL (acts in random state 1)
+  EQ on B                          audio=CONDITIONAL (acts in random state 1)
+  Low B                            audio=CONDITIONAL (acts in random state 1)
+  Low shift 40 Hz B                audio=CONDITIONAL (acts in random state 1)
+  High B                           audio=CONDITIONAL (acts in random state 1)
+  High shift 6 kHz B               audio=CONDITIONAL (acts in random state 1)
+  Lo-Mid level B                   audio=CONDITIONAL (acts in random state 1)
+  Lo-Mid freq B                    audio=CONDITIONAL (acts in random state 1)
+  Lo-Mid x10 B                     audio=CONDITIONAL (acts in random state 1)
+  Lo-Mid narrow B                  audio=CONDITIONAL (acts in random state 1)
+  Hi-Mid level B                   audio=CONDITIONAL (acts in random state 1)
+  Hi-Mid freq B                    audio=CONDITIONAL (acts in random state 1)
+  Hi-Mid x10 B                     audio=CONDITIONAL (acts in random state 1)
+  Master B                         audio=CONDITIONAL (acts in random state 1)
+  Output +4 dBu B                  audio=CONDITIONAL (acts in random state 1)
+  Eco mode                         audio=CONDITIONAL (acts in random state 1)
+  Oversampling                     audio=CONDITIONAL (acts in random state 1)
+  Instrument source impedance      audio=CONDITIONAL (acts in random state 2)
+  Circuit noise                    audio=CONDITIONAL (acts in random state 2)
+  Hi-Mid narrow B                  audio=CONDITIONAL (acts in random state 2)
+  Phantom 48V B                    audio=CONDITIONAL (acts in random state 4)
+  Ratio B                          audio=CONDITIONAL (acts in random state 5)
+  Attack B                         audio=CONDITIONAL (acts in random state 5)
+FAIL     every parameter changes the sound Quality, Detect auto B, External sidechain B
+PASS     every parameter is shown in the GUI 
+PASS     state survives save and reopen 
+PASS     editor reopens 5 close/open cycles
+report: C:\Users\marco\Developer\TubeChannel\qa\2026-11-02-win-release\report.md

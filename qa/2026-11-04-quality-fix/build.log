@@ -1,0 +1,65 @@
+[0/2] Re-checking globbed directories...
+[1/16] Building VST3 manifest helper for TubeChannel
+-- Configuring done (0.1s)
+-- Generating done (0.2s)
+-- Build files have been written to: C:/Users/marco/Developer/TubeChannel/build/vst3_helpers/TubeChannel
+ninja: no work to do.
+[2/16] Building CXX object CMakeFiles\TubeChannelGuiTest.dir\tests\gui_test.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[3/16] Building CXX object CMakeFiles\TubeChannelStress.dir\tests\processor_stress.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\tests\processor_stress.cpp(49): warning C4459: declaration of 'failures' hides global declaration
+C:\Users\marco\Developer\TubeChannel\tests\processor_stress.cpp(14): note: see declaration of 'failures'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[4/16] Building CXX object CMakeFiles\TubeChannelSnapshot.dir\tests\ui_snapshot.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(201): warning C4457: declaration of 'grain' hides function parameter
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(187): note: see declaration of 'grain'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[5/16] Building CXX object CMakeFiles\TubeChannel.dir\Source\Plugin\PluginProcessor.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(201): warning C4457: declaration of 'grain' hides function parameter
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(187): note: see declaration of 'grain'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[6/16] Building CXX object CMakeFiles\TubeChannel.dir\Source\Plugin\PluginEditor.cpp.obj
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(25): warning C4458: declaration of 'inputs' hides class member
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/Block.h(104): note: see declaration of 'tubechannel::circuit::Block::inputs'
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(201): warning C4457: declaration of 'grain' hides function parameter
+C:\Users\marco\Developer\TubeChannel\third_party\GoodLookinUI\adapters\juce\Knobs.h(187): note: see declaration of 'grain'
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(91): note: the template instantiation context (the oldest one first) is
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(333): note: see reference to class template instantiation 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>' being compiled
+C:\Users\marco\Developer\TubeChannel\Source\Circuit\SparseLU.h(66): note: while compiling class template member function 'void tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze(void)'
+C:\Users\marco\Developer\TubeChannel\Source\Channel\../Circuit/CircuitPair.h(24): note: see the first reference to 'tubechannel::circuit::SparseLUT<tubechannel::circuit::V2>::analyze' in 'tubechannel::circuit::CircuitPair::CircuitPair'
+[7/16] Linking CXX static library "TubeChannel_artefacts\Release\Tube Channel_SharedCode.lib"
+[8/16] Linking CXX shared module "TubeChannel_artefacts\Release\LV2\Tube Channel.lv2\Tube Channel.dll"
+[9/16] Linking CXX shared module "TubeChannel_artefacts\Release\CLAP\Tube Channel.clap"
+[10/16] Linking CXX shared module "TubeChannel_artefacts\Release\AAX\Tube Channel.aaxplugin\Contents\x64\Tube Channel.aaxplugin"
+[11/16] Linking CXX shared module "TubeChannel_artefacts\Release\VST3\Tube Channel.vst3\Contents\x86_64-win\Tube Channel.vst3"
+removing moduleinfo.json
+creating C:/Users/marco/Developer/TubeChannel/build/TubeChannel_artefacts/Release/VST3/Tube Channel.vst3/Contents/Resources/moduleinfo.json
+[12/16] Linking CXX executable TubeChannelSnapshot_artefacts\Release\TubeChannelSnapshot.exe
+[13/16] Linking CXX executable TubeChannelGuiTest_artefacts\Release\TubeChannelGuiTest.exe
+[14/16] Linking CXX executable "TubeChannel_artefacts\Release\Standalone\Tube Channel.exe"
+[15/16] Linking CXX executable TubeChannelStress_artefacts\Release\TubeChannelStress.exe
