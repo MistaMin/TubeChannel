@@ -67,7 +67,7 @@ fi
 # 4. Root INSTALL instructions
 cat > "$STAGE/INSTALL.txt" <<EOF
 Tube Channel $VERSION — macOS Universal (Apple Silicon & Intel)
-OpenGrid / Marcos Deida
+OpenGrid / Marcos Quirino Deida
 
 INSTALLATION:
 1. Double-click "TubeChannel-$VERSION.pkg" to launch the installer.
