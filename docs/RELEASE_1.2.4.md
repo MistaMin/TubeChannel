@@ -23,7 +23,7 @@ host activation stability across macOS, Windows, and Linux.
 ## Formats and platforms
 
 - macOS universal (Apple silicon and Intel): VST3, Audio Unit, CLAP, LV2,
-  standalone, and AAX.
+  and AAX.
 - Windows x64: VST3, CLAP, LV2, and standalone.
 - Linux x86_64: VST3, CLAP, LV2, and standalone.
 
