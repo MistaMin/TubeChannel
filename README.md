@@ -45,17 +45,17 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 ## Download
 
 Pick the download for your operating system. The macOS installer includes VST3,
-Audio Unit, CLAP, LV2, standalone, and AAX. Windows and Linux builds
+Audio Unit, CLAP, LV2, and AAX. Windows and Linux builds
 include VST3, CLAP, LV2, and standalone.
 
 **Windows 1.2.4 (Windows 10 or later, x64)** — [TubeChannel-1.2.4-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-win.exe)
 Double-click the installer and choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
 
-**macOS 1.2.4 (Apple silicon and Intel)** — [TubeChannel-1.2.4.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4.pkg) · [TubeChannel-1.2.4.dmg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4.dmg)
+**macOS 1.2.4 (Apple silicon and Intel)** — [TubeChannel-1.2.4-macos.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-macos.pkg) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-macos.sha256))
 Signed and notarized. The installer lets you choose VST3, Audio Unit, CLAP, LV2,
-AAX, and the standalone app.
+and AAX.
 
-**Linux 1.2.4 (x86_64)** — [TubeChannel-1.2.4-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-linux-x86_64.tar.gz) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-linux-x86_64.sha256))
+**Linux 1.2.4 (x86_64)** — [TubeChannel-1.2.4-linux-x86_64.tar.gz](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-linux-x86_64.tar.gz) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-linux-x86_64.tar.gz.sha256))
 Includes **VST3**, **CLAP**, **LV2**, and the **standalone app**. Extract the archive and copy the contents of `VST3/`, `CLAP/`, and `LV2/` into `~/.vst3`, `~/.clap`, and `~/.lv2`.
 
 All packages include the user guide and applicable license texts. Browse all downloads
