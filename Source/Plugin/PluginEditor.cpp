@@ -554,6 +554,7 @@ private:
 // ---------------------------------------------------------------------------------------------------------------------
 TubeChannelEditor::TubeChannelEditor(TubeChannelProcessor& p) : AudioProcessorEditor(&p), proc(p)
 {
+    proc.spectrumViewers.fetch_add(1);
     content = std::make_unique<Content>(p);
     addAndMakeVisible(*content);
     constrainer.setFixedAspectRatio(double(kW) / double(kH));
@@ -564,7 +565,7 @@ TubeChannelEditor::TubeChannelEditor(TubeChannelProcessor& p) : AudioProcessorEd
     startTimerHz(8);
 }
 
-TubeChannelEditor::~TubeChannelEditor() { stopTimer(); }
+TubeChannelEditor::~TubeChannelEditor() { stopTimer(); proc.spectrumViewers.fetch_sub(1); }
 
 void TubeChannelEditor::resized()
 {

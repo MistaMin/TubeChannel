@@ -11,6 +11,7 @@ VERSION=$(cat VERSION)
 OUT=${OUT:-dist}
 BUILD=${BUILD:-build/universal}
 ART="$BUILD/TubeChannel_artefacts/Release"
+installer/check_bundle_versions.sh "$ART"
 APP_ID="Developer ID Application: Marcos Deida (ZQYU67JUBH)"
 mkdir -p "$OUT"
 rm -rf "$OUT/resources"

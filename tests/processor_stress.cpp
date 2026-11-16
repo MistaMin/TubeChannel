@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <limits>
 #include <chrono>
 #include <ctime>
 #include <memory>
@@ -163,6 +164,80 @@ int main(int argc, char** argv)
         while (p.swapCount() == before && juce::Time::getMillisecondCounterHiRes() < deadline);
         check(p.currentQuality() == 1, "host-side Quality change reaches the engine", p.currentQuality());
         check(!p.usesPrototypeCompressor(), "host-side HQ selects the original detector");
+    }
+
+    // A snapshot replayed as separate parameter sets, in parameter-index order (Quality before the
+    // appended Eco), must restore both the Eco flag and the quality index.
+    for (int saved = 0; saved < 4; ++saved)
+    {
+        TubeChannelProcessor p;
+        setChoice(p, id::quality, (saved + 1) % 4);
+        const float quality = saved == 3 ? 0.f : float(saved);
+        auto* q = p.apvts.getParameter(id::quality);
+        auto* e = p.apvts.getParameter(id::eco);
+        q->setValueNotifyingHost(q->convertTo0to1(quality));
+        e->setValueNotifyingHost(saved == 3 ? 1.f : 0.f);
+        check((p.apvts.getRawParameterValue(id::eco)->load() > .5f ? 3 : int(p.apvts.getRawParameterValue(id::quality)->load())) == saved,
+              "per-parameter snapshot replay restores the engine", saved);
+    }
+
+    // A NaN or infinity from the host (an upstream plugin glitch) must not poison the filter state:
+    // the next clean block has to come out finite and audible again, main input and sidechain.
+    for (int quality : { 3, 0, 1 })
+    {
+        TubeChannelProcessor p;
+        setChoice(p, id::quality, quality);
+        p.setRateAndBufferSizeDetails(48000.0, 256);
+        p.prepareToPlay(48000.0, 256);
+        juce::MidiBuffer midi;
+        juce::AudioBuffer<float> buf(2, 256);
+        auto sine = [&](juce::AudioBuffer<float>& b) {
+            for (int ch = 0; ch < 2; ++ch)
+                for (int i = 0; i < b.getNumSamples(); ++i)
+                    b.setSample(ch, i, 0.1f * std::sin(0.05f * float(i)));
+        };
+        for (int block = 0; block < 4; ++block) { sine(buf); p.processBlock(buf, midi); }
+        sine(buf);
+        buf.setSample(0, 10, std::numeric_limits<float>::quiet_NaN());
+        buf.setSample(1, 20, std::numeric_limits<float>::infinity());
+        buf.setSample(0, 30, -std::numeric_limits<float>::infinity());
+        p.processBlock(buf, midi);
+        float peak = 0.f;
+        bool finite = true;
+        for (int block = 0; block < 8; ++block)
+        {
+            sine(buf);
+            p.processBlock(buf, midi);
+            for (int ch = 0; ch < 2; ++ch)
+                for (int i = 0; i < 256; ++i)
+                {
+                    finite = finite && std::isfinite(buf.getSample(ch, i));
+                    peak = std::max(peak, std::fabs(buf.getSample(ch, i)));
+                }
+        }
+        check(finite, "output finite after NaN/Inf input", quality);
+        check(peak > 0.01f, "output audible after NaN/Inf input", peak);
+    }
+
+    // Informational: a host that re-prepares during playback must not pay for the chain build inside the
+    // first callback after re-activation (now built in prepareToPlay; the audio thread only swaps it in).
+    for (int quality : { 3, 0, 1 })
+    {
+        TubeChannelProcessor p;
+        setChoice(p, id::quality, quality);
+        p.setRateAndBufferSizeDetails(48000.0, 256);
+        p.prepareToPlay(48000.0, 256);
+        juce::MidiBuffer midi;
+        juce::AudioBuffer<float> buf(2, 256);
+        buf.clear(); p.processBlock(buf, midi);
+        p.setRateAndBufferSizeDetails(96000.0, 256);
+        p.prepareToPlay(96000.0, 256);
+        const auto t0 = juce::Time::getMillisecondCounterHiRes();
+        buf.clear(); p.processBlock(buf, midi);
+        const double ms = juce::Time::getMillisecondCounterHiRes() - t0;
+        std::printf("  info: first block after re-activation, quality %d: %.1f ms\n", quality, ms);
+        check(ms < 25.0, "first callback after re-activation does not build the chain", ms);
+        check(p.getLatencySamples() >= 0 && p.currentFactor() >= 1, "re-activated chain is installed", quality);
     }
 
     // Every explicit oversampling setting applies independently of the engine and session rate.

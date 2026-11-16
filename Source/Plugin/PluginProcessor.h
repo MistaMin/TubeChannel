@@ -58,9 +58,8 @@ public:
     int currentLatency() const { return activeLatency.load(); }
     bool isBuilding() const { return building.load(); }
 
-    // Runs the whole prepare on the audio thread: OpenGrid9's host activates the plugin from its
-    // disk thread while the callback may still be running, and swapping the chain then frees DSP
-    // state that is in use. prepareToPlay defers to this via a flag checked in processBlock.
+    // First activation only: builds and installs the chain inline. Later activations are built in
+    // prepareToPlay and swapped in by the audio thread (see installPrepared).
     void applyPendingPrepare();
     float cpuLoad() const { return cpu.load(); }
     int swapCount() const { return swaps.load(); }
@@ -73,6 +72,8 @@ public:
     static constexpr int kSpecSize = 4096;
     std::atomic<float> specRing[kSpecSize];
     std::atomic<int> specWrite { 0 };
+    // Editors that display the spectrum register here so the audio thread fills the ring only when needed.
+    std::atomic<int> spectrumViewers { 0 };
 
     int skin() const { return int(apvts.state.getProperty("skin", 0)); }
     void setSkin(int s) { apvts.state.setProperty("skin", s, nullptr); }
@@ -121,15 +122,20 @@ private:
         void preserve(PreparedState&, bool preserveBounce = true);
     };
     Key requestedKey() const;
+    Key requestedKey(double sampleRate, int maxBlock) const;
     StateKey requestedStateKey() const;
+    StateKey requestedStateKey(double sampleRate, int maxBlock) const;
+    void installPrepared(std::unique_ptr<PreparedState>, const StateKey&, double sampleRate, int samplesPerBlock);
     std::unique_ptr<PreparedState> buildState(const StateKey&) const;
     bool adoptIncoming(const StateKey&, bool& playbackChanged);
     void publishActive(bool offline);
     std::unique_ptr<tc::Chain> buildChain(const Key&) const;
     tc::ChainGlobals readGlobals() const;
 
-    double sampleRate_ = 48000.0;
-    int maxBlock_ = 512;
+    // Written by the audio thread (applyPendingPrepare), read by the message thread (requestedKey).
+    std::atomic<double> sampleRate_ { 48000.0 };
+    std::atomic<int> maxBlock_ { 512 };
+    void announceLatency(int samples);
     std::atomic<bool> preparePending { false };
     std::atomic<int> announcedLatency { -1 };
     double pendingSampleRate = 48000.0;
@@ -144,6 +150,11 @@ private:
     // hand-over from the message thread
     juce::SpinLock handoverLock;
     std::unique_ptr<PreparedState> incoming, retired;
+    // A chain built by prepareToPlay for a re-activation, waiting for the audio thread (guarded by handoverLock).
+    std::unique_ptr<PreparedState> reprepared;
+    StateKey reprepareKey;
+    double reprepareRate = 48000.0;
+    int reprepareBlock = 512;
 
     juce::SpinLock keyLock;
     StateKey builtKey;
