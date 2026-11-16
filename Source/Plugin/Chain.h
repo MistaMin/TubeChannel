@@ -133,6 +133,12 @@ public:
                  tubechannel::channel::Telemetry* const* tel)
     {
         using tubechannel::channel::ChannelControls;
+        // A single NaN or infinity would enter the filters, detector and supply state and stay there,
+        // so every later sample would be NaN until the chain is rebuilt. Hosts do send them.
+        for (int ch = 0; ch < nch; ++ch)
+            for (int i = 0; i < n; ++i)
+                if (!std::isfinite(audio[ch][i])) audio[ch][i] = 0.f;
+        const auto cleanSide = [](float v) { return std::isfinite(v) ? v : 0.f; };
         const double fsPeak = 0.775 * 1.4142135623730951 * std::pow(10.0, (4.0 - g.alignmentDbfs + kInterfacePadDb) / 20.0);
         const float inGain = float(std::pow(10.0, g.inputTrimDb / 20.0) * fsPeak);
         const bool linked = nch == 2 && !g.dualMono && g.stereoLink;
@@ -155,7 +161,7 @@ public:
                 for(int ch=0;ch<nch;++ch){
                     inputPeak[ch]=std::max(inputPeak[ch],std::fabs(audio[ch][i]));
                     const float* side=sc&&nsc>0?sc[std::min(ch,nsc-1)]:nullptr;
-                    audio[ch][i]=float(eco[ch]->process(double(audio[ch][i])*inGain,side?double(side[i])*inGain:0,linked,previous[1-ch])*outGain[ch]);
+                    audio[ch][i]=float(eco[ch]->process(double(audio[ch][i])*inGain,side?double(cleanSide(side[i]))*inGain:0,linked,previous[1-ch])*outGain[ch]);
                     ms[ch]+=(double(audio[ch][i])*audio[ch][i]-ms[ch])*rmsCoeff;
                 }
             }
@@ -203,7 +209,7 @@ public:
                 if (scSrc != nullptr)
                 {
                     for (int i = 0; i < m; ++i)
-                        scaledSc[ch][size_t(i)] = scSrc[start + i] * inGain;
+                        scaledSc[ch][size_t(i)] = cleanSide(scSrc[start + i]) * inGain;
                     osSc[ch].upsample(0, scaledSc[ch].data(), m, osSc2[ch].data());
                 }
                 else

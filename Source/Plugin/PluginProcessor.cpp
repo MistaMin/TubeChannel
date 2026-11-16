@@ -58,11 +58,13 @@ bool TubeChannelProcessor::isBusesLayoutSupported(const BusesLayout& layouts) co
     return true;
 }
 
-TubeChannelProcessor::Key TubeChannelProcessor::requestedKey() const
+TubeChannelProcessor::Key TubeChannelProcessor::requestedKey() const { return requestedKey(sampleRate_.load(), maxBlock_.load()); }
+
+TubeChannelProcessor::Key TubeChannelProcessor::requestedKey(double sampleRate, int maxBlock) const
 {
     Key k;
-    k.sampleRate = sampleRate_;
-    k.maxBlock = maxBlock_;
+    k.sampleRate = sampleRate;
+    k.maxBlock = maxBlock;
     k.channels = std::max(1, std::min(2, getMainBusNumInputChannels()));
     k.quality = paramsA.eco->load() > .5f ? 3 : juce::roundToInt(paramsA.quality->load());
     k.oversampling = juce::roundToInt(paramsA.oversampling->load());
@@ -103,10 +105,12 @@ void TubeChannelProcessor::reset()
     offlineEpoch.fetch_add(1, std::memory_order_relaxed);
 }
 
-TubeChannelProcessor::StateKey TubeChannelProcessor::requestedStateKey() const
+TubeChannelProcessor::StateKey TubeChannelProcessor::requestedStateKey() const { return requestedStateKey(sampleRate_.load(), maxBlock_.load()); }
+
+TubeChannelProcessor::StateKey TubeChannelProcessor::requestedStateKey(double sampleRate, int maxBlock) const
 {
     StateKey key;
-    key.playback = requestedKey();
+    key.playback = requestedKey(sampleRate, maxBlock);
     key.bounce = key.playback;
     key.bounceEnabled = paramsA.offlineBounceEnabled->load() > .5f;
     if (key.bounceEnabled)
@@ -217,20 +221,28 @@ tc::ChainGlobals TubeChannelProcessor::readGlobals() const
     return g;
 }
 
+// First activation: no callback is running yet, so the whole prepare happens inline.
 void TubeChannelProcessor::applyPendingPrepare()
 {
     const double sampleRate = pendingSampleRate;
-    const int samplesPerBlock = pendingBlockSize;
-
-    sampleRate_ = sampleRate;
-    maxBlock_ = std::max(samplesPerBlock, 1);
+    const int samplesPerBlock = std::max(pendingBlockSize, 1);
     building.store(true);
-    const StateKey k = requestedStateKey();
-    auto fresh = buildState(k);
+    const StateKey k = requestedStateKey(sampleRate, samplesPerBlock);
+    installPrepared(buildState(k), k, sampleRate, samplesPerBlock);
+}
+
+// Cheap enough for the audio thread: swaps in a chain that was already built elsewhere. The old chain
+// is handed to the timer for destruction, so no DSP state is freed while a callback could still use it.
+void TubeChannelProcessor::installPrepared(std::unique_ptr<PreparedState> fresh, const StateKey& k, double sampleRate, int samplesPerBlock)
+{
+    sampleRate_.store(sampleRate);
+    maxBlock_.store(samplesPerBlock);
+    building.store(true);
+    auto old = std::move(chain);
     {
         const juce::SpinLock::ScopedLockType l(handoverLock);
         incoming.reset();
-        retired.reset();
+        retired = std::move(old);
     }
     chain = std::move(fresh);
     {
@@ -243,26 +255,48 @@ void TubeChannelProcessor::applyPendingPrepare()
         outputMeterPeak[ch].store(0.f, std::memory_order_relaxed);
         outputClip[ch].store(false, std::memory_order_relaxed);
     }
-    fadeInLength = std::max(1, juce::roundToInt(sampleRate_ * 0.02));
+    fadeInLength = std::max(1, juce::roundToInt(sampleRate * 0.02));
     bounceHasRun = false;
     renderedEpoch = offlineEpoch.load(std::memory_order_relaxed);
     publishActive(isNonRealtime());
-    // Runs on the audio thread when deferred (re-activation): host calls are only made when the
-    // latency actually changed, so a plain re-activation with unchanged settings is silent here.
-    if (chain->latency != announcedLatency.exchange(chain->latency))
-        setLatencySamples(chain->latency);
+    // Host calls are only made when the latency actually changed, so a plain re-activation with
+    // unchanged settings is silent here.
+    announceLatency(chain->latency);
     prepared.store(true);
     building.store(false);
+}
+
+// The only place that tells the host about latency, so an unchanged value is never re-announced.
+void TubeChannelProcessor::announceLatency(int samples)
+{
+    if (announcedLatency.exchange(samples) != samples)
+        setLatencySamples(samples);
 }
 
 void TubeChannelProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
     pendingSampleRate = sampleRate;
     pendingBlockSize = std::max(samplesPerBlock, 1);
-    if (prepared.exchange(true))
-        preparePending.store(true, std::memory_order_release); // defer: the callback may be running
-    else
+    if (!prepared.exchange(true))
+    {
         applyPendingPrepare(); // first activation: no callback is running yet
+        return;
+    }
+    // Re-activation while a callback may be running (OpenGrid9 activates from its disk thread). The heavy
+    // chain build, about 200 ms for the Circuit and HQ engines, stays on this thread; the audio thread
+    // only swaps the finished chain in at the start of its next callback.
+    const StateKey k = requestedStateKey(sampleRate, pendingBlockSize);
+    auto fresh = buildState(k);
+    std::unique_ptr<PreparedState> superseded;
+    {
+        const juce::SpinLock::ScopedLockType l(handoverLock);
+        superseded = std::move(reprepared);
+        reprepared = std::move(fresh);
+        reprepareKey = k;
+        reprepareRate = sampleRate;
+        reprepareBlock = pendingBlockSize;
+    }
+    preparePending.store(true, std::memory_order_release);
 }
 
 void TubeChannelProcessor::parameterChanged(const juce::String& parameterID, float)
@@ -292,6 +326,13 @@ void TubeChannelProcessor::handleAsyncUpdate()
     }
     building.store(true);
     auto fresh = buildState(k);            // heavy preparation stays off the live callback
+    // A re-activation (new sample rate or block size) or another edit may have landed while this
+    // chain was being built. The audio thread would never adopt it, and its latency would be wrong.
+    if (!(requestedStateKey() == k))
+    {
+        building.store(false);
+        return;
+    }
     const int latency = fresh->latency;
     std::unique_ptr<PreparedState> trash;
     {
@@ -301,7 +342,7 @@ void TubeChannelProcessor::handleAsyncUpdate()
         trash = std::move(retired);
         incoming = std::move(fresh);
     }
-    setLatencySamples(latency);
+    announceLatency(latency);
     building.store(false);
 }
 
@@ -318,7 +359,21 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 {
     juce::ScopedNoDenormals noDenormals;
     if (preparePending.exchange(false, std::memory_order_acquire))
-        applyPendingPrepare();
+    {
+        std::unique_ptr<PreparedState> fresh;
+        StateKey k;
+        double rate = 0;
+        int block = 0;
+        {
+            const juce::SpinLock::ScopedLockType l(handoverLock);
+            fresh = std::move(reprepared);
+            k = reprepareKey;
+            rate = reprepareRate;
+            block = reprepareBlock;
+        }
+        if (fresh != nullptr)
+            installPrepared(std::move(fresh), k, rate, block);
+    }
     const auto t0 = juce::Time::getHighResolutionTicks();
     const int total = buffer.getNumSamples();
     for (int ch = getMainBusNumInputChannels(); ch < getTotalNumOutputChannels(); ++ch)
@@ -341,7 +396,7 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
             fresh->preserve(*chain, false);
             chain = std::move(fresh);
             { const juce::SpinLock::ScopedLockType lock(keyLock); builtKey = wanted; }
-            setLatencySamples(chain->latency);
+            announceLatency(chain->latency);
         }
         renderedEpoch = epoch;
         bounceHasRun = wanted.bounceEnabled;
@@ -400,6 +455,7 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
     {
         int w = specWrite.load(std::memory_order_relaxed);
+        const bool feedSpectrum = spectrumViewers.load(std::memory_order_relaxed) > 0; // only an open editor reads the ring
         const int nc = std::max(1, std::min(buffer.getNumChannels(), getMainBusNumOutputChannels()));
         float peaks[2] = {};
         for (int i = 0; i < total; ++i)
@@ -411,10 +467,13 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
                 v += sample;
                 peaks[ch] = std::max(peaks[ch], std::fabs(sample));
             }
-            specRing[w].store(v / float(nc), std::memory_order_relaxed);
-            w = (w + 1) % kSpecSize;
+            if (feedSpectrum)
+            {
+                specRing[w].store(v / float(nc), std::memory_order_relaxed);
+                w = (w + 1) % kSpecSize;
+            }
         }
-        specWrite.store(w, std::memory_order_release);
+        if (feedSpectrum) specWrite.store(w, std::memory_order_release);
         for (int ch = 0; ch < nc; ++ch)
         {
             float previous = outputMeterPeak[ch].load(std::memory_order_relaxed);
@@ -427,7 +486,7 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
     }
 
     const double secs = juce::Time::highResolutionTicksToSeconds(juce::Time::getHighResolutionTicks() - t0);
-    const float load = float(secs / (double(total) / sampleRate_));
+    const float load = float(secs / (double(total) / sampleRate_.load()));
     cpu.store(cpu.load() * 0.9f + load * 0.1f);
 }
 

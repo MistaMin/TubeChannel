@@ -45,11 +45,11 @@ and [development plan](docs/SOUND_MODEL_PLAN.md).
 ## Download
 
 Pick the download for your operating system. The macOS installer includes VST3,
-Audio Unit, CLAP, LV2, and AAX. Windows and Linux builds
-include VST3, CLAP, LV2, and standalone.
+Audio Unit, CLAP, LV2, and AAX. The Windows build includes
+VST3, CLAP, and LV2; the Linux build adds the standalone app.
 
-**Windows 1.2.4 (Windows 10 or later, x64)** — [TubeChannel-1.2.4-win.exe](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-win.exe)
-Double-click the installer and choose which formats to install: **VST3** and **CLAP** for most recording apps, **LV2**, and the **standalone app** (run it on its own, no other software needed).
+**Windows 1.2.4 (Windows 10 or later, x64)** — [Tube-Channel-1.2.4-windows-x64-bundles.zip](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/Tube-Channel-1.2.4-windows-x64-bundles.zip) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/Tube-Channel-1.2.4-windows-x64-bundles.zip.sha256))
+There is no installer for Windows yet. Extract the zip and copy `Common Files\VST3\Tube Channel.vst3`, `Common Files\CLAP\Tube Channel.clap` and `Common Files\LV2\Tube Channel.lv2` into `C:\Program Files\Common Files\VST3`, `...\CLAP` and `...\LV2`.
 
 **macOS 1.2.4 (Apple silicon and Intel)** — [TubeChannel-1.2.4-macos.pkg](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-macos.pkg) ([SHA-256](https://github.com/MistaMin/TubeChannel/releases/download/v1.2.4/TubeChannel-1.2.4-macos.sha256))
 Signed and notarized. The installer lets you choose VST3, Audio Unit, CLAP, LV2,
@@ -151,7 +151,7 @@ To package the installer you also need [Inno Setup](https://jrsoftware.org/isinf
 powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
 ```
 
-The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. The macOS 1.2.4 release package includes AAX. Building AAX from source requires a separately licensed AAX SDK and PACE signing access. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. A Windows installer script (`installer/TubeChannel.iss`) and build script (`installer/build_installer_win.ps1`) are included for the Windows distribution.
+The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. The macOS 1.2.4 release package includes AAX. Building AAX from source requires a separately licensed AAX SDK and PACE signing access. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. `installer/build_installer_win.ps1` builds the Windows bundle zip, `installer/build_pkg.sh` builds the signed macOS package, and `installer/build_installer.sh` builds the macOS bundle zip. Each refuses to run if the built bundles do not match `VERSION`.
 
 ## Notes for Windows users
 
