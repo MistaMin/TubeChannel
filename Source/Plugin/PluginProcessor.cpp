@@ -455,7 +455,6 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
 
     {
         int w = specWrite.load(std::memory_order_relaxed);
-        const bool feedSpectrum = spectrumViewers.load(std::memory_order_relaxed) > 0; // only an open editor reads the ring
         const int nc = std::max(1, std::min(buffer.getNumChannels(), getMainBusNumOutputChannels()));
         float peaks[2] = {};
         for (int i = 0; i < total; ++i)
@@ -467,13 +466,10 @@ void TubeChannelProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::
                 v += sample;
                 peaks[ch] = std::max(peaks[ch], std::fabs(sample));
             }
-            if (feedSpectrum)
-            {
-                specRing[w].store(v / float(nc), std::memory_order_relaxed);
-                w = (w + 1) % kSpecSize;
-            }
+            specRing[w].store(v / float(nc), std::memory_order_relaxed);
+            w = (w + 1) % kSpecSize;
         }
-        if (feedSpectrum) specWrite.store(w, std::memory_order_release);
+        specWrite.store(w, std::memory_order_release);
         for (int ch = 0; ch < nc; ++ch)
         {
             float previous = outputMeterPeak[ch].load(std::memory_order_relaxed);

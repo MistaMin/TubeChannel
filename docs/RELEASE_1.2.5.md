@@ -22,8 +22,6 @@ plugin against bad input and host re-activation. The sound is unchanged from 1.2
 - **Latency reporting**: a chain built while a re-activation landed could report the
   old latency to the host, and unchanged latency could be announced twice. Latency
   is now announced from one place, and only when it changes.
-- **Spectrum display**: the audio thread fills the spectrum ring only while an editor
-  is open.
 
 ## Packaging
 

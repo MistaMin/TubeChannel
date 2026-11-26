@@ -72,8 +72,6 @@ public:
     static constexpr int kSpecSize = 4096;
     std::atomic<float> specRing[kSpecSize];
     std::atomic<int> specWrite { 0 };
-    // Editors that display the spectrum register here so the audio thread fills the ring only when needed.
-    std::atomic<int> spectrumViewers { 0 };
 
     int skin() const { return int(apvts.state.getProperty("skin", 0)); }
     void setSkin(int s) { apvts.state.setProperty("skin", s, nullptr); }
