@@ -1,0 +1,4239 @@
+{
+  "schema_version": 1,
+  "tool": "openplugin-port 1.0.0-beta",
+  "source": {
+    "format": "au",
+    "path": "/Users/marcosdeida/Library/Audio/Plug-Ins/Components/Tube Channel.component",
+    "index": 0,
+    "count": 1,
+    "bundle_id": "com.OpenGrid.TubeChannel"
+  },
+  "plugin": {
+    "name": "Tube Channel",
+    "vendor": "OpenGrid",
+    "version": "1.2.5",
+    "ids": {
+      "clap": null,
+      "vst3": null,
+      "au": {
+        "component_type": "aufx",
+        "subtype": "TbCh",
+        "manufacturer": "OpGr",
+        "factory_function": "Tube_ChannelAUFactory",
+        "version": 66053
+      },
+      "aax": null
+    }
+  },
+  "states": [
+    {
+      "name": "default",
+      "kind": "default",
+      "location": null,
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/000-default.au-classinfo.bin",
+          "bytes": 4032,
+          "fnv1a64": "e19152118f6bc8cc"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "set",
+      "kind": "set",
+      "location": null,
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/001-set.au-classinfo.bin",
+          "bytes": 4060,
+          "fnv1a64": "d04635e59b858a0f"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.699999988079071,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.75,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Init",
+      "kind": "factory-preset",
+      "location": "factory-preset:0",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/002-init.au-classinfo.bin",
+          "bytes": 4028,
+          "fnv1a64": "c4940057d2cfffc3"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Vocal, warm and close",
+      "kind": "factory-preset",
+      "location": "factory-preset:1",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/003-vocal-warm-and-close.au-classinfo.bin",
+          "bytes": 4193,
+          "fnv1a64": "23777f6199c5f96e"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.6200000047683716,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.3499999940395355,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.4600000083446502,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.2199999988079071,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.550000011920929,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.550000011920929,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5799999833106995,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.3499999940395355,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.550000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Bass guitar, DI",
+      "kind": "factory-preset",
+      "location": "factory-preset:2",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/004-bass-guitar-di.au-classinfo.bin",
+          "bytes": 4144,
+          "fnv1a64": "11968acb5a2925ca"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5799999833106995,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.550000011920929,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.20000000298023224,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.6000000238418579,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.550000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.10000000149011612,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.44999998807907104,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Drum bus, glue",
+      "kind": "factory-preset",
+      "location": "factory-preset:3",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/005-drum-bus-glue.au-classinfo.bin",
+          "bytes": 4127,
+          "fnv1a64": "1db74e3ec45e107c"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5600000023841858,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.10000000149011612,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5799999833106995,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.2199999988079071,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.18000000715255737,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.699999988079071,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.3499999940395355,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Tube drive, plate low",
+      "kind": "factory-preset",
+      "location": "factory-preset:4",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/006-tube-drive-plate-low.au-classinfo.bin",
+          "bytes": 4062,
+          "fnv1a64": "85c36ea9c0e7e550"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "name": "Limiter, infinity",
+      "kind": "factory-preset",
+      "location": "factory-preset:5",
+      "blobs": [
+        {
+          "role": "au-classinfo",
+          "file": "tube-channel.au.blobs/007-limiter-infinity.au-classinfo.bin",
+          "bytes": 4087,
+          "fnv1a64": "93efa72f58bd8038"
+        }
+      ],
+      "params": [
+        {
+          "id": 3244,
+          "name": "EQ on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 107348,
+          "name": "Low",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3059471,
+          "name": "Compressor on",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3120527,
+          "name": "EQ on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 3165055,
+          "name": "Gain",
+          "plain": 0.20000000298023224,
+          "normalized": null
+        },
+        {
+          "id": 3202466,
+          "name": "High",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 3351315,
+          "name": "Mic source impedance",
+          "plain": 0.1818181872367859,
+          "normalized": null
+        },
+        {
+          "id": 3526257,
+          "name": "Unit seed",
+          "plain": 0.010101010091602802,
+          "normalized": null
+        },
+        {
+          "id": 63650711,
+          "name": "Power supply model",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 66014454,
+          "name": "Output +4 dBu",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 89607722,
+          "name": "Release B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 90227986,
+          "name": "Detect auto",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 96965681,
+          "name": "External sidechain",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 99410290,
+          "name": "Hi-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 100360948,
+          "name": "Instrument source impedance",
+          "plain": 0.09090909361839294,
+          "normalized": null
+        },
+        {
+          "id": 103104374,
+          "name": "Lo-Mid x10",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 103164471,
+          "name": "Low B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 103657946,
+          "name": "Mains frequency",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 104998682,
+          "name": "Circuit noise",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 108285963,
+          "name": "Ratio",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 132005304,
+          "name": "Plate voltage high",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 133769590,
+          "name": "Linear phase (+L)",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 155564955,
+          "name": "Plate voltage high B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 227183900,
+          "name": "Lo-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 271052448,
+          "name": "Gain +20 dB B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 283911621,
+          "name": "Master B",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 289592995,
+          "name": "Lo-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 299058649,
+          "name": "Lo-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 308128002,
+          "name": "Low shift 40 Hz B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 328029905,
+          "name": "Low cut B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 353392863,
+          "name": "Low shift 40 Hz",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 440906012,
+          "name": "Lo-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 538740779,
+          "name": "Attack B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 602006635,
+          "name": "Threshold",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 627674681,
+          "name": "Invert B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 651215103,
+          "name": "Quality",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 656401919,
+          "name": "Lo-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 688229362,
+          "name": "Stereo link",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 740224584,
+          "name": "Attack",
+          "plain": 0.15000000596046448,
+          "normalized": null
+        },
+        {
+          "id": 747799042,
+          "name": "Comp output B",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 792671026,
+          "name": "Compressor on B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 809751669,
+          "name": "Detect auto B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 842225620,
+          "name": "External sidechain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 855277966,
+          "name": "Threshold B",
+          "plain": 0.25,
+          "normalized": null
+        },
+        {
+          "id": 867605230,
+          "name": "Preamp output B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 874587299,
+          "name": "Output trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 894135805,
+          "name": "Gain +20 dB",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 894137250,
+          "name": "Gain B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 926570529,
+          "name": "High shift 6 kHz",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 930089221,
+          "name": "High B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 933763325,
+          "name": "Hi-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 950497759,
+          "name": "Comp output",
+          "plain": 0.8799999952316284,
+          "normalized": null
+        },
+        {
+          "id": 963780566,
+          "name": "Invert",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 983598382,
+          "name": "Ratio B",
+          "plain": 0.30000001192092896,
+          "normalized": null
+        },
+        {
+          "id": 1029968394,
+          "name": "Instrument input B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1034545567,
+          "name": "Hi-Mid level",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1044011221,
+          "name": "Hi-Mid x10 B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1048279929,
+          "name": "Lo-Mid freq",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1050619502,
+          "name": "Low cut",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1066216034,
+          "name": "Master",
+          "plain": 0.800000011920929,
+          "normalized": null
+        },
+        {
+          "id": 1090594823,
+          "name": "Release",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1149999773,
+          "name": "Impedance B",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1162867545,
+          "name": "Output +4 dBu B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1167381963,
+          "name": "Preamp output",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1273480646,
+          "name": "Lo-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1376051140,
+          "name": "High shift 6 kHz B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1382831352,
+          "name": "Mains voltage",
+          "plain": 0.5999999046325684,
+          "normalized": null
+        },
+        {
+          "id": 1395483623,
+          "name": "Instrument input",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1442455939,
+          "name": "Hi-Mid narrow B",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1539086093,
+          "name": "Phantom 48V",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1592988592,
+          "name": "Phantom 48V B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1639183674,
+          "name": "Impedance",
+          "plain": 0.4000000059604645,
+          "normalized": null
+        },
+        {
+          "id": 1707923180,
+          "name": "Input trim",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1767875043,
+          "name": "0 VU level",
+          "plain": 2.0,
+          "normalized": null
+        },
+        {
+          "id": 1826215263,
+          "name": "Dual mono",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1845877152,
+          "name": "Hi-Mid freq B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 1849553523,
+          "name": "Brickwall limiter B",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 1960481286,
+          "name": "Component tolerances",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2059599264,
+          "name": "Hi-Mid narrow",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 2060847554,
+          "name": "Hi-Mid level B",
+          "plain": 0.5,
+          "normalized": null
+        },
+        {
+          "id": 2124827280,
+          "name": "Brickwall limiter",
+          "plain": 0.0,
+          "normalized": null
+        },
+        {
+          "id": 236228788,
+          "name": "Eco mode",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1420097723,
+          "name": "Oversampling",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 320177846,
+          "name": "Offline Bounce override",
+          "plain": 1.0,
+          "normalized": null
+        },
+        {
+          "id": 1558761003,
+          "name": "Offline Bounce",
+          "plain": 8.0,
+          "normalized": null
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "notes": []
+}

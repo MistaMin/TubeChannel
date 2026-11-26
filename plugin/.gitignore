@@ -1,0 +1,4 @@
+# machine paths (written by scripts/build.sh) and build output
+.cargo/
+target/
+dist/

@@ -1,0 +1,38 @@
+[package]
+name = "tube-channel"
+version = "2.0.0"
+description = "Tube Channel on OpenPluginSDK"
+edition = "2021"
+license = "MIT"
+publish = false
+
+[lib]
+# PR-1: cdylib for CLAP and LV2, staticlib for the native VST3, AU and AAX shells, rlib for tests and the bench.
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+# OpenPluginSDK is taken from a local checkout: .cargo/config.toml (not in Git, it holds machine
+# paths) patches these in. scripts/build.sh writes it. See README.md.
+[dependencies]
+openplugin = "1.0.0-beta"
+goodlookindri-shell = "0.2"
+
+[dev-dependencies]
+openplugin = { version = "1.0.0-beta", features = ["testing"] }
+# The conformance kit and the bench harness; nothing of it ships in the plugin.
+openplugin-testing = "1.0.0-beta"
+serde_json = "1"
+
+[[bin]]
+name = "lv2_ttl"
+path = "src/bin/lv2_ttl.rs"
+
+[build-dependencies]
+cc = "1"
+
+# PF-6
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+
+[workspace]

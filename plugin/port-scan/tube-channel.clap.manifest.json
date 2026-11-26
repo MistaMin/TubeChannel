@@ -1,0 +1,3976 @@
+{
+  "schema_version": 1,
+  "tool": "openplugin-port 1.0.0-beta",
+  "source": {
+    "format": "clap",
+    "path": "/Users/marcosdeida/Library/Audio/Plug-Ins/CLAP/Tube Channel.clap",
+    "index": 0,
+    "count": 1,
+    "bundle_id": "com.opengrid.tubechannel"
+  },
+  "plugin": {
+    "name": "Tube Channel",
+    "vendor": "OpenGrid",
+    "version": "1.2.5",
+    "url": "",
+    "email": "",
+    "description": "Tube Channel",
+    "categories": [
+      "audio-effect",
+      "equalizer",
+      "compressor",
+      "mono",
+      "stereo"
+    ],
+    "is_instrument": false,
+    "ids": {
+      "clap": {
+        "id": "com.opengrid.tubechannel"
+      },
+      "vst3": null,
+      "au": null,
+      "aax": null
+    },
+    "buses": [
+      {
+        "direction": "input",
+        "kind": "main",
+        "name": "Input",
+        "channels": 2,
+        "arrangement": "stereo",
+        "layout": "stereo"
+      },
+      {
+        "direction": "input",
+        "kind": "aux",
+        "name": "Sidechain",
+        "channels": 2,
+        "arrangement": "stereo",
+        "layout": "stereo"
+      },
+      {
+        "direction": "output",
+        "kind": "main",
+        "name": "Output",
+        "channels": 2,
+        "arrangement": "stereo",
+        "layout": "stereo"
+      }
+    ],
+    "channel_layouts": [],
+    "latency_samples": 0,
+    "tail_samples": 0,
+    "tail_seconds": null,
+    "params": [
+      {
+        "id": 1395483623,
+        "name": "Instrument input",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3165055,
+        "name": "Gain",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "10.2 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "20.3 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "30.5 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "40.6 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3041619453,
+        "name": "Gain +20 dB",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3786667322,
+        "name": "Impedance",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.4000000059604645,
+        "default_normalized": 0.4000000059604645,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "150 ohm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "221 ohm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "445 ohm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "1.2 kohm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "3.4 kohm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3686569741,
+        "name": "Phantom 48V",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3111264214,
+        "name": "Invert",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3198103150,
+        "name": "Low cut",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "11 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "24 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "53 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "115 Hz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "250 Hz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2279488952,
+        "name": "Plate voltage high",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3314865611,
+        "name": "Preamp output",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-2.5 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "0.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3059471,
+        "name": "Compressor on",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2749490283,
+        "name": "Threshold",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.25,
+        "default_normalized": 0.25,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-20.0 dBm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-10.0 dBm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dBm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "10.0 dBm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "20.0 dBm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 108285963,
+        "name": "Ratio",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.30000001192092896,
+        "default_normalized": 0.30000001192092896,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "2.0:1"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "2.6:1"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "3.8:1"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.1:1"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "7.0:1"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2887708232,
+        "name": "Attack",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "4.3 ms"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "5.7 ms"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "10 ms"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "18 ms"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "33 ms"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1090594823,
+        "name": "Release",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "97 ms"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "137 ms"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "185 ms"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "267 ms"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "1.11 s"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 90227986,
+        "name": "Detect auto",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 950497759,
+        "name": "Comp output",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.8799999952316284,
+        "default_normalized": 0.8799999952316284,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-28.3 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-16.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-5.3 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "4.9 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 96965681,
+        "name": "External sidechain",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2124827280,
+        "name": "Brickwall limiter",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3244,
+        "name": "EQ on",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 107348,
+        "name": "Low",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 353392863,
+        "name": "Low shift 40 Hz",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3202466,
+        "name": "High",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 926570529,
+        "name": "High shift 6 kHz",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 289592995,
+        "name": "Lo-Mid level",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3195763577,
+        "name": "Lo-Mid freq",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "16 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "31 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "59 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "112 Hz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "214 Hz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 103104374,
+        "name": "Lo-Mid x10",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 440906012,
+        "name": "Lo-Mid narrow",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1034545567,
+        "name": "Hi-Mid level",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3081246973,
+        "name": "Hi-Mid freq",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "162 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "307 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "583 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "1.11 kHz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "2.10 kHz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 99410290,
+        "name": "Hi-Mid x10",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2059599264,
+        "name": "Hi-Mid narrow",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3213699682,
+        "name": "Master",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.800000011920929,
+        "default_normalized": 0.800000011920929,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-10.1 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-4.1 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-0.6 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "1.9 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 66014454,
+        "name": "Output +4 dBu",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1707923180,
+        "name": "Input trim",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-24.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "12.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "24.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3022070947,
+        "name": "Output trim",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-24.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "12.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "24.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1767875043,
+        "name": "0 VU level",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-14 dBFS"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-16 dBFS"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-18 dBFS"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-20 dBFS"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "-22 dBFS"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3351315,
+        "name": "Mic source impedance",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.1818181872367859,
+        "default_normalized": 0.1818181872367859,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "50 ohm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "188 ohm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "325 ohm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "462 ohm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "600 ohm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 100360948,
+        "name": "Instrument source impedance",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.09090909361839294,
+        "default_normalized": 0.09090909361839294,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "1.0 kohm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "25.8 kohm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "50.5 kohm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "75.2 kohm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "100 kohm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 651215103,
+        "name": "Quality",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Circuit"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Circuit"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "HQ"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "HQ (legacy Derp)"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "HQ (legacy Derp)"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2281253238,
+        "name": "Linear phase (+L)",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 688229362,
+        "name": "Stereo link",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1826215263,
+        "name": "Dual mono",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 103657946,
+        "name": "Mains frequency",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "60 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "60 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "60 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "50 Hz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "50 Hz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1382831352,
+        "name": "Mains voltage",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5999999046325684,
+        "default_normalized": 0.5999999046325684,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "85 %"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "91 %"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "98 %"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "104 %"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "110 %"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1960481286,
+        "name": "Component tolerances",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3526257,
+        "name": "Unit seed",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.010101010091602802,
+        "default_normalized": 0.010101010091602802,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "0"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "25"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "50"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "74"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "99"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 104998682,
+        "name": "Circuit noise",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 63650711,
+        "name": "Power supply model",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1029968394,
+        "name": "Instrument input B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3041620898,
+        "name": "Gain B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "10.2 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "20.3 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "30.5 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "40.6 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2418536096,
+        "name": "Gain +20 dB B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1149999773,
+        "name": "Impedance B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.4000000059604645,
+        "default_normalized": 0.4000000059604645,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "150 ohm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "221 ohm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "445 ohm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "1.2 kohm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "3.4 kohm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3740472240,
+        "name": "Phantom 48V B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 627674681,
+        "name": "Invert B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2475513553,
+        "name": "Low cut B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "11 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "24 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "53 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "115 Hz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "250 Hz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 155564955,
+        "name": "Plate voltage high B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3015088878,
+        "name": "Preamp output B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-2.5 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "0.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2940154674,
+        "name": "Compressor on B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 855277966,
+        "name": "Threshold B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.25,
+        "default_normalized": 0.25,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-20.0 dBm"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-10.0 dBm"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dBm"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "10.0 dBm"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "20.0 dBm"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 983598382,
+        "name": "Ratio B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.30000001192092896,
+        "default_normalized": 0.30000001192092896,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "2.0:1"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "2.6:1"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "3.8:1"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.1:1"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "7.0:1"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 538740779,
+        "name": "Attack B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "4.3 ms"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "5.7 ms"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "10 ms"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "18 ms"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "33 ms"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 89607722,
+        "name": "Release B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "97 ms"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "137 ms"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "185 ms"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "267 ms"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "1.11 s"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 809751669,
+        "name": "Detect auto B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2895282690,
+        "name": "Comp output B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.8799999952316284,
+        "default_normalized": 0.8799999952316284,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-28.3 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-16.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-5.3 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "4.9 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2989709268,
+        "name": "External sidechain B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 1849553523,
+        "name": "Brickwall limiter B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3120527,
+        "name": "EQ on B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 103164471,
+        "name": "Low B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 308128002,
+        "name": "Low shift 40 Hz B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3077572869,
+        "name": "High B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1376051140,
+        "name": "High shift 6 kHz B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3420964294,
+        "name": "Lo-Mid level B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 227183900,
+        "name": "Lo-Mid freq B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "16 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "31 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "59 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "112 Hz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "214 Hz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 299058649,
+        "name": "Lo-Mid x10 B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2803885567,
+        "name": "Lo-Mid narrow B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2060847554,
+        "name": "Hi-Mid level B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "-12.0 dB"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-6.0 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "0.0 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "6.0 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "12.0 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1845877152,
+        "name": "Hi-Mid freq B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.5,
+        "default_normalized": 0.5,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "162 Hz"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "307 Hz"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "583 Hz"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "1.11 kHz"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "2.10 kHz"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 1044011221,
+        "name": "Hi-Mid x10 B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.0,
+        "default_normalized": 0.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3589939587,
+        "name": "Hi-Mid narrow B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 283911621,
+        "name": "Master B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.800000011920929,
+        "default_normalized": 0.800000011920929,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "mute"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "-10.1 dB"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "-4.1 dB"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "-0.6 dB"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "1.9 dB"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3310351193,
+        "name": "Output +4 dBu B",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 2383712436,
+        "name": "Eco mode",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      },
+      {
+        "id": 3567581371,
+        "name": "Oversampling",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 0.25,
+        "default_normalized": 0.25,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Legacy"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off (1x)"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "2x"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "4x"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "8x (Derp)"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 3706244651,
+        "name": "Offline Bounce",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 0,
+        "flags": [
+          "automatable"
+        ],
+        "flags_raw": 32,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Eco · 2x"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Eco · Derp (8x)"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "Circuit · 4x"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "HQ · 2x"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "HQ · Derp (8x)"
+          }
+        ],
+        "step_texts": []
+      },
+      {
+        "id": 2467661494,
+        "name": "Offline Bounce override",
+        "short_name": null,
+        "group": null,
+        "units": "",
+        "min": 0.0,
+        "max": 1.0,
+        "default": 1.0,
+        "default_normalized": 1.0,
+        "step_count": 1,
+        "flags": [
+          "automatable",
+          "stepped"
+        ],
+        "flags_raw": 33,
+        "samples": [
+          {
+            "normalized": 0.0,
+            "plain": 0.0,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.25,
+            "plain": 0.25,
+            "text": "Off"
+          },
+          {
+            "normalized": 0.5,
+            "plain": 0.5,
+            "text": "On"
+          },
+          {
+            "normalized": 0.75,
+            "plain": 0.75,
+            "text": "On"
+          },
+          {
+            "normalized": 1.0,
+            "plain": 1.0,
+            "text": "On"
+          }
+        ],
+        "step_texts": [
+          "Off",
+          "On"
+        ]
+      }
+    ],
+    "warnings": []
+  }
+}
