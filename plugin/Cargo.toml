@@ -10,8 +10,13 @@ publish = false
 # PR-1: cdylib for CLAP and LV2, staticlib for the native VST3, AU and AAX shells, rlib for tests and the bench.
 crate-type = ["cdylib", "staticlib", "rlib"]
 
-# OpenPluginSDK is taken from a local checkout: .cargo/config.toml (not in Git, it holds machine
-# paths) patches these in. scripts/build.sh writes it. See README.md.
+# OpenPluginSDK at the commit the port was verified on. A local checkout can override this from
+# .cargo/config.toml (not in Git, it holds machine paths; scripts/build.sh writes it). See README.md.
+[patch.crates-io]
+openplugin = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
+openplugin-testing = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
+goodlookindri-shell = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
+
 [dependencies]
 openplugin = "1.0.0-beta"
 goodlookindri-shell = "0.2"
