@@ -2,6 +2,8 @@
 
 Tube Channel is a channel-strip plug-in with an input/preamp section, a compressor, a four-band equalizer, and an output section. Its analogue-style and digital skins share the same controls and sound. The System page contains quality, stereo, and circuit settings.
 
+This guide describes version 2.0. Projects and presets saved with 1.x open in 2.0 with the same settings and the same sound.
+
 ## Main page
 
 ![Digital main page, showing the input, compressor, equalizer, and output sections](ui-digital.png)
@@ -12,10 +14,10 @@ Tube Channel is a channel-strip plug-in with an input/preamp section, a compress
 
 | Control | What it does |
 |---|---|
-| **Init** | Opens the factory-preset menu. Init restores the starting settings; the other entries are starting points for vocals, bass, drums, tube drive, and limiting. |
+| **Init** | Opens the list of factory programs, drawn over the page. Init restores the starting settings; the other entries are starting points for vocals, bass, drums, tube drive, and limiting. The host's own preset list shows the same programs. |
 | **A / B** | Switches between two parameter snapshots. |
 | **Copy** | Copies the current snapshot to the other snapshot. |
-| **Undo / Redo** | Reverses or reapplies the last control changes. |
+| **Offline Bounce** | Opens the list of engine and oversampling combinations used for offline renders (see below). |
 | **CH A / CH B** | Selects the channel controls when Dual Mono is enabled. These tabs are hidden otherwise. |
 | **System** | Opens the System page. Press it again to return to the main page. |
 | **Analogue / Digital** | Changes the interface layout. It does not change the audio processing. |
@@ -64,6 +66,8 @@ Tube Channel is a channel-strip plug-in with an input/preamp section, a compress
 | Control | What it does |
 |---|---|
 | **Master** | Sets the final output level. |
+| **Autogain** | Matches the output loudness to the input loudness, so a setting can be judged without a level change. It measures both with the broadcast loudness weighting (ITU-R BS.1770) over about three seconds and holds its gain during silence. Off by default. |
+| **Delta** | Plays only what the processing changes: the output minus the input, with the input delayed by the reported latency. A listening aid. Off by default; its state is saved with the project, so check it if a reopened project sounds thin. |
 | **Output Trim** *(System page)* | Adds or removes up to 24 dB after the channel processing. |
 | **+4 dBu / -10 dBV** | Selects the nominal output and meter reference level. |
 | **PRE / COMP / EQ / OUT** | Selects the point in the signal path shown by the VU meter. |
@@ -90,8 +94,8 @@ The engine buttons are ordered **Eco · Circuit · HQ**.
 | **Link / Unlink** | Links or separates the left and right channel controls. |
 | **Mono / Dual** | Selects a single linked stereo path or independent Dual Mono channel settings. In Dual Mono, use CH A and CH B to edit each side. |
 
-The status text reports the engine, effective factor/internal sample rate, phase,
-latency and CPU use. Oversampling increases CPU cost; Eco's published speed results
+The status text reports the engine, effective factor/internal sample rate, phase
+and latency. Oversampling increases CPU cost; Eco's published speed results
 use 1x. Eco uses reduced supply/load states and seeded gain/noise variation rather
 than per-component circuit-equivalent behavior.
 
@@ -103,7 +107,7 @@ mode changes keep oversampling unchanged.
 
 ### Offline Bounce
 
-The **Offline Bounce** dropdown sits between **Redo** and **System** and is visible
+The **Offline Bounce** list sits beside **System** and is visible
 on both pages and in both skins. It sets the engine and oversampling together:
 
 | Engine | 2x | 4x | Derp (8x) |
@@ -117,10 +121,10 @@ for normal work. The override applies only when the host explicitly reports offl
 rendering. **Realtime exports are realtime**: they use the normal playback settings,
 just like playback and recording. There is no manual force-offline switch.
 
-The dropdown does not alter playback mode/oversampling automation. Both settings
+The list does not alter playback mode/oversampling automation. Both settings
 are saved in the project. Sessions saved before 1.2.1 continue to use their playback
-settings for offline bounce until a dropdown option is chosen. Its tooltip explains
-this compatibility state. The nine choices are exposed to the host as the appended
+settings for offline bounce until an entry of the list is chosen. The list says so
+while that is the case. The nine choices are exposed to the host as the appended
 Offline Bounce parameter; the accompanying override flag preserves older sessions.
 
 The processing path changes before the first nonempty render block, without the
@@ -136,15 +140,11 @@ The shorter path is delayed to match it, keeping host timing unchanged when an
 offline render starts or ends. This can add latency to Eco/1x while Linear is on.
 The global phase setting, gain trims, sidechain and stereo/Dual Mono settings apply
 to both paths. Changing the bounce combination during playback preserves the working
-engine's filter/detector history. The dropdown lights while its offline path is active.
+engine's filter/detector history. The Offline Bounce key lights while its offline path is active.
 
 The Eco/Circuit/HQ buttons continue to show the saved **playback** selection during
 a bounce. The status footer reports the active offline model, but fast renders or
 hosts using a separate render instance may not redraw the editor.
-
-![Nine Offline Bounce combinations, menu illustration](offline-bounce-digital.png)
-
-Menu illustration. Native popup spacing and highlighting follow the platform skin.
 
 ### Unit and power supply
 
@@ -176,6 +176,10 @@ The main audio moves through the channel in this order. The detector listens to 
 
 ## Notes
 
+- A change of engine, oversampling, phase, tolerances or seed builds a new circuit in the background and fades it in; playback is not interrupted.
+- An offline render always starts with the circuit at rest, so repeated bounces give the same result.
+- The plug-in reports a 2.5 second tail, so hosts render the decay after the last note.
+- Version 2.0 has no undo history of its own and no CPU readout; use the host's undo and performance meter. A/B and Copy are kept.
 - The plugin's first/default state has PSU SIM off. Turning it on uses more CPU.
 - In a saved project, the host-restored parameter value takes precedence over the new-instance default.
 - If you hear crackling or breakup, first check the host's audio buffer and real-time CPU load, then try Eco mode and turn off PSU SIM.

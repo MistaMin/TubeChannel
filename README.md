@@ -10,37 +10,17 @@ The interface is available in a digital layout and an analogue-style layout. Bot
 |---|---|
 | ![Digital interface](docs/ui-digital.png) | ![Analogue-style interface](docs/ui-analogue.png) |
 
-## Version 1.2.4
+## Version 2.0.0 (in preparation)
 
-**1.2.4** fixes engine mode switching when automated or controlled from a DAW
-host: explicit host-side Quality parameter changes on Eco-default instances now
-properly exit Eco mode to switch to Circuit or HQ. It also improves host
-activation stability with deferred chain rebuilding and deduplicated latency
-announcements. See the [1.2.4 release notes](docs/RELEASE_1.2.4.md).
+**2.0.0** moves Tube Channel from JUCE to [OpenPluginSDK](https://github.com/MistaMin/OpenPluginSDK), with the editor drawn by GoodLookin DRI. The audio model is the same code as 1.2.x.
 
-## Version 1.2.3
+- Projects and presets saved with 1.x open with the same settings. At the default settings the output is bit-identical to the 1.2.5 build (VST3, 48 kHz).
+- New: **Autogain** (loudness-matched output) and **Delta** (hear only what the processing changes), both off by default.
+- Engine, oversampling and phase changes are built in the background and faded in.
+- An offline render always starts with the circuit at rest, so repeated bounces match.
+- Removed: the plug-in's own undo history, the CPU readout and the standalone app.
 
-**1.2.3** adds a dedicated icon for the standalone app and fixes the Linux GUI
-test setup so menu tests run with a native X11 window. The audio processing is
-unchanged from 1.2.2.
-
-**1.2.1** adds an **Offline Bounce** dropdown between Redo and System. Choose any
-of nine combinations: Eco, Circuit or HQ at 2x, 4x or Derp (8x). New instances use
-Eco/1x for playback and HQ/8x only when the host reports offline rendering.
-Playback, recording and realtime exports keep the normal System-page settings.
-Older saved projects retain their previous bounce behavior until a dropdown choice
-is made. See the [1.2.1 release notes](docs/RELEASE_1.2.1.md).
-
-**1.2.0** adds the reduced **Eco** engine as the default for new instances.
-It uses measured filters and asymmetric nonlinear maps without runtime circuit solves.
-Circuit and HQ retain the original engine. Older sessions, including legacy Derp
-settings, retain their original processing.
-
-The measured stereo workload matrix achieved **26–35x at 48 kHz** and **14–19x at
-96 kHz** against v1.1.4 Default, exceeding the 10x minimum throughout. The 20x
-stretch target is met at 48 kHz. These are local measured results; they do not establish listening acceptance
-or actual multi-instance DAW playback. See the [measurement report](docs/measurements/eco-1.2.0/README.md)
-and [development plan](docs/SOUND_MODEL_PLAN.md).
+2.0.0 is not published yet. The downloads below are 1.2.4, the current release. See the [2.0.0 release notes](docs/RELEASE_2.0.0.md) and the [changelog](CHANGELOG.md).
 
 ## Download
 
@@ -66,7 +46,7 @@ on [GitHub Releases](https://github.com/MistaMin/TubeChannel/releases). See the
 
 ## User guide
 
-See the [Tube Channel User Guide](docs/USER_MANUAL.md) for the complete control reference, signal-flow diagrams, quality-mode details, and setup notes.
+See the [Tube Channel User Guide](docs/USER_MANUAL.md) for the complete control reference, signal-flow diagrams, quality-mode details, and setup notes. It describes 2.0; the [changelog](CHANGELOG.md) lists what each version changed.
 
 For engineering teams, the [HQ-to-Eco engineering guide](docs/HQ_TO_ECO_ENGINEERING_GUIDE.md) documents the model-reduction process, measurement pipeline, validation, compatibility work and reusable project handoff.
 
@@ -117,46 +97,31 @@ These measurements predate the current quality-mode mapping and came from a mach
 
 ## Build from source
 
-**macOS / Linux**
+The plug-in is the Rust crate in [`plugin/`](plugin/README.md). It compiles the circuit code in `Source/` (C++, no framework) behind a C interface. You need Rust, a C++ compiler, and a checkout of OpenPluginSDK at the revision `plugin/Cargo.toml` pins for its bundle scripts.
 
 ```sh
-git submodule update --init
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-ctest --test-dir build --output-on-failure
+cd plugin
+cargo test --release
+scripts/build.sh --archs universal --out dist   # CLAP, LV2, VST3, Audio Unit, AAX; nothing is installed or signed
 ```
 
-**Windows**
+VST3, Audio Unit and AAX need their SDKs (`VST3_SDK`, `AU_SDK`, `AAX_SDK`, or a `Dependencies` folder beside the repository). AAX also needs a separately licensed AAX SDK and PACE signing access. `scripts/build.sh --qa` builds a test copy with its own ids that installs beside a release.
 
-From a command prompt after running the Visual Studio x64 tools (`vcvars64.bat`):
+The JUCE project in the repository root (`CMakeLists.txt`, `Source/Plugin`, `Source/UI`) is what 1.2.x was built from. It is kept as the reference for the port and is no longer developed.
 
-```bat
-git submodule update --init
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-ctest --test-dir build --output-on-failure
-```
+## Repository layout
 
-Or use the convenience wrapper once the x64 tools are active:
-
-```bat
-build_win.bat configure
-build_win.bat build
-build_win.bat test
-```
-
-To package the installer you also need [Inno Setup](https://jrsoftware.org/isinfo.php). Then run:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File installer\build_installer_win.ps1
-```
-
-The build produces VST3, Standalone, LV2, and CLAP; Audio Unit is also built on macOS. The macOS 1.2.4 release package includes AAX. Building AAX from source requires a separately licensed AAX SDK and PACE signing access. On macOS, pass `-DTUBECHANNEL_UNIVERSAL=ON` for an arm64 + x86_64 build. Existing JUCE and CLAP extension checkouts can be supplied with `-DTUBECHANNEL_JUCE_SOURCE=<path>` and `-DTUBECHANNEL_CLAP_EXT_SOURCE=<path>`. `installer/build_installer_win.ps1` builds the Windows bundle zip, `installer/build_pkg.sh` builds the signed macOS package, and `installer/build_installer.sh` builds the macOS bundle zip. Each refuses to run if the built bundles do not match `VERSION`.
-
-## Notes for Windows users
-
-- **SmartScreen warning.** The installer is not code-signed, so Windows may show a "Windows protected your PC" dialog the first time it runs. Click **More info** → **Run anyway**. Code signing requires a Windows code-signing certificate and a `signtool.exe` step after the installer is built; that step is not included here.
+| Folder | What it holds |
+|---|---|
+| `plugin/` | The 2.0 plug-in: parameters, state, editor, tests, build script |
+| `Source/` | The circuit, channel, hybrid (Eco) and oversampling code both builds share; the 1.2.x JUCE plug-in and editor |
+| `Netlists/` | The circuit netlists, embedded at build time |
+| `docs/` | User guide, release notes, engineering notes, measurements |
+| `tests/`, `tools/`, `installer/` | The 1.2.x tests, fitting and packaging tools |
+| `qa/` | Test evidence per run |
 
 ## License
 
-Tube Channel source code is MIT licensed; see [LICENSE](LICENSE). All official plugin binaries, including the macOS AAX binary, are freeware. The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements. Building from source requires a JUCE license that covers your use and distribution.
+Tube Channel source code is MIT licensed, copyright Marcos Quirino Deida; see [LICENSE](LICENSE). All official plugin binaries, including the macOS AAX binary, are freeware. The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements.
+
+VST is a registered trademark of Steinberg Media Technologies GmbH. Audio Units is a trademark of Apple Inc. AAX and Pro Tools are trademarks of Avid Technology, Inc.

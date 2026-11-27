@@ -1,6 +1,6 @@
 # Tube Channel on OpenPluginSDK
 
-Tube Channel 2.0 on [OpenPluginSDK](https://github.com/MistaMin/OpenPluginSDK), with its editor drawn by GoodLookin DRI. The JUCE build in the repository root is what 1.2.x was made from.
+Tube Channel 2.0 on [OpenPluginSDK](https://github.com/MistaMin/OpenPluginSDK), with its editor drawn by GoodLookin DRI. This is the plug-in that is developed and released. The JUCE build in the repository root is what 1.2.x was made from; it is kept as the reference and is no longer developed.
 
 | File | What it holds |
 |---|---|
@@ -23,7 +23,7 @@ scripts/build.sh --formats clap,vst3,au --archs arm64 --out dist   # nothing is 
 cargo run --release --example snapshot -- out.ppm digital 2
 ```
 
-The bundles carry the release's ids: installing them replaces the JUCE build in every host.
+The bundles carry the release's ids: installing them replaces the JUCE build in every host. `scripts/build.sh --qa` builds "Tube Channel QA" with its own ids, which installs beside a release for testing.
 
 ## Checked against the 1.2.5 release
 
@@ -39,5 +39,5 @@ The bundles carry the release's ids: installing them replaces the JUCE build in 
 - The release's popup menus (programs, offline bounce) are lists drawn over the page.
 - An explicit Quality change from the host no longer turns Eco off by itself. The editor's mode keys set both, as before.
 - A 2.5 s tail is reported (the release reported none). `examples/tail.rs` measured 1.76 s at most.
-- `reset` clears the circuit by swapping in a freshly built spare. The release kept the circuit's state.
+- `reset` clears the circuit by swapping in a freshly built spare. When none is ready yet, an offline block builds a clean one itself and a realtime block takes the spare as soon as it is there. The release kept the circuit's state.
 - The System page shows no CPU figure.

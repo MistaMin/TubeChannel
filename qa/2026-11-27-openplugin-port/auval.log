@@ -15,12 +15,12 @@ Component Version: 2.0.0 (0x20000)
 --------------------------------------------------
 TESTING OPEN TIMES:
 COLD:
-Time to open AudioUnit:         217.081 ms
+Time to open AudioUnit:         184.262 ms
 WARM:
-Time to open AudioUnit:         0.235  ms
+Time to open AudioUnit:         0.208  ms
 This AudioUnit is a version 2 implementation.
 FIRST TIME:
-Time for initialization:        938.080 ms
+Time for initialization:        1056.932 ms
 
 * * PASS
 --------------------------------------------------
