@@ -11,11 +11,15 @@ publish = false
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 # OpenPluginSDK at the commit the port was verified on. A local checkout can override this from
-# .cargo/config.toml (not in Git, it holds machine paths; scripts/build.sh writes it). See README.md.
+# .cargo/config.toml (not in Git, it holds machine paths). See README.md.
 [patch.crates-io]
-openplugin = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
-openplugin-testing = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
-goodlookindri-shell = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "19fac89" }
+openplugin = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "d93d926" }
+openplugin-testing = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "d93d926" }
+goodlookindri-shell = { git = "https://github.com/MistaMin/OpenPluginSDK", rev = "d93d926" }
+
+[features]
+# A test copy with its own ids and name, to install beside a released Tube Channel (scripts/build.sh --qa).
+qa-identity = []
 
 [dependencies]
 openplugin = "1.0.0-beta"

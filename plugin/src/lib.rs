@@ -30,7 +30,26 @@ use engine::{Builder, Latencies, Setup, State, StateKey};
 pub use params::{idx, COUNT, PARAMS};
 pub use shared::{Shared, View};
 
-pub static INFO: PluginInfo = PluginInfo::new("com.opengrid.tubechannel", "Tube Channel", "OpenGrid", "2.0.0", Category::Dynamics, &PARAMS)
+/// The release's identity, or with the `qa-identity` feature a test copy's (`scripts/build.sh --qa`)
+/// that installs beside a released Tube Channel: plugin id, name, VST3 classes, AU subtype, LV2 URI, AAX product.
+#[cfg(not(feature = "qa-identity"))]
+mod identity {
+    pub const ID: &str = "com.opengrid.tubechannel";
+    pub const NAME: &str = "Tube Channel";
+    pub const VST3: (&str, &str) = ("ABCDEF019182FAEB4F70477254624368", "ABCDEF011234ABCD4F70477254624368");
+    pub const SUBTYPE: [u8; 4] = *b"TbCh";
+    pub const LV2: &str = "urn:opengrid:tubechannel";
+}
+#[cfg(feature = "qa-identity")]
+mod identity {
+    pub const ID: &str = "com.opengrid.tubechannel.qa";
+    pub const NAME: &str = "Tube Channel QA";
+    pub const VST3: (&str, &str) = ("51A0C4A1B2E64D7F9C3E2A7B5D10F001", "51A0C4A1B2E64D7F9C3E2A7B5D10F002");
+    pub const SUBTYPE: [u8; 4] = *b"TbQA";
+    pub const LV2: &str = "urn:opengrid:tubechannel-qa";
+}
+
+pub static INFO: PluginInfo = PluginInfo::new(identity::ID, identity::NAME, "OpenGrid", "2.0.0", Category::Dynamics, &PARAMS)
     .with_url("https://github.com/MistaMin/TubeChannel")
     .with_editor(true);
 
@@ -70,6 +89,8 @@ pub struct TubeChannel {
     fade_length: usize,
     /// The live state has processed audio since it was built (a reset has something to clear).
     used: bool,
+    /// A reset found no spare ready: the circuit is cleared at the next block that has one.
+    reset_pending: bool,
     autogain: LoudnessMatch,
     delta: Option<Delta>,
     dry: [Vec<f32>; 2],
@@ -100,6 +121,7 @@ impl Default for TubeChannel {
             fade_remaining: 0,
             fade_length: 960,
             used: false,
+            reset_pending: false,
             autogain: LoudnessMatch::new(48_000.0),
             delta: None,
             dry: [Vec::new(), Vec::new()],
@@ -162,6 +184,22 @@ impl TubeChannel {
         }
         self.state = Some(fresh);
         self.used = false;
+        self.reset_pending = false;
+    }
+
+    /// Swaps in the builder's spare, a state built for these settings. False when none is ready.
+    fn swap_spare(&mut self) -> bool {
+        let wanted = self.wanted;
+        let Some(builder) = self.builder.as_mut() else { return false };
+        if !builder.can_retire() {
+            return false;
+        }
+        let Some(fresh) = builder.take_spare(wanted) else { return false };
+        if let Some(old) = self.state.replace(fresh) {
+            builder.retire(old);
+        }
+        self.used = false;
+        true
     }
 
     fn publish(&self, offline: bool) {
@@ -186,12 +224,16 @@ impl TubeChannel {
                 self.install(fresh, true);
             }
             let rerender = self.wanted.bounce_enabled && self.bounce_has_run && self.epoch != self.rendered_epoch;
-            if self.state.as_ref().is_none_or(|s| s.key != self.wanted) || rerender {
+            if self.state.as_ref().is_none_or(|s| s.key != self.wanted) || rerender || self.reset_pending {
                 // Some hosts go offline or restore parameters right before rendering, with no prepare
                 // and no message loop in between. Synchronous work is allowed ONLY offline.
                 if let Some(setup) = self.setup {
                     // rt-lint: allow(RT-1) offline render only, as the JUCE build did
                     if let Some(fresh) = State::build(self.wanted, &setup) {
+                        if self.reset_pending {
+                            // The old playback chain is the one to clear: nothing of it is kept.
+                            drop(self.state.take()); // rt-lint: allow(RT-1) offline render only
+                        }
                         self.install(fresh, false);
                     }
                 }
@@ -199,6 +241,10 @@ impl TubeChannel {
             self.rendered_epoch = self.epoch;
             self.bounce_has_run = self.wanted.bounce_enabled;
             self.fade_remaining = 0;
+        } else if self.reset_pending && self.swap_spare() {
+            // The late reset: audio has run on the old circuit since, so the fresh one fades in.
+            self.reset_pending = false;
+            self.fade_remaining = self.fade_length;
         }
         if let Some(builder) = self.builder.as_mut() {
             builder.refresh_spare(self.wanted);
@@ -292,6 +338,7 @@ impl Plugin for TubeChannel {
             self.state = Some(fresh);
         }
         self.used = false;
+        self.reset_pending = false;
         let spare = State::build(self.wanted, &setup);
         self.builder = Some(Builder::start(setup, self.wanted, spare));
         self.dry = [vec![0.0; max_block], vec![0.0; max_block]];
@@ -315,25 +362,19 @@ impl Plugin for TubeChannel {
     }
 
     /// Clears the circuit by swapping in the builder's spare, a state built for these settings (the
-    /// chain has no reset of its own). When no spare is ready yet the circuit keeps its state, as in
-    /// the JUCE build. A reset also starts a new offline pass, so an offline bounce renders from a
-    /// fresh chain.
+    /// chain has no reset of its own). When no spare is ready yet the reset stays pending: an offline
+    /// block builds the state itself, a realtime block swaps the spare in as soon as it is there.
+    /// A reset also starts a new offline pass, so an offline bounce renders from a fresh chain.
     fn reset(&mut self) {
         self.epoch += 1;
-        let wanted = self.wanted;
         if !self.used {
             return; // a circuit that has not run yet has nothing to clear
         }
-        if let Some(builder) = self.builder.as_mut() {
-            if builder.can_retire() {
-                if let Some(fresh) = builder.take_spare(wanted) {
-                    if let Some(old) = self.state.replace(fresh) {
-                        builder.retire(old);
-                    }
-                    self.fade_remaining = 0;
-                    self.used = false;
-                }
-            }
+        if self.swap_spare() {
+            self.fade_remaining = 0;
+            self.reset_pending = false;
+        } else {
+            self.reset_pending = true;
         }
         self.autogain.reset();
         if let Some(d) = self.delta.as_mut() {
@@ -441,21 +482,21 @@ impl Plugin for TubeChannel {
 
     // ---- the identity of the JUCE release (1.2.x), so its sessions find this plugin ----
     fn vst3_ids(&self) -> Option<Vst3Ids> {
-        Vst3Ids::from_hex("ABCDEF019182FAEB4F70477254624368", "ABCDEF011234ABCD4F70477254624368")
+        Vst3Ids::from_hex(identity::VST3.0, identity::VST3.1)
     }
 
     fn au_ids(&self) -> Option<AuIds> {
-        Some(AuIds { subtype: *b"TbCh", manufacturer: *b"OpGr" })
+        Some(AuIds { subtype: identity::SUBTYPE, manufacturer: *b"OpGr" })
     }
 
     fn lv2_uri(&self) -> Option<&'static str> {
-        Some("urn:opengrid:tubechannel")
+        Some(identity::LV2)
     }
 
     // JUCE's AAX codes: its manufacturer and plugin codes, and the plug-in type ids it derives from
     // the bus layout (`jcaa` plus 0x101 for mono, 0x202 for stereo).
     fn aax_ids(&self) -> Option<AaxIds> {
-        Some(AaxIds { manufacturer: *b"OpGr", product: *b"TbCh", mono: *b"jcbb", stereo: *b"jccc" })
+        Some(AaxIds { manufacturer: *b"OpGr", product: identity::SUBTYPE, mono: *b"jcbb", stereo: *b"jccc" })
     }
 
     /// `TCH2`, the editor's view (skin, meter source, System page, a spare byte), then the SDK's

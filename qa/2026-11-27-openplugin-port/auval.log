@@ -1,0 +1,769 @@
+
+    AU Validation Tool
+    Version: 1.10.0 
+    Copyright 2003-2019, Apple Inc. All Rights Reserved.
+    Specify -h (-help) for command options
+
+--------------------------------------------------
+VALIDATING AUDIO UNIT: 'aufx' - 'TbQA' - 'OpGr'
+--------------------------------------------------
+Manufacturer String: OpenGrid
+AudioUnit Name: Tube Channel QA
+Component Version: 2.0.0 (0x20000)
+
+* * PASS
+--------------------------------------------------
+TESTING OPEN TIMES:
+COLD:
+Time to open AudioUnit:         217.081 ms
+WARM:
+Time to open AudioUnit:         0.235  ms
+This AudioUnit is a version 2 implementation.
+FIRST TIME:
+Time for initialization:        938.080 ms
+
+* * PASS
+--------------------------------------------------
+VERIFYING DEFAULT SCOPE FORMATS:
+Input Scope Bus Configuration:
+ Default Bus Count:1
+    Default Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+    Has Channel Layouts: 0x650002 
+    Default Layout:
+	Tag=0x650002, Num Chan Descs=0
+
+Output Scope Bus Configuration:
+ Default Bus Count:1
+    Default Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+    Has Channel Layouts: 0x650002 
+    Default Layout:
+	Tag=0x650002, Num Chan Descs=0
+
+* * PASS
+--------------------------------------------------
+VERIFYING REQUIRED PROPERTIES:
+
+* * PASS
+--------------------------------------------------
+VERIFYING RECOMMENDED PROPERTIES:
+  VERIFYING PROPERTY: Latency
+    PASS
+  VERIFYING PROPERTY: Tail Time
+    PASS
+  VERIFYING PROPERTY: Bypass Effect
+    PASS
+
+* * PASS
+--------------------------------------------------
+VERIFYING OPTIONAL PROPERTIES:
+
+* * PASS
+--------------------------------------------------
+VERIFYING SPECIAL PROPERTIES:
+
+VERIFYING CUSTOM UI
+Cocoa Views Available: 1
+  OpenPluginAUViewFactory_Tube_Channel_QA_2_0_0
+    PASS
+
+VERIFYING CLASS INFO
+    PASS
+
+TESTING HOST CALLBACKS
+    PASS
+
+* * PASS
+--------------------------------------------------
+PUBLISHED PARAMETER INFO:
+
+# # # 87 Global Scope Parameters:
+Parameter ID:1395483623
+Name: Instrument input
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3165055
+Name: Gain
+Parameter Type: Generic
+Values: Minimum = 0.0 dB, Default = 0.0 dB, Maximum = 40.6 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:894135805
+Name: Gain +20 dB
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1639183674
+Name: Impedance
+Parameter Type: Generic
+Values: Minimum = 150 ohm, Default = 324 ohm, Maximum = 3.4 kohm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1539086093
+Name: Phantom 48V
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:963780566
+Name: Invert
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1050619502
+Name: Low cut
+Parameter Type: Generic
+Values: Minimum = 11 Hz, Default = 11 Hz, Maximum = 250 Hz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:132005304
+Name: Plate voltage high
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1167381963
+Name: Preamp output
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 0.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3059471
+Name: Compressor on
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:602006635
+Name: Threshold
+Parameter Type: Generic
+Values: Minimum = -20.0 dBm, Default = -10.0 dBm, Maximum = 20.0 dBm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:108285963
+Name: Ratio
+Parameter Type: Generic
+Values: Minimum = 2.0:1, Default = 2.8:1, Maximum = 7.0:1
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:740224584
+Name: Attack
+Parameter Type: Generic
+Values: Minimum = 4.3 ms, Default = 10 ms, Maximum = 33 ms
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1090594823
+Name: Release
+Parameter Type: Generic
+Values: Minimum = 97 ms, Default = 185 ms, Maximum = 1.11 s
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:90227986
+Name: Detect auto
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:950497759
+Name: Comp output
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 4.9 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:96965681
+Name: External sidechain
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:2124827280
+Name: Brickwall limiter
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3244
+Name: EQ on
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:107348
+Name: Low
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:353392863
+Name: Low shift 40 Hz
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3202466
+Name: High
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:926570529
+Name: High shift 6 kHz
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:289592995
+Name: Lo-Mid level
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1048279929
+Name: Lo-Mid freq
+Parameter Type: Generic
+Values: Minimum = 16 Hz, Default = 59 Hz, Maximum = 214 Hz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:103104374
+Name: Lo-Mid x10
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:440906012
+Name: Lo-Mid narrow
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1034545567
+Name: Hi-Mid level
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:933763325
+Name: Hi-Mid freq
+Parameter Type: Generic
+Values: Minimum = 162 Hz, Default = 583 Hz, Maximum = 2.10 kHz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:99410290
+Name: Hi-Mid x10
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:2059599264
+Name: Hi-Mid narrow
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1066216034
+Name: Master
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 1.9 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:66014454
+Name: Output +4 dBu
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1707923180
+Name: Input trim
+Parameter Type: Generic
+Values: Minimum = -24.0 dB, Default = 0.0 dB, Maximum = 24.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:874587299
+Name: Output trim
+Parameter Type: Generic
+Values: Minimum = -24.0 dB, Default = 0.0 dB, Maximum = 24.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1767875043
+Name: 0 VU level
+Parameter Type: Generic
+Values: Minimum = -14 dBFS, Default = -18 dBFS, Maximum = -22 dBFS
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3351315
+Name: Mic source impedance
+Parameter Type: Generic
+Values: Minimum = 50 ohm, Default = 150 ohm, Maximum = 600 ohm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:100360948
+Name: Instrument source impedance
+Parameter Type: Generic
+Values: Minimum = 1.0 kohm, Default = 10.0 kohm, Maximum = 100 kohm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:651215103
+Name: Quality
+Parameter Type: Generic
+Values: Minimum = Circuit, Default = Circuit, Maximum = HQ (legacy Derp)
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:133769590
+Name: Linear phase (+L)
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:688229362
+Name: Stereo link
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1826215263
+Name: Dual mono
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:103657946
+Name: Mains frequency
+Parameter Type: Generic
+Values: Minimum = 60 Hz, Default = 60 Hz, Maximum = 50 Hz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1382831352
+Name: Mains voltage
+Parameter Type: Generic
+Values: Minimum = 85 %, Default = 100 %, Maximum = 110 %
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1960481286
+Name: Component tolerances
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3526257
+Name: Unit seed
+Parameter Type: Generic
+Values: Minimum = 0, Default = 1, Maximum = 99
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:104998682
+Name: Circuit noise
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:63650711
+Name: Power supply model
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1029968394
+Name: Instrument input B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:894137250
+Name: Gain B
+Parameter Type: Generic
+Values: Minimum = 0.0 dB, Default = 0.0 dB, Maximum = 40.6 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:271052448
+Name: Gain +20 dB B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1149999773
+Name: Impedance B
+Parameter Type: Generic
+Values: Minimum = 150 ohm, Default = 324 ohm, Maximum = 3.4 kohm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1592988592
+Name: Phantom 48V B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:627674681
+Name: Invert B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:328029905
+Name: Low cut B
+Parameter Type: Generic
+Values: Minimum = 11 Hz, Default = 11 Hz, Maximum = 250 Hz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:155564955
+Name: Plate voltage high B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:867605230
+Name: Preamp output B
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 0.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:792671026
+Name: Compressor on B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:855277966
+Name: Threshold B
+Parameter Type: Generic
+Values: Minimum = -20.0 dBm, Default = -10.0 dBm, Maximum = 20.0 dBm
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:983598382
+Name: Ratio B
+Parameter Type: Generic
+Values: Minimum = 2.0:1, Default = 2.8:1, Maximum = 7.0:1
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:538740779
+Name: Attack B
+Parameter Type: Generic
+Values: Minimum = 4.3 ms, Default = 10 ms, Maximum = 33 ms
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:89607722
+Name: Release B
+Parameter Type: Generic
+Values: Minimum = 97 ms, Default = 185 ms, Maximum = 1.11 s
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:809751669
+Name: Detect auto B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:747799042
+Name: Comp output B
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 4.9 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:842225620
+Name: External sidechain B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1849553523
+Name: Brickwall limiter B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:3120527
+Name: EQ on B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:103164471
+Name: Low B
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:308128002
+Name: Low shift 40 Hz B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:930089221
+Name: High B
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1376051140
+Name: High shift 6 kHz B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1273480646
+Name: Lo-Mid level B
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:227183900
+Name: Lo-Mid freq B
+Parameter Type: Generic
+Values: Minimum = 16 Hz, Default = 59 Hz, Maximum = 214 Hz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:299058649
+Name: Lo-Mid x10 B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:656401919
+Name: Lo-Mid narrow B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:2060847554
+Name: Hi-Mid level B
+Parameter Type: Generic
+Values: Minimum = -12.0 dB, Default = 0.0 dB, Maximum = 12.0 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1845877152
+Name: Hi-Mid freq B
+Parameter Type: Generic
+Values: Minimum = 162 Hz, Default = 583 Hz, Maximum = 2.10 kHz
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1044011221
+Name: Hi-Mid x10 B
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1442455939
+Name: Hi-Mid narrow B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:283911621
+Name: Master B
+Parameter Type: Generic
+Values: Minimum = mute, Default = 0.0 dB, Maximum = 1.9 dB
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1162867545
+Name: Output +4 dBu B
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:236228788
+Name: Eco mode
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1420097723
+Name: Oversampling
+Parameter Type: Generic
+Values: Minimum = Legacy, Default = Off (1x), Maximum = 8x (Derp)
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1558761003
+Name: Offline Bounce
+Parameter Type: Generic
+Values: Minimum = Eco · 2x, Default = HQ · Derp (8x), Maximum = HQ · Derp (8x)
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:320177846
+Name: Offline Bounce override
+Parameter Type: Generic
+Values: Minimum = Off, Default = On, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:1439283630
+Name: Autogain
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Parameter ID:95468472
+Name: Delta
+Parameter Type: Generic
+Values: Minimum = Off, Default = Off, Maximum = On
+Flags: Values Have Strings, Readable, Writable 
+  -parameter PASS
+
+Testing that parameters retain value across reset and initialization
+  PASS
+
+* * PASS
+--------------------------------------------------
+FORMAT TESTS:
+
+Reported Channel Capabilities (explicit):
+      [2, 2]  [1, 1]  
+
+Input/Output Channel Handling:
+1-1   1-2   1-4   1-5   1-6   1-7   1-8   2-2   2-4   2-5   2-6   2-7   2-8   4-4   4-5   5-5   6-6   7-7   8-8
+X                                         X                                                                       
+
+# # AudioChannelLayouts (1), Input Scope:
+ChannelLayout is Writable: T
+The Unit publishes the following Channel Layouts:
+  0x650002, 
+
+Is Audio Channel Layout Available:
+Mono    Stereo  Binau.  AU_4    Ambi.   AU_5    AU_5_0  AU_6    AU_6_0  AU_7_0  AU_7_0F AU_8    AU_5_1  AU_6_1  AU_7_1  AU_7_1F 
+        X                                                                                                                       
+
+Current Format:AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+Current Format Tag = 0x650002, New Format Tag = 0x650002, Successsful
+
+# # AudioChannelLayouts (1), Output Scope:
+ChannelLayout is Writable: T
+The Unit publishes the following Channel Layouts:
+  0x650002, 
+
+Is Audio Channel Layout Available:
+Mono    Stereo  Binau.  AU_4    Ambi.   AU_5    AU_5_0  AU_6    AU_6_0  AU_7_0  AU_7_0F AU_8    AU_5_1  AU_6_1  AU_7_1  AU_7_1F 
+        X                                                                                                                       
+
+Current Format:AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+Current Format Tag = 0x650002, New Format Tag = 0x650002, Successsful
+
+* * PASS
+--------------------------------------------------
+RENDER TESTS:
+
+Input Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+Output Format: AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+Render Test at 512 frames
+Slicing Render Test at 64 frames
+  PASS
+
+
+Render Test at 64 frames, sample rate: 22050 Hz
+Render Test at 137 frames, sample rate: 96000 Hz
+Render Test at 4096 frames, sample rate: 48000 Hz
+Render Test at 4096 frames, sample rate: 192000 Hz
+Render Test at 4096 frames, sample rate: 11025 Hz
+Render Test at 512 frames, sample rate: 44100 Hz
+  PASS
+
+1 Channel Test:
+Render Test at 512 frames
+  PASS
+
+Checking connection semantics:
+Connection format:
+AudioStreamBasicDescription:  2 ch,  44100 Hz, Float32, deinterleaved
+  PASS
+
+Bad Max Frames - Render should fail
+  PASS
+
+Checking parameter setting
+Using AudioUnitSetParameter
+Using AudioUnitScheduleParameter
+  PASS
+
+Test MIDI
+  PASS
+
+* * PASS
+--------------------------------------------------
+AU VALIDATION SUCCEEDED.
+--------------------------------------------------

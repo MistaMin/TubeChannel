@@ -2,7 +2,9 @@
 # Builds Tube Channel's macOS bundles (CLAP, LV2, VST3, Audio Unit, AAX) with OpenPluginSDK's
 # scripts/build_plugin.sh. Nothing is installed and nothing is signed beyond ad hoc.
 #
-#   scripts/build.sh [--archs arm64|x86_64|universal] [--formats LIST] [--out DIR] [--work-dir DIR]
+#   scripts/build.sh [--archs arm64|x86_64|universal] [--formats LIST] [--out DIR] [--work-dir DIR] [--qa]
+#
+# --qa builds "Tube Channel QA": its own ids (feature qa-identity), so it installs beside a release.
 #
 # Where things are found (set the variable, or keep the checkout in a Dependencies or SDKs folder
 # beside or above this repository):
@@ -28,13 +30,15 @@ archs=universal
 formats=clap,lv2,vst3,au,aax
 out="$here/dist"
 work="$here/target/bundles"
+name="Tube Channel"; bundle=com.OpenGrid.TubeChannel; subtype=TbCh; features=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --archs) archs="$2"; shift 2 ;;
     --formats) formats="$2"; shift 2 ;;
     --out) out="$2"; shift 2 ;;
     --work-dir) work="$2"; shift 2 ;;
-    -h|--help) sed -n 2,10p "$0"; exit 0 ;;
+    --qa) name="Tube Channel QA"; bundle=com.OpenGrid.TubeChannelQA; subtype=TbQA; features=qa-identity; shift ;;
+    -h|--help) sed -n 2,12p "$0"; exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
@@ -61,8 +65,8 @@ esac
 # The Audio Unit type and codes are given here because the shell build cannot ask a library
 # that also holds C++ (its probe links as C). They are the ones `Plugin::au_ids` pins.
 cd "$here"
-"$SDK/scripts/build_plugin.sh" --manifest-path "$here/Cargo.toml" --name "Tube Channel" \
-  --bundle-id com.OpenGrid.TubeChannel --manufacturer OpenGrid \
+"$SDK/scripts/build_plugin.sh" --manifest-path "$here/Cargo.toml" --name "$name" \
+  --bundle-id "$bundle" --manufacturer OpenGrid \
   --ttl-bin lv2_ttl --formats "$formats" --editor --tail --archs "$archs" \
-  --au-type aufx --au-subtype TbCh --au-manufacturer OpGr \
-  "$@" --out "$out" --work-dir "$work"
+  --au-type aufx --au-subtype "$subtype" --au-manufacturer OpGr \
+  ${features:+--features "$features"} "$@" --out "$out" --work-dir "$work"
