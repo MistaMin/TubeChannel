@@ -55,17 +55,8 @@ case ",$formats," in *,aax,*)
   set -- "$@" --aax-sdk "$AAX" ;;
 esac
 
-# Cargo takes the SDK from this checkout. The file holds machine paths and is not in Git.
-if [ ! -f "$here/.cargo/config.toml" ]; then
-  mkdir -p "$here/.cargo"
-  cat > "$here/.cargo/config.toml" <<CFG
-# Written by scripts/build.sh: where this machine keeps OpenPluginSDK.
-[patch.crates-io]
-openplugin = { path = "$SDK/crates/openplugin" }
-openplugin-testing = { path = "$SDK/crates/openplugin-testing" }
-goodlookindri-shell = { path = "$SDK/crates/goodlookindri/shell" }
-CFG
-fi
+# Cargo takes the SDK crates from the git revision Cargo.toml pins; this checkout gives only the
+# build scripts and should be at the same revision.
 
 # The Audio Unit type and codes are given here because the shell build cannot ask a library
 # that also holds C++ (its probe links as C). They are the ones `Plugin::au_ids` pins.

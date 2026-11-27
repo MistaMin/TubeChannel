@@ -55,7 +55,8 @@ pub fn import_original(data: &[u8]) -> Option<std::result::Result<([f32; COUNT],
         Ok(state) => state,
         Err(e) => return Some(Err(e.to_string())),
     };
-    let named = |id: &str| document(data).and_then(|d| xml::parse(d).ok()).is_some_and(|root| root.children_named("PARAM").any(|p| p.attr("id") == Some(id)));
+    let root = document(data).and_then(|d| xml::parse(d).ok());
+    let named = |id: &str| root.as_ref().is_some_and(|root| root.children_named("PARAM").any(|p| p.attr("id") == Some(id)));
     let mut values: [f32; COUNT] = std::array::from_fn(|i| PARAMS[i].default);
     // Released states have no Eco flag (the original engine), no split oversampling (legacy
     // adaptive factors) and no bounce choice (bounce off). Autogain and Delta did not exist.
@@ -78,13 +79,12 @@ pub fn import_original(data: &[u8]) -> Option<std::result::Result<([f32; COUNT],
     for (index, value) in map.apply(&PARAMS, &state).values {
         values[index] = value;
     }
-    Some(Ok((values, view(data))))
+    Some(Ok((values, view(root.as_ref()))))
 }
 
 /// The root's `skin`, `vuSrc` and `sysPage` properties.
-fn view(data: &[u8]) -> View {
-    let root = document(data).and_then(|d| xml::parse(d).ok());
-    let number = |name: &str| root.as_ref().and_then(|r| r.attr(name)).and_then(|v| v.parse::<f32>().ok()).filter(|v| v.is_finite());
+fn view(root: Option<&xml::Element>) -> View {
+    let number = |name: &str| root.and_then(|r| r.attr(name)).and_then(|v| v.parse::<f32>().ok()).filter(|v| v.is_finite());
     let d = View::default();
     View {
         skin: number("skin").map_or(d.skin, |v| u8::from(v >= 0.5)),

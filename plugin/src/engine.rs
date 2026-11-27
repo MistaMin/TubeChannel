@@ -151,7 +151,11 @@ impl Chain {
 
     /// In place over the chain's channels of `io`; `sc` is the sidechain (up to two channels).
     fn process(&mut self, io: &mut [&mut [f32]], frames: usize, sc: &[&[f32]], values: &[f32; COUNT], telemetry: &Telemetry) {
-        let channels = self.channels().min(io.len());
+        // The C++ chain reads every channel it was built for: fewer buffers would hand it a null pointer.
+        if io.len() < self.channels() || io.iter().any(|c| c.len() < frames) {
+            return;
+        }
+        let channels = self.channels();
         let mut io_ptrs = [std::ptr::null_mut::<f32>(); 2];
         for (ptr, channel) in io_ptrs.iter_mut().zip(io.iter_mut()).take(channels) {
             *ptr = channel.as_mut_ptr();
@@ -456,9 +460,9 @@ impl Builder {
                     }
                     let code = want.load(Ordering::Acquire);
                     if waiting.is_none() && code != last {
-                        last = code;
-                        // A failed build keeps the running state; asking again retries.
+                        // A failed build keeps the running state and is retried on the next pass.
                         if let Some(state) = State::build(StateKey::decode(code), &setup) {
+                            last = code;
                             // Another edit while building: build that instead of handing over a stale state.
                             if want.load(Ordering::Acquire) == code {
                                 waiting = Some(state);

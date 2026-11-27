@@ -15,7 +15,7 @@ Tube Channel 2.0 on [OpenPluginSDK](https://github.com/MistaMin/OpenPluginSDK), 
 
 ## Building and testing
 
-`scripts/build.sh` finds OpenPluginSDK (or set `OPENPLUGIN_SDK`) and writes `.cargo/config.toml`, which is not in Git. Run Cargo from this folder.
+Cargo takes OpenPluginSDK from the git revision `Cargo.toml` pins, so a clean checkout builds and `Cargo.lock` matches it. `scripts/build.sh` finds an OpenPluginSDK checkout (or set `OPENPLUGIN_SDK`) for its bundle scripts; keep it at the same revision. Run Cargo from this folder.
 
 ```bash
 cargo test

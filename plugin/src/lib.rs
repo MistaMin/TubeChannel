@@ -545,6 +545,15 @@ mod tests {
     }
 
     #[test]
+    fn fewer_channels_than_prepared_do_not_crash() {
+        let mut p = TubeChannel::default();
+        p.prepare(48_000.0, 256, 2);
+        let mut left = vec![0.25f32; 256];
+        p.process(&mut [&mut left[..]], 256);
+        assert!(left.iter().all(|x| x.is_finite()));
+    }
+
+    #[test]
     fn every_pin_is_usable() {
         let plugin = TubeChannel::default();
         let errors = openplugin::core::identity::check_pins(&plugin);
