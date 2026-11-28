@@ -122,6 +122,6 @@ The JUCE project in the repository root (`CMakeLists.txt`, `Source/Plugin`, `Sou
 
 ## License
 
-Tube Channel source code is MIT licensed, copyright Marcos Quirino Deida; see [LICENSE](LICENSE). All official plugin binaries, including the macOS AAX binary, are freeware. The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements.
+Tube Channel source code is MIT licensed, copyright Marcos Quirino Deida; see [LICENSE](LICENSE). All official plugin binaries, including the macOS AAX binary, are freeware under [BINARY_LICENSE.txt](BINARY_LICENSE.txt). The package includes the applicable third-party license texts. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for the dependency list and build requirements.
 
 VST is a registered trademark of Steinberg Media Technologies GmbH. Audio Units is a trademark of Apple Inc. AAX and Pro Tools are trademarks of Avid Technology, Inc.

@@ -1,3 +1,0 @@
-# tube-channel
-
-@AGENTS.md

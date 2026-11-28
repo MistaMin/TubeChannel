@@ -1,0 +1,35 @@
+Tube Channel Binary Freeware License
+Copyright (c) 2026 Marcos Quirino Deida
+
+Scope
+This license applies to the official compiled Tube Channel plug-ins and
+installers distributed by OpenGrid.
+Tube Channel source code is separately available under the MIT License.
+
+Permission to use
+You may download, install, and use the official binaries free of charge,
+for personal or commercial purposes, including professional audio production.
+The official binaries are distributed as proprietary freeware, not under an
+open-source license. Freeware describes their price and permission to use;
+it does not place the complete binaries in the public domain or grant the
+MIT source license over third-party code incorporated into them.
+
+Third-party components
+Tube Channel's MIT-licensed source and the MIT-licensed GoodLookinDri drawing
+library and OpenPluginSDK retain their respective MIT permissions. These
+freeware terms do not restrict rights granted by those component licenses.
+External components retain their own licenses; no license to the Avid AAX SDK
+is granted by this document.
+
+Warranty
+THE BINARIES ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. TO THE EXTENT PERMITTED BY APPLICABLE LAW,
+THE COPYRIGHT HOLDER IS NOT LIABLE FOR CLAIMS, DAMAGES OR OTHER LIABILITY
+ARISING FROM THE BINARIES OR THEIR USE.
+
+Independent project
+Tube Channel is an independent OpenGrid audio project and claims no affiliation
+with, sponsorship by, or endorsement from any hardware or plug-in maker.
+Third-party software and format names appear for required attribution or
+compatibility only.

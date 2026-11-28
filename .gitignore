@@ -21,3 +21,4 @@ qa/**/*.png
 qa/**/*.ppm
 qa/**/*.rpp
 qa/**/*.reapeaks
+output/

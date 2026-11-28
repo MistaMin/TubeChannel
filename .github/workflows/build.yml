@@ -1,0 +1,124 @@
+# Windows and Linux builds of Tube Channel 2 (plugin/). macOS is built on the owner's Mac
+# (plugin/scripts/build.sh). Each job builds the same commit, runs the tests and keeps the
+# installer (Windows) or archive (Linux) with its SHA-256 as an artifact.
+name: Windows and Linux builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+env:
+  # The revisions this build is made and tested with. Cargo takes the SDK crates from the revision
+  # plugin/Cargo.toml pins; this checkout gives the build scripts and must be the same revision.
+  OPENPLUGIN_SDK_REF: d93d926c09ce6ff90193d5824fc5ae831f321f0d
+  VST3_SDK_REF: v3.8.1_build_84
+  CARGO_TERM_COLOR: always
+
+jobs:
+  windows:
+    name: Windows x64 (VST3, CLAP, LV2)
+    runs-on: windows-latest
+    env:
+      CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS: -C target-feature=+crt-static
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: w/tubechannel
+      - uses: actions/checkout@v4
+        with:
+          repository: MistaMin/OpenPluginSDK
+          ref: ${{ env.OPENPLUGIN_SDK_REF }}
+          path: Dependencies/OpenPluginSDK
+      - uses: actions/checkout@v4
+        with:
+          repository: steinbergmedia/vst3sdk
+          ref: ${{ env.VST3_SDK_REF }}
+          submodules: recursive
+          path: Dependencies/vst3sdk
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Tests
+        working-directory: w/tubechannel/plugin
+        run: cargo test --release --locked
+      # UIAutomationCore.DLL is the Windows accessibility library the editor's window uses.
+      - name: Build VST3, CLAP and LV2
+        shell: pwsh
+        run: |
+          $root = "$env:GITHUB_WORKSPACE"
+          $version = (Get-Content w\tubechannel\VERSION).Trim()
+          powershell -NoProfile -ExecutionPolicy Bypass -File Dependencies\OpenPluginSDK\scripts\windows\build_plugin.ps1 `
+            -ManifestPath w\tubechannel\plugin\Cargo.toml -Name "Tube Channel" -Version $version -Manufacturer OpenGrid `
+            -BundleId com.OpenGrid.TubeChannel -Editor -Tail -AllowLib UIAutomationCore.DLL -TtlBin lv2_ttl -Formats clap,vst3,lv2 `
+            -Vst3Sdk "$root\Dependencies\vst3sdk" -Out "$root\dist-windows" -WorkDir "$root\build-windows"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-ChildItem -Recurse "$root\dist-windows" | Select-Object -ExpandProperty FullName
+      - name: Installer
+        shell: pwsh
+        run: |
+          $v = (Get-Content w\tubechannel\VERSION).Trim()
+          if (-not (Get-Command iscc -ErrorAction SilentlyContinue)) { choco install innosetup -y --no-progress; $env:Path += ";${env:ProgramFiles(x86)}\Inno Setup 6" }
+          iscc /DVersion=$v /DDist="$env:GITHUB_WORKSPACE\dist-windows" /DRoot="$env:GITHUB_WORKSPACE\w\tubechannel" w\tubechannel\installer\windows.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # One line with a Unix line ending, so `shasum -a 256 -c` reads it on macOS and Linux.
+          Get-FileHash -Algorithm SHA256 Tube-Channel-*-setup.exe | ForEach-Object { [IO.File]::WriteAllText("$PWD\$(Split-Path $_.Path -Leaf).sha256", "$($_.Hash.ToLower())  $(Split-Path $_.Path -Leaf)`n") }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64
+          if-no-files-found: error
+          path: |
+            Tube-Channel-*-windows-x64-setup.exe
+            Tube-Channel-*-windows-x64-setup.exe.sha256
+
+  linux:
+    name: Linux x86_64 (VST3, CLAP, LV2)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: w/tubechannel
+      - uses: actions/checkout@v4
+        with:
+          repository: MistaMin/OpenPluginSDK
+          ref: ${{ env.OPENPLUGIN_SDK_REF }}
+          path: Dependencies/OpenPluginSDK
+      - uses: actions/checkout@v4
+        with:
+          repository: steinbergmedia/vst3sdk
+          ref: ${{ env.VST3_SDK_REF }}
+          submodules: recursive
+          path: Dependencies/vst3sdk
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Tests
+        working-directory: w/tubechannel/plugin
+        run: cargo test --release --locked
+      - name: Build VST3, CLAP and LV2
+        run: |
+          version=$(tr -d '[:space:]' < w/tubechannel/VERSION)
+          Dependencies/OpenPluginSDK/scripts/build_plugin_linux.sh --manifest-path w/tubechannel/plugin/Cargo.toml \
+            --name "Tube Channel" --version "$version" --manufacturer OpenGrid --ttl-bin lv2_ttl --formats clap,lv2,vst3 --editor \
+            --vst3-sdk "$GITHUB_WORKSPACE/Dependencies/vst3sdk" --strip \
+            --out "$GITHUB_WORKSPACE/dist-linux" --work-dir "$GITHUB_WORKSPACE/build-linux"
+          find dist-linux
+      - name: Archive
+        run: |
+          v=$(tr -d '[:space:]' < w/tubechannel/VERSION)
+          name="Tube-Channel-$v-linux-x86_64"
+          doc="$GITHUB_WORKSPACE/pkg/usr/share/doc/tube-channel"
+          mkdir -p pkg/usr/lib/vst3 pkg/usr/lib/clap pkg/usr/lib/lv2 "$doc"
+          cp -R "dist-linux/Tube Channel.vst3" pkg/usr/lib/vst3/
+          cp "dist-linux/Tube Channel.clap" pkg/usr/lib/clap/
+          cp -R dist-linux/TubeChannel.lv2 pkg/usr/lib/lv2/
+          (cd w/tubechannel && cp LICENSE BINARY_LICENSE.txt THIRD_PARTY_LICENSES.md Licenses/* docs/USER_MANUAL.md "$doc/")
+          tar -C pkg --owner=0 --group=0 -czf "$name.tar.gz" usr
+          sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
+          tar -tzf "$name.tar.gz"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-x86_64
+          if-no-files-found: error
+          path: |
+            Tube-Channel-*-linux-x86_64.tar.gz
+            Tube-Channel-*-linux-x86_64.tar.gz.sha256

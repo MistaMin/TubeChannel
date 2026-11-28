@@ -2,9 +2,7 @@
 # tube-channel: notes for coding agents
 
 An audio plugin on OpenPluginSDK. The rules below are the short form of the OpenPluginSDK plugin
-author wiki; the Claude Code plugin `openplugin-dev` enforces them with hooks and has a skill for
-each task (`new-plugin`, `write-dsp`, `test-plugin`, `prepare-release`). Load the skill before
-the task.
+author wiki, which explains each one.
 
 ## Rules
 
@@ -25,8 +23,7 @@ the task.
 
 ## Before every commit
 
-These checks must pass. With `openplugin-dev` installed, the Stop hook runs them for you and the
-commit tester runs the full list on every commit in the background; without it, run them yourself:
+These checks must pass:
 
 ```bash
 cargo test --test conformance                 # quick conformance (debug, Options::quick)

@@ -23,7 +23,7 @@ and are disclosed in the release notes. The version bump alone does not certify 
 Keep v1.1.4 as the sound and performance reference. Its exact clean source checkpoint
 is `a80455549b9b92466f73d9017b8127fad779f013`. Retain the original circuit engine for
 offline dataset generation and A/B comparison. Work is isolated on
-`codex/reduced-engine-1.2.0`; the installed release is not replaced.
+`reduced-engine-1.2.0`; the installed release is not replaced.
 
 Saved parameter IDs, automation, state restoration, gain staging, external sidechain,
 stereo link, dual mono, bypass and reported latency must stay compatible. Keep the
