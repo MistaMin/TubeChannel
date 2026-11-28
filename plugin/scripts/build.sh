@@ -67,6 +67,6 @@ esac
 cd "$here"
 "$SDK/scripts/build_plugin.sh" --manifest-path "$here/Cargo.toml" --name "$name" \
   --bundle-id "$bundle" --manufacturer OpenGrid \
-  --ttl-bin lv2_ttl --formats "$formats" --editor --tail --archs "$archs" \
+  --ttl-bin lv2_ttl --formats "$formats" --editor --tail --aax-pages --archs "$archs" \
   --au-type aufx --au-subtype "$subtype" --au-manufacturer OpGr \
   ${features:+--features "$features"} "$@" --out "$out" --work-dir "$work"
