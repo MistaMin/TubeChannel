@@ -45,3 +45,20 @@ visual:Brickwall limiter B
 # plugin parameter: Tube Channel has no Bypass parameter and no control for it by design. Its
 # audio sweep passes because REAPER applies it.
 visual:Bypass
+#
+# Mains frequency @ Power supply model=1.0
+# Mains voltage @ Power supply model=1.0
+#   The mains settings feed the power supply model (Chain.h setMains, PowerSupply.h), which is
+#   off by default, so they are tested with it on instead of waiting for a random state to
+#   switch it on (REAPER LV2, 2026-11-27: no random state did, and both read DEAD).
+Mains frequency @ Power supply model=1.0
+Mains voltage @ Power supply model=1.0
+#
+# state:Freewheel (LV2 only)
+#   The LV2 freewheeling port is set by the host while it renders offline; it is not a plugin
+#   setting and is not saved with the session. REAPER lists it as a parameter.
+state:Freewheel
+# Freewheel (LV2 only), audio and GUI: the same host-owned port. The host drives it during every
+# offline render, so a sweep of it from the parameter list is not a plugin behaviour, and it has
+# no control by design.
+Freewheel

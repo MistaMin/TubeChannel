@@ -1,0 +1,16 @@
+PASS     loads LV2: Tube Channel QA (OpenGrid) (4->2ch), 91 parameters
+PASS     finite output peak -7.2 dBFS
+PASS     not silent rms -21.0 dBFS
+PASS     deterministic render repeat differs by -240.0 dB
+PASS     editor opens 1200x337, 0.0% animates by itself
+  Input trim                       audio=ok       visual=ok
+  Output trim                      audio=ok       visual=ok
+  Quality                          audio=ok       visual=ok
+  Stereo link                      audio=ok       visual=ok
+  Gain B                           audio=DEAD     visual=ok
+  Gain B                           audio=CONDITIONAL (acts in random state 1)
+PASS     every parameter changes the sound 
+PASS     every parameter is shown in the GUI 
+PASS     state survives save and reopen 
+PASS     editor reopens 5 close/open cycles
+report: /Volumes/Developer/OpenGrid/TubeChannel/qa/2026-11-27-openplugin-port/reaper-LV2-required-probe/report.md

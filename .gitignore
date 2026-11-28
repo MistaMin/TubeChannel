@@ -5,6 +5,7 @@ build/
 .vscode/
 dist/
 qa/**/reaper*/
+qa/**/opengrid9*/
 
 # QA run transients and bulky media (docs stay: report.md/json, ledger.md, exceptions.txt, logs)
 qa/**/cmd.txt

@@ -47,9 +47,13 @@ fn main() {
     }
     editor.show(u8::from(page.starts_with("digital")), page.ends_with("system"));
     editor.resize((1200.0 * size).round() as u32, (284.0 * size).round() as u32);
+    // Frame cost for the GUI performance check: 30 ticks with a full render each, meters moving.
+    let start = std::time::Instant::now();
     for _ in 0..30 {
         editor.tick(1.0 / 30.0);
+        editor.render(scale);
     }
+    eprintln!("{page} at {scale}x: {:.1} ms per frame", start.elapsed().as_secs_f64() * 1000.0 / 30.0);
     let frame = editor.render(scale);
     let mut ppm = format!("P6\n{} {}\n255\n", frame.width, frame.height).into_bytes();
     for p in frame.pixels {

@@ -1,0 +1,103 @@
+note: OpenGrid9 had not indexed VST3: Tube Channel QA; scanned ~/Library/Audio/Plug-Ins/VST3/Tube Channel QA.vst3 and restarted it
+PASS     loads Tube Channel QA, 88 parameters
+PASS     finite output peak -8.2 dBFS
+PASS     not silent rms -20.1 dBFS
+PASS     deterministic render repeat differs by -240.0 dB
+SKIPPED  editor opens visual checks disabled
+  Instrument input                 audio=ok       visual=-
+  Gain                             audio=ok       visual=-
+  Gain +20 dB                      audio=ok       visual=-
+  Impedance                        audio=ok       visual=-
+  Phantom 48V                      audio=DEAD     visual=-
+  Invert                           audio=ok       visual=-
+  Low cut                          audio=ok       visual=-
+  Plate voltage high               audio=ok       visual=-
+  Preamp output                    audio=ok       visual=-
+  Compressor on                    audio=ok       visual=-
+  Threshold                        audio=ok       visual=-
+  Ratio                            audio=ok       visual=-
+  Attack                           audio=ok       visual=-
+  Release                          audio=ok       visual=-
+  Detect auto                      audio=ok       visual=-
+  Comp output                      audio=ok       visual=-
+  External sidechain               audio=ok       visual=-
+  Brickwall limiter                audio=ok       visual=-
+  EQ on                            audio=ok       visual=-
+  Low                              audio=ok       visual=-
+  Low shift 40 Hz                  audio=ok       visual=-
+  High                             audio=ok       visual=-
+  High shift 6 kHz                 audio=ok       visual=-
+  Lo-Mid level                     audio=ok       visual=-
+  Lo-Mid freq                      audio=ok       visual=-
+  Lo-Mid x10                       audio=ok       visual=-
+  Lo-Mid narrow                    audio=ok       visual=-
+  Hi-Mid level                     audio=ok       visual=-
+  Hi-Mid freq                      audio=ok       visual=-
+  Hi-Mid x10                       audio=ok       visual=-
+  Hi-Mid narrow                    audio=ok       visual=-
+  Master                           audio=ok       visual=-
+  Output +4 dBu                    audio=ok       visual=-
+  Input trim                       audio=ok       visual=-
+  Output trim                      audio=ok       visual=-
+  0 VU level                       audio=ok       visual=-
+  Mic source impedance             audio=ok       visual=-
+  Instrument source impedance      audio=ok       visual=-
+  Quality                          audio=DEAD     visual=-
+  Linear phase (+L)                audio=ok       visual=-
+  Stereo link                      audio=ok       visual=-
+  Dual mono                        audio=ok       visual=-
+  Mains frequency                  audio=DEAD     visual=-
+  Mains voltage                    audio=DEAD     visual=-
+  Component tolerances             audio=ok       visual=-
+  Unit seed                        audio=ok       visual=-
+  Circuit noise                    audio=ok       visual=-
+  Power supply model               audio=ok       visual=-
+  Instrument input B               audio=ok       visual=-
+  Gain B                           audio=ok       visual=-
+  Gain +20 dB B                    audio=ok       visual=-
+  Impedance B                      audio=ok       visual=-
+  Phantom 48V B                    audio=DEAD     visual=-
+  Invert B                         audio=ok       visual=-
+  Low cut B                        audio=ok       visual=-
+  Plate voltage high B             audio=ok       visual=-
+  Preamp output B                  audio=ok       visual=-
+  Compressor on B                  audio=ok       visual=-
+  Threshold B                      audio=ok       visual=-
+  Ratio B                          audio=ok       visual=-
+  Attack B                         audio=ok       visual=-
+  Release B                        audio=ok       visual=-
+  Detect auto B                    audio=ok       visual=-
+  Comp output B                    audio=ok       visual=-
+  External sidechain B             audio=ok       visual=-
+  Brickwall limiter B              audio=ok       visual=-
+  EQ on B                          audio=ok       visual=-
+  Low B                            audio=ok       visual=-
+  Low shift 40 Hz B                audio=ok       visual=-
+  High B                           audio=ok       visual=-
+  High shift 6 kHz B               audio=ok       visual=-
+  Lo-Mid level B                   audio=ok       visual=-
+  Lo-Mid freq B                    audio=ok       visual=-
+  Lo-Mid x10 B                     audio=ok       visual=-
+  Lo-Mid narrow B                  audio=ok       visual=-
+  Hi-Mid level B                   audio=ok       visual=-
+  Hi-Mid freq B                    audio=ok       visual=-
+  Hi-Mid x10 B                     audio=ok       visual=-
+  Hi-Mid narrow B                  audio=ok       visual=-
+  Master B                         audio=ok       visual=-
+  Output +4 dBu B                  audio=ok       visual=-
+  Eco mode                         audio=ok       visual=-
+  Oversampling                     audio=ok       visual=-
+  Offline Bounce                   audio=ok       visual=-
+  Offline Bounce override          audio=ok       visual=-
+  Autogain                         audio=ok       visual=-
+  Delta                            audio=ok       visual=-
+  Bypass                           audio=ok       visual=-
+  Quality                          audio=CONDITIONAL (acts in random state 1)
+  Mains frequency                  audio=CONDITIONAL (acts in random state 1)
+  Mains voltage                    audio=CONDITIONAL (acts in random state 1)
+  Phantom 48V B                    audio=CONDITIONAL (acts in random state 1)
+  Phantom 48V                      audio=CONDITIONAL (acts in random state 2)
+PASS     every parameter changes the sound 
+PASS     state survives save and reopen 
+PASS     editor reopens 5 close/open cycles
+report: /Volumes/Developer/OpenGrid/TubeChannel/qa/2026-11-27-openplugin-port/opengrid9-VST3/report.md

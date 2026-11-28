@@ -738,6 +738,76 @@ fn handle_dot(s: &mut Scene, x: f32, y: f32, colour: Color, big: f32) {
     s.fill_ellipse_solid(Rect::new(x - big * 0.22, y - big * 0.22, big * 0.44, big * 0.44), c(0xff05_0a12));
 }
 
+/// Segments per piece of a long curve. The toolkit tests every segment of a shape at every pixel
+/// of its box, so a curve across a plot is drawn in short pieces with small boxes.
+const PIECE: usize = 8;
+
+fn curve(s: &mut Scene, points: &[Point], colour: Color, width: f32) {
+    for piece in points.windows(PIECE + 1).step_by(PIECE).chain(std::iter::once(&points[(points.len() - 1) / PIECE * PIECE..])) {
+        if piece.len() >= 2 {
+            s.stroke_poly(piece.to_vec(), colour, width, false);
+        }
+    }
+}
+
+/// Fills, for every device-pixel column under a curve that runs left to right, the span
+/// `span(y, slope)` gives, in `colour` at `alpha(y)`. Columns are rectangles on whole pixels, so
+/// neighbours meet without a seam and the cost is the area filled, not segments times the box.
+fn columns(s: &mut Scene, points: &[Point], colour: Color, span: impl Fn(f32, f32) -> (f32, f32), alpha: impl Fn(f32) -> f32) {
+    if points.len() < 2 {
+        return;
+    }
+    let k = hardware::device_scale().max(1.0);
+    let first = (points[0].x * k).round() as i64;
+    let mut i = 0;
+    let spans: Vec<(f32, f32)> = (first..(points[points.len() - 1].x * k).round() as i64)
+        .map(|col| {
+            let x = (col as f32 + 0.5) / k;
+            while i + 2 < points.len() && points[i + 1].x < x {
+                i += 1;
+            }
+            let (a, b) = (points[i], points[i + 1]);
+            let m = if b.x > a.x { (b.y - a.y) / (b.x - a.x) } else { 0.0 };
+            span(a.y + m * (x - a.x).clamp(0.0, (b.x - a.x).max(0.0)), m)
+        })
+        .collect();
+    let mut rect = |col: i64, n: usize, top: f32, bottom: f32| {
+        if bottom - top > 1e-3 {
+            s.fill_rect(Rect::new(col as f32 / k, top, n as f32 / k, bottom - top), colour.with_alpha(alpha(top)), colour.with_alpha(alpha(bottom)), true);
+        }
+    };
+    // Eight columns share one rectangle for the rows they all cover; each adds its own ragged ends.
+    for (n, chunk) in spans.chunks(8).enumerate() {
+        let col0 = first + 8 * n as i64;
+        let top = (chunk.iter().fold(f32::MIN, |m, c| m.max(c.0)) * k).ceil() / k;
+        let bottom = (chunk.iter().fold(f32::MAX, |m, c| m.min(c.1)) * k).floor() / k;
+        let shared = bottom - top >= 2.0 / k;
+        if shared {
+            rect(col0, chunk.len(), top, bottom);
+        }
+        for (m, &(t, b)) in chunk.iter().enumerate() {
+            if shared {
+                rect(col0 + m as i64, 1, t, top);
+                rect(col0 + m as i64, 1, bottom, b);
+            } else {
+                rect(col0 + m as i64, 1, t, b);
+            }
+        }
+    }
+}
+
+/// The area from a curve down to `base`: `top` alpha at the curve's highest point, `bottom` at the base.
+fn area(s: &mut Scene, points: &[Point], base: f32, colour: Color, top: f32, bottom: f32) {
+    let high = points.iter().fold(base, |m, p| m.min(p.y));
+    columns(s, points, colour, |y, _| (y.min(base), base), |y| top + (bottom - top) * if base > high { ((y - high) / (base - high)).clamp(0.0, 1.0) } else { 0.0 });
+}
+
+/// A wide translucent line along a curve. Pieces of a stroke would overlap at their joints and show as dots.
+fn glow(s: &mut Scene, points: &[Point], colour: Color, width: f32) {
+    let alpha = colour.alpha_f();
+    columns(s, points, colour, |y, m| (y - 0.5 * width * (1.0 + m * m).sqrt(), y + 0.5 * width * (1.0 + m * m).sqrt()), |_| alpha);
+}
+
 fn eq(s: &mut Scene, r: R, l: &Looks) {
     let sk = &l.skin;
     let outer = rect(r);
@@ -770,14 +840,15 @@ fn eq(s: &mut Scene, r: R, l: &Looks) {
         spec.push(Point::new(x, a.bottom() - t * a.h * 0.9));
     }
     spec.push(Point::new(a.right(), a.bottom()));
-    s.fill_poly(spec.clone(), sk.accent.with_alpha(0.42), sk.accent.with_alpha(0.03));
-    s.stroke_poly(spec[1..spec.len() - 1].to_vec(), sk.accent.with_alpha(0.65), 1.0, false);
+    let spec = &spec[1..spec.len() - 1];
+    area(s, spec, a.bottom(), sk.accent, 0.42, 0.03);
+    curve(s, spec, sk.accent.with_alpha(0.65), 1.0);
     // EQ curve
     let eq_on = l.values[EQ + l.ch] > 0.5;
     let bands = Bands::of(l.values, l.ch);
-    let curve: Vec<Point> = (0..=w).step_by(2).map(|px| Point::new(a.x + px as f32, plot.y(if eq_on { bands.response_db(plot.f(a.x + px as f32)) } else { 0.0 }))).collect();
-    s.stroke_poly(curve.clone(), Color(0xffff_ffff).with_alpha(if eq_on { 0.18 } else { 0.06 }), 5.0, false);
-    s.stroke_poly(curve, Color(0xffff_ffff).with_alpha(if eq_on { 1.0 } else { 0.45 }), 1.8, false);
+    let line: Vec<Point> = (0..=w).step_by(2).map(|px| Point::new(a.x + px as f32, plot.y(if eq_on { bands.response_db(plot.f(a.x + px as f32)) } else { 0.0 }))).collect();
+    glow(s, &line, Color(0xffff_ffff).with_alpha(if eq_on { 0.18 } else { 0.06 }), 5.0);
+    curve(s, &line, Color(0xffff_ffff).with_alpha(if eq_on { 1.0 } else { 0.45 }), 1.8);
     for i in 0..4 {
         let (f, g) = bands.handle(i);
         let (x, y) = (plot.x(f), plot.y(g));
@@ -817,12 +888,9 @@ fn comp(s: &mut Scene, r: R, l: &Looks) {
         d += 4.0;
     }
     let pts: Vec<Point> = (0..=120).map(|i| COMP_LO + i as f64 * 0.5).map(|input| Point::new(plot.x(input), plot.y(curve_of.out_db(input)))).collect();
-    let mut fill = pts.clone();
-    fill.push(Point::new(plot.x(COMP_HI), a.bottom()));
-    fill.push(Point::new(plot.x(COMP_LO), a.bottom()));
-    s.fill_poly(fill, sk.accent.with_alpha(0.22), sk.accent.with_alpha(0.0));
-    s.stroke_poly(pts.clone(), sk.accent.with_alpha(0.3), 5.0, false);
-    s.stroke_poly(pts, c(0xffff_ffff), 1.8, false);
+    area(s, &pts, a.bottom(), sk.accent, 0.22, 0.0);
+    glow(s, &pts, sk.accent.with_alpha(0.3), 5.0);
+    curve(s, &pts, c(0xffff_ffff), 1.8);
     // live gain reduction
     let gr = l.meters.comp_gr;
     s.fill_rect(Rect::new(a.right() - 5.0, a.y, 4.0, a.h * (gr / 24.0).clamp(0.0, 1.0)), c(0xffff_9a2a), c(0xffff_9a2a), true);
@@ -834,4 +902,25 @@ fn comp(s: &mut Scene, r: R, l: &Looks) {
     }
     s.pop_clip();
     text_r(s, outer.right() - 8.0, outer.y + 9.0, &format!("GR {gr:.1} dB"), sk.accent, 9.5, true);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use openplugin::dri::goodlookindri::scene::Cmd;
+
+    /// The column fill covers the area under the curve once: no gap and no overlap between columns.
+    #[test]
+    fn column_fill_covers_the_area_once() {
+        hardware::set_device_scale(2.0);
+        let mut s = Scene::new();
+        let points = [Point::new(10.0, 50.0), Point::new(40.0, 20.0), Point::new(90.0, 80.0)];
+        area(&mut s, &points, 100.0, Color(0xffff_ffff), 0.4, 0.0);
+        let filled: f32 = s.cmds.iter().map(|c| match c {
+            Cmd::FillRect { rect, .. } => rect.w * rect.h,
+            _ => panic!("only rectangles"),
+        }).sum();
+        let exact = 30.0 * (50.0 + 80.0) / 2.0 + 50.0 * (80.0 + 20.0) / 2.0;
+        assert!((filled - exact).abs() < 1.0, "{filled} against {exact}");
+    }
 }
