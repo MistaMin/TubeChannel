@@ -40,7 +40,20 @@ fn main() {
             build.flag_if_supported(format!("-ffile-prefix-map={from}={to}"));
         }
     }
+    // MSVC has no prefix map: cut the repository folder off the file names its asserts keep.
+    if let Some(repo) = Path::new(&manifest).parent() {
+        build.flag_if_supported(format!("/d1trimfile:{}\\", repo.display()));
+        build.flag_if_supported(format!("/d1trimfile:{manifest}\\..\\"));
+    }
+    // Linux: the C++ runtime goes into the plug-in, so it does not depend on the host system's libstdc++.
+    let linux = env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("linux");
+    if linux {
+        build.cpp_link_stdlib(None);
+    }
     build.compile("tubechannel_engine");
+    if linux {
+        println!("cargo:rustc-link-lib=static=stdc++");
+    }
     println!("cargo:rerun-if-changed=cpp");
     println!("cargo:rerun-if-changed=../Netlists/EmbeddedNetlists.h.in");
     for dir in ["Channel", "Circuit", "DSP", "Hybrid", "Plugin/Chain.h"] {
