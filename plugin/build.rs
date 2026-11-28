@@ -52,6 +52,12 @@ fn main() {
     }
     build.compile("tubechannel_engine");
     if linux {
+        // rustc does not know the compiler's library folders: ask the compiler where its libstdc++.a is.
+        let found = build.get_compiler().to_command().arg("-print-file-name=libstdc++.a").output().expect("the C++ compiler");
+        let archive = String::from_utf8_lossy(&found.stdout).trim().to_string();
+        if let Some(dir) = Path::new(&archive).parent().filter(|d| d.is_dir()) {
+            println!("cargo:rustc-link-search=native={}", dir.display());
+        }
         println!("cargo:rustc-link-lib=static=stdc++");
     }
     println!("cargo:rerun-if-changed=cpp");
