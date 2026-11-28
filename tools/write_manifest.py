@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 
 NAME = "Tube Channel"
-LV2 = "TubeChannel"
+PLUGIN = "TubeChannel"  # the catalog key of the 1.x manifests
 HIGHLIGHTS = [
     "Rebuilt on OpenPluginSDK: same sound, same parameters, 1.x projects and presets open unchanged",
     "Autogain matches the output loudness to the input; Delta plays only what the processing changes",
@@ -55,27 +55,27 @@ def main() -> None:
             ("vst3", f"Library/Audio/Plug-Ins/VST3/{NAME}.vst3"),
             ("au", f"Library/Audio/Plug-Ins/Components/{NAME}.component"),
             ("clap", f"Library/Audio/Plug-Ins/CLAP/{NAME}.clap"),
-            ("lv2", f"Library/Audio/Plug-Ins/LV2/{LV2}.lv2"),
+            ("lv2", f"Library/Audio/Plug-Ins/LV2/{NAME}.lv2"),
             ("aax", f"Library/Application Support/Avid/Audio/Plug-Ins/{NAME}.aaxplugin"),
         ]))
     if a.windows:
         archives.append(entry(a.windows, "windows", ["x64"], "10.0", [
             ("vst3", f"Common Files/VST3/{NAME}.vst3"),
             ("clap", f"Common Files/CLAP/{NAME}.clap"),
-            ("lv2", f"Common Files/LV2/{LV2}.lv2"),
+            ("lv2", f"Common Files/LV2/{NAME}.lv2"),
         ]))
     if a.linux:
         # Linux: the minimum is the glibc of the build machine (Ubuntu 22.04).
         archives.append(entry(a.linux, "linux", ["x86_64"], "2.35", [
             ("vst3", f"usr/lib/vst3/{NAME}.vst3"),
             ("clap", f"usr/lib/clap/{NAME}.clap"),
-            ("lv2", f"usr/lib/lv2/{LV2}.lv2"),
+            ("lv2", f"usr/lib/lv2/{NAME}.lv2"),
         ]))
     if not archives:
         raise SystemExit("no archive given")
     manifest = {
         "schema": 2,
-        "plugin": NAME,
+        "plugin": PLUGIN,
         "version": a.version,
         "released": a.released,
         "highlights": HIGHLIGHTS,

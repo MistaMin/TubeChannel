@@ -110,7 +110,8 @@ jobs:
           mkdir -p pkg/usr/lib/vst3 pkg/usr/lib/clap pkg/usr/lib/lv2 "$doc"
           cp -R "dist-linux/Tube Channel.vst3" pkg/usr/lib/vst3/
           cp "dist-linux/Tube Channel.clap" pkg/usr/lib/clap/
-          cp -R dist-linux/TubeChannel.lv2 pkg/usr/lib/lv2/
+          # The folder name 1.x used: same plug-in URI, so 2.0 replaces it.
+          cp -R dist-linux/TubeChannel.lv2 "pkg/usr/lib/lv2/Tube Channel.lv2"
           (cd w/tubechannel && cp LICENSE BINARY_LICENSE.txt THIRD_PARTY_LICENSES.md Licenses/* docs/USER_MANUAL.md "$doc/")
           tar -C pkg --owner=0 --group=0 -czf "$name.tar.gz" usr
           sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"

@@ -35,10 +35,14 @@ rm -rf "$WORK"
 mkdir -p "$WORK/stage" "$WORK/components" "$WORK/plists" "$WORK/resources"
 
 echo "== Developer ID signatures"
-for b in "$NAME.vst3" "$NAME.component" "$NAME.clap" "$LV2.lv2"; do
+for b in "$NAME.vst3" "$NAME.component" "$NAME.clap"; do
   rm -rf "${SIGNED:?}/$b"
   COPYFILE_DISABLE=1 ditto --norsrc --noextattr --noqtn "$DIST/$b" "$SIGNED/$b"
 done
+# The LV2 folder keeps the name 1.x installed ("Tube Channel.lv2"): both versions have the same
+# plug-in URI, so 2.0 must replace that folder, not sit beside it.
+rm -rf "${SIGNED:?}/$NAME.lv2"
+COPYFILE_DISABLE=1 ditto --norsrc --noextattr --noqtn "$DIST/$LV2.lv2" "$SIGNED/$NAME.lv2"
 # Code nested in a bundle (the CLAP's ARA library in Contents/Resources) is signed first, inside out.
 nested() { find "$SIGNED/$NAME.vst3" "$SIGNED/$NAME.component" "$SIGNED/$NAME.clap" -name '*.dylib' -print0; }
 nested | xargs -0 -n1 codesign --force --timestamp --options runtime --sign "$APP_ID"
@@ -49,8 +53,8 @@ done
 while IFS= read -r -d '' f; do
   codesign -dvv "$f" 2>&1 | grep "^Authority=Developer ID Application" > /dev/null || { echo "not Developer ID signed: $f" >&2; exit 1; }
 done < <(nested)
-codesign --force --timestamp --options runtime --sign "$APP_ID" "$SIGNED/$LV2.lv2/$LV2.dylib"
-for b in "$NAME.vst3" "$NAME.component" "$NAME.clap" "$LV2.lv2/$LV2.dylib" "$NAME.aaxplugin"; do
+codesign --force --timestamp --options runtime --sign "$APP_ID" "$SIGNED/$NAME.lv2/$LV2.dylib"
+for b in "$NAME.vst3" "$NAME.component" "$NAME.clap" "$NAME.lv2/$LV2.dylib" "$NAME.aaxplugin"; do
   codesign --verify --deep --strict --verbose=1 "$SIGNED/$b"
 done
 
@@ -64,8 +68,16 @@ component() { # key, bundle or folder, install location, identifier
     /usr/libexec/PlistBuddy -c "Set :$i:BundleIsRelocatable false" "$plist"
     i=$((i + 1))
   done
+  local scripts=()
+  if [ "$key" = lv2 ]; then
+    # 1.x left its own files in this folder; remove it first so no old binary stays behind.
+    mkdir -p "$WORK/scripts-lv2"
+    printf '#!/bin/sh\nrm -rf "/Library/Audio/Plug-Ins/LV2/%s.lv2"\nexit 0\n' "$NAME" > "$WORK/scripts-lv2/preinstall"
+    chmod +x "$WORK/scripts-lv2/preinstall"
+    scripts=(--scripts "$WORK/scripts-lv2")
+  fi
   pkgbuild --root "$WORK/stage/$key" --component-plist "$plist" --identifier "$pid" --version "$VERSION" \
-    --install-location "$loc" --ownership recommended --sign "$INSTALLER_ID" --timestamp "$WORK/components/$FILE-$key.pkg"
+    ${scripts[@]+"${scripts[@]}"} --install-location "$loc" --ownership recommended --sign "$INSTALLER_ID" --timestamp "$WORK/components/$FILE-$key.pkg"
   # The payload lists extended attributes (com.apple.provenance) as ._ entries; the installer folds them back into
   # attributes. What must not ship is a real ._ file, so expand the package as the installer does and look.
   rm -rf "$WORK/check"
@@ -80,7 +92,7 @@ echo "== component packages"
 component vst3 "$SIGNED/$NAME.vst3" /Library/Audio/Plug-Ins/VST3 "$ID.pkg.vst3"
 component au "$SIGNED/$NAME.component" /Library/Audio/Plug-Ins/Components "$ID.pkg.au"
 component clap "$SIGNED/$NAME.clap" /Library/Audio/Plug-Ins/CLAP "$ID.pkg.clap"
-component lv2 "$SIGNED/$LV2.lv2" /Library/Audio/Plug-Ins/LV2 "$ID.pkg.lv2"
+component lv2 "$SIGNED/$NAME.lv2" /Library/Audio/Plug-Ins/LV2 "$ID.pkg.lv2"
 component aax "$SIGNED/$NAME.aaxplugin" "/Library/Application Support/Avid/Audio/Plug-Ins" "$ID.pkg.aax"
 DOCS="$WORK/docs/$NAME"
 mkdir -p "$DOCS/Licenses"

@@ -39,10 +39,14 @@ Name: "vst3"; Description: "VST3 plug-in"; Types: full
 Name: "clap"; Description: "CLAP plug-in"; Types: full
 Name: "lv2"; Description: "LV2 plug-in"; Types: full
 
+; 1.x used the same LV2 folder with other file names: clear it so no old binary stays behind.
+[InstallDelete]
+Type: filesandordirs; Name: "{commoncf64}\LV2\Tube Channel.lv2"; Components: lv2
+
 [Files]
 Source: "{#Dist}\Tube Channel.vst3\*"; DestDir: "{commoncf64}\VST3\Tube Channel.vst3"; Components: vst3; Flags: recursesubdirs ignoreversion
 Source: "{#Dist}\Tube Channel.clap"; DestDir: "{commoncf64}\CLAP"; Components: clap; Flags: ignoreversion
-Source: "{#Dist}\TubeChannel.lv2\*"; DestDir: "{commoncf64}\LV2\TubeChannel.lv2"; Components: lv2; Flags: recursesubdirs ignoreversion
+Source: "{#Dist}\TubeChannel.lv2\*"; DestDir: "{commoncf64}\LV2\Tube Channel.lv2"; Components: lv2; Flags: recursesubdirs ignoreversion
 Source: "{#Root}\LICENSE"; DestDir: "{app}\Licenses"; DestName: "LICENSE.txt"
 Source: "{#Root}\BINARY_LICENSE.txt"; DestDir: "{app}\Licenses"
 Source: "{#Root}\THIRD_PARTY_LICENSES.md"; DestDir: "{app}\Licenses"
